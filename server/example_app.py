@@ -1,6 +1,7 @@
 import os
-from rawpi import RawPi
-from basicui import BasicUI
+
+from UI import BasicUI
+from HAL.basic_pi import RawPi
 
 # Tornado server settings
 settings = {

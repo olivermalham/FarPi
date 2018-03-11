@@ -1,4 +1,4 @@
-from hal import HAL, HALComponent
+from hal import *
 #import RPI
 
 
