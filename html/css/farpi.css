@@ -11,12 +11,26 @@ body {
     background-color: #202020; 
 	color: #ff6600; 
 	width: 100%;
-    margin-top:3em;
-    margin-bottom: 3em; 
-	/*height: 100vh; */
+    margin-top:20px;
+    margin-bottom: 20px;
 	font-family: 'Roboto', sans-serif;
     font-size: 38pt;
 	align-items: center;
 	display: flex;
 	justify-content: center;
+}
+
+hr {
+    color: #ff6600;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0 none;
+    border-top: 1px solid #ff6600;
+    margin: 1em 0;
+    padding: 0;
+    color: #ff6600;
+    background-color: #ff6600;
 }

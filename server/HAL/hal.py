@@ -22,7 +22,7 @@ class HAL(object):
     """
 
     def __init__(self, *args, **kwargs):
-        pass
+        self.cycle = 0
 
     def action(self, name, **kwargs):
         """ Dispatch an action received via the WebSockets server
@@ -46,7 +46,10 @@ class HAL(object):
         for entry_name in dir(self):
             entry = getattr(self, entry_name)
             if not callable(entry) and not entry_name.startswith("_"):
-                result = result + '"{}":{},'.format(entry_name, entry.serialise(entry_name))
+                if issubclass(entry.__class__, HALComponent):
+                    result = result + '"{}":{},'.format(entry_name, entry.serialise(entry_name))
+                else:
+                    result = result + '"{}":{},'.format(entry_name, str(entry))
         result = result[:-1] + "}"
         return result
 
@@ -56,10 +59,12 @@ class HAL(object):
             Run through all active HALComponents and call their refresh methods
         :return: Nothing
         """
+        self.cycle += 1
+
         for entry in dir(self):
             if not entry.startswith("_"):
                 component = getattr(self, entry)
-                if issubclass(self.__class__, HALComponent):
+                if issubclass(component.__class__, HALComponent):
                     component.refresh()
 
 

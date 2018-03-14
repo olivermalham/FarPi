@@ -1,6 +1,6 @@
 """ Mockip UI definition file to try and work out how to build the system.
 
-I sant this to be as simple and intuitive as possible, whilst also being
+I want this to be as simple and intuitive as possible, whilst also being
 powerful and easily extensible. It also needs to be pure python.
 
 Themes is a directory holding a bunch of python packages.
@@ -9,16 +9,16 @@ string it should output an HTML page with embedded hooks for the JavaScript
 parts to interact with.
 
 I like the relative elegance of nested function calls, as demoed below, 
-for capturing the hierarchial structure of HTML.
+for capturing the hierarchical structure of HTML.
 
 The various GUI components will inherit from one of  a pair of base classes,
 one for containers, the other for components.
 
 All UI classes implement the __call__() method. Containers use *args to 
 iterate through all children, simply outputting whatever they evaluate to 
-when converted to strings, wrapped with a preamble and postamble(?).
+when converted to strings, wrapped with a preamble and post-amble.
 
-Componets are simpler, and just return a fragment of HTML when called. Just
+Components are simpler, and just return a fragment of HTML when called. Just
 use simple .format() call with the **kwargs dictionary.
 
 As well as outputting HTML, there should also be hooks for generating 
@@ -30,50 +30,101 @@ Example:
 import themes.vanilla.*
 ui = panel(
             row(
-                horizontal_bar(value="bcm23", label="Temperatuee"), 
+                horizontal_bar(value="bcm23", label="Temperature"),
                 toggle_switch(value"bcm01", label="Fan")
                 ),
             row(
                 dial_meter(value="bcm12", label="Volts")
                 )
                )
+               
+Javascript part. Basic updating of the UI with state values from the HAL
+is dealt with by the basic FarPi framework. However, it is inevitable that
+some components will want to run handlers when certain things happen. The
+JS fragments will be collated and sent to the client, so can in theory do
+anything JS can do. I should also provide hooks for code to run when the
+state is updated. Given the JS frags will be run on load, there needs to be
+a mechanism to register callbacks.
+
+
 """
 
 class Container(object):
+    """ Base class for FarPi UI generation.
 
-    _prefix="""<div>(prefix)"""
-    _postfix="""</div>(postfix)"""
-    _child_prefix="""<span>(child prefix)"""
-    _child_postfix="""</span>(child postfix)"""
+    Designed to be used in a functional programming style. Concrete instances only need to define the
+    HTML, JavaScript and CSS fragments as python string templates, with standard {param} placeholders.
+    Returns HTML, JavaScript and CSS stylesheet strings for sending to the client.
+    """
 
+    # These should all be strings with {param} placeholders for the .format operator
+
+    # Opening HTML fragment for the main container
+    _prefix="""<div>\n"""
+
+    # Closing HTML fragment for the main container
+    _postfix="""\n</div>\n"""
+
+    # HTML fragment added immediately before each child HTML section
+    _child_prefix="""<span>"""
+
+    # HTML fragment added immediately after each child HTML section
+    _child_postfix="""</span>"""
+
+    # Javascript template to provide extra functionality not available in the base code. Optional.
     _javascript = ""
+
+    # CSS stylesheet template to provide extra styles if required. Option.
     _css = ""
 
-    @classmethod
-    def __call__(cls, *args, **kwargs):
-        """ wraps all child element HTML in it's own.
+    def __init__(self, *args, **kwargs):
+        """ Wraps all child element HTML in it's own.
+        All positional arguments are assumed to be Component subclasses.
+        Keyword arguments are used to populate template parameters.
+
+        :return (html, javascript, CSS) tuple of string
         """
-        html = cls._prefix.format(**kwargs)
-        js = cls._javascript.format(**kwargs)
-        css = cls._css.format(**kwargs)
+        self.html_prefix = self._prefix.format(**kwargs)
+        self.html_postfix = self._postfix.format(**kwargs)
+        self.js = self._javascript.format(**kwargs)
+        self.css = self._css.format(**kwargs)
+        self.child_prefix = self._child_prefix.format(**kwargs)
+        self.child_postfix = self._child_postfix.format(**kwargs)
+        self._children = args
+
+    def __call__(self):
+        """ Wraps all child element HTML in it's own.
+
+        :return (html, javascript, CSS) tuple of string
+        """
+        html = self.html_prefix
+        js = self.js
+        css = self.css
         
-        for child in args:
-            html += cls._child_prefix.format(**kwargs) + child[0] + cls._child_postfix.format(**kwargs)
-            js += child[1]
-            css += child[2]
+        for child in self._children:
+            child_html, child_js, child_css = child()
+            html += self.child_prefix + child_html + self.child_postfix
+            js += child_js
+            css += child_css
             
-        html += cls._postfix.format(**kwargs)
+        html += self.html_postfix
         
         return html, js, css
 
 
 class Component(object):
+    """ Base class for FarPi UI components.
 
+
+    """
     _html = """<some html>"""
     _js = """<some js>"""
     _css = """<some css>"""
-    
-    @classmethod
-    def __call__(cls, *args, **kwargs):
-        return cls._html.format(**kwargs), cls._js.format(**kwargs), cls._css.format(**kwargs),
 
+    def __init__(self, *args, **kwargs):
+        self.html = self._html.format(**kwargs)
+        self.js = self._js.format(**kwargs)
+        self.css = self._css.format(**kwargs)
+
+    def __call__(self, *args, **kwargs):
+        return self.html, self.js, self.css
