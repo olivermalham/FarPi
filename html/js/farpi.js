@@ -16,7 +16,7 @@ var FarPi = {
         this.socket = new WebSocket(target);
 
         this.socket.onmessage = function(e) {
-            document.getElementById("message_content").innerHTML = e.data;
+            //console.log(e.data);
             FarPi.state = JSON.parse(e.data);
             for(var i in FarPi._callbacks){
                 FarPi._callbacks[i]();

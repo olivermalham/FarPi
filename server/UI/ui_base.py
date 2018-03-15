@@ -48,6 +48,8 @@ a mechanism to register callbacks.
 
 
 """
+from tornado.template import Template
+
 
 class Container(object):
     """ Base class for FarPi UI generation.
@@ -77,6 +79,11 @@ class Container(object):
     # CSS stylesheet template to provide extra styles if required. Option.
     _css = ""
 
+    # Page template defines the page that will surround the GUI defined by the UI
+    # objects. Should be a string, will be run through the Python .format method
+    # to replace {far_pi} with the generated control panel.
+    _page_template = ""
+
     def __init__(self, *args, **kwargs):
         """ Wraps all child element HTML in it's own.
         All positional arguments are assumed to be Component subclasses.
@@ -84,12 +91,12 @@ class Container(object):
 
         :return (html, javascript, CSS) tuple of string
         """
-        self.html_prefix = self._prefix.format(**kwargs)
-        self.html_postfix = self._postfix.format(**kwargs)
-        self.js = self._javascript.format(**kwargs)
-        self.css = self._css.format(**kwargs)
-        self.child_prefix = self._child_prefix.format(**kwargs)
-        self.child_postfix = self._child_postfix.format(**kwargs)
+        self.html_prefix = Template(self._prefix).generate(**kwargs)
+        self.html_postfix = Template(self._postfix).generate(**kwargs)
+        self.js = Template(self._javascript).generate(**kwargs)
+        self.css = Template(self._css).generate(**kwargs)
+        self.child_prefix = Template(self._child_prefix).generate(**kwargs)
+        self.child_postfix = Template(self._child_postfix).generate(**kwargs)
         self._children = args
 
     def __call__(self):
@@ -122,9 +129,9 @@ class Component(object):
     _css = """<some css>"""
 
     def __init__(self, *args, **kwargs):
-        self.html = self._html.format(**kwargs)
-        self.js = self._js.format(**kwargs)
-        self.css = self._css.format(**kwargs)
+        self.html = Template(self._html).generate(**kwargs)
+        self.js = Template(self._js).generate(**kwargs)
+        self.css = Template(self._css).generate(**kwargs)
 
     def __call__(self, *args, **kwargs):
         return self.html, self.js, self.css

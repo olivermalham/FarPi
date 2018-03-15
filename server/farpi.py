@@ -103,7 +103,7 @@ class FarPiGUIHandler(tornado.web.RequestHandler):
            extension == "" or \
            extension.upper() == '.HTML' or \
            extension.upper() == '.HTM':
-            result = application.page_template.format(far_pi=application.ui()[0])
+            result = application.ui._page_template.format(far_pi=application.ui()[0])
             self.write(result)
         elif extension.upper() == '.JS':
             self.write(application.ui()[1])

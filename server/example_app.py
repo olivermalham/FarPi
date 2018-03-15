@@ -21,7 +21,7 @@ settings = {
 port = 8888
 
 # Number of milliseconds to delay between updates to clients
-refresh_ms =100
+refresh_ms =1000
 
 # Web server paths
 paths = {}
@@ -31,26 +31,3 @@ hal = BasicPi()
 
 # Create the object that defines the user interface layout and components
 ui = UI.basic_ui.ui
-
-page_template = """
-<!doctype html>
-<html lang="en">
-
-<head>
-    <title>FarPi</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100" rel="stylesheet">
-    <script src="/js/farpi.js"></script>
-    <link rel="stylesheet" href="/css/farpi.css">
-    
-</head>
-<body onload="FarPi.onLoad('ws://localhost:8888/farpi');">
-<div id="title">- FarPi -</div>
-<hr />
-<center>
-
-{far_pi}
-
-</center>
-</body>
-</html>
-"""
