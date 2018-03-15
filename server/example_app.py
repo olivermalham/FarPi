@@ -21,7 +21,7 @@ settings = {
 port = 8888
 
 # Number of milliseconds to delay between updates to clients
-refresh_ms =1000
+refresh_ms =500
 
 # Web server paths
 paths = {}

@@ -14,7 +14,8 @@ class BasicPiGPIO(HALComponent):
         # self._pin = RPI.gpio TODO!
 
     def refresh(self):
-        pass #  TODO: Use RPIO to get the pin value
+        # TODO: Use RPIO to get the pin value
+        pass
 
     def action_toggle(self, msg=""):
         print "BasicPiGPIO action_toggle msg:",msg
@@ -32,6 +33,7 @@ class BasicPi(HAL):
 
         # Add all the GPIO pins, setting pin number and direction
         self.bcm00 = BasicPiGPIO(pin_number=0, directon=0)
+        self.bcm00.state = True
         self.bcm01 = BasicPiGPIO(pin_number=1, directon=0)
         self.bcm02 = BasicPiGPIO(pin_number=2, directon=0)
         self.bcm03 = BasicPiGPIO(pin_number=3, directon=0)

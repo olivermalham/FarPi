@@ -1,36 +1,93 @@
+:root {
+    --highlight: #87fded;
+    --glow: #1481c4;
+    --inactive: #444444;
+    --active: #AAAAAA;
+    --background: #202020;
+}
+
 body {
-    background-color: #202020; 
+    background-color: var(--background);
 	min-height: 100%;
-	padding:0px; 
-	margin:0px;
-    color:white;
-    font-family: 'Roboto', sans-serif;
+	color: var(--active);
+    font-family: 'Abel', sans-serif;
+    font-size: 20pt;
 }
 
 #title { 	
-    background-color: #202020; 
-	color: #ff6600; 
+    color: var(--glow);
 	width: 100%;
-    margin-top:20px;
-    margin-bottom: 20px;
-	font-family: 'Roboto', sans-serif;
-    font-size: 38pt;
-	align-items: center;
-	display: flex;
-	justify-content: center;
-}
-
-hr {
-    color: #ff6600;
+    padding-top:20px;
+    font-family: 'Abel', sans-serif;
+    font-size: 70pt;
+	text-align: center;
 }
 
 hr {
     display: block;
-    height: 1px;
     border: 0 none;
-    border-top: 1px solid #ff6600;
+    border-top: 1px solid;
+    border-color: var(--glow);
     margin: 1em 0;
     padding: 0;
-    color: #ff6600;
-    background-color: #ff6600;
+    box-shadow: 0 0 25px var(--glow);
+}
+
+.HeartBeat {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 0 6px;
+    border-color: var(--active);
+    background: var(--inactive);
+    display: inline-block;
+    margin: 15px;
+    width: 15px;
+    height: 15px;
+    float: right;
+}
+
+.HeartBeatGlow {
+    border-color: var(--highlight);
+    box-shadow: 0 0 25px var(--glow);
+    background: var(--glow);
+}
+
+.LED {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 0 10px;
+    border-color: var(--inactive);
+    box-shadow: 0 0 15px var(--inactive);
+    display: inline-block;
+    margin: 10px;
+    vertical-align: middle;
+    line-height: 2em;
+    padding:10px;
+}
+
+.LED_indicator {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 0 6px;
+    border-color: var(--active);
+    background: var(--inactive);
+    display: inline-block;
+    margin-right: 1ex;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+}
+
+.LED_label {
+    display: inline-block;
+    height: 1em;
+}
+
+.LED_on {
+    background: var(--glow);
+}
+
+.on_glow {
+    border-color: var(--highlight);
+    box-shadow: 0 0 25px var(--glow);
 }

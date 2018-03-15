@@ -6,16 +6,16 @@ class Panel(ui_base.Container):
 
     """
     # Opening HTML fragment for the main container
-    _prefix="""<!-- Panel -->\n<div>\n"""
+    _prefix = """<!-- Panel -->\n<div>\n"""
 
     # Closing HTML fragment for the main container
-    _postfix="""</div> <!-- End Panel -->\n"""
+    _postfix = """</div> <!-- End Panel -->\n"""
 
     # HTML fragment added immediately before each child HTML section
-    _child_prefix=""" """
+    _child_prefix = """ """
 
     # HTML fragment added immediately after each child HTML section
-    _child_postfix=""" """
+    _child_postfix = """ """
 
     # Javascript template to provide extra functionality not available in the base code. Optional.
     _javascript = ""
@@ -32,14 +32,15 @@ class Panel(ui_base.Container):
 
 <head>
     <title>FarPi</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Abel" rel="stylesheet">
     <script src="/js/farpi.js"></script>
     <script src="/farpiGUI.js"></script>
     <link rel="stylesheet" href="/css/farpi.css">
     <link rel="stylesheet" href="/farpiGUI.css">
 </head>
 <body onload="FarPi.onLoad('ws://localhost:8888/farpi');">
-<div id="title">- F   a   r   P   i -</div>
+<div class="HeartBeat" id="HeartBeat"></div>
+<div id="title">- FarPi -</div>
 <hr />
 <center>
 
@@ -53,8 +54,9 @@ class Panel(ui_base.Container):
 
 class LED(ui_base.Component):
     _html = """
-<div class="LED">
-    <div id="LED_{{pin}}">{{label}}</div>
+<div class="LED" id="LED_{{pin}}">
+    <span class="LED_indicator">&nbsp;</span>
+    <span class="LED_label">{{label}}</span>
 </div>
     """
 
@@ -65,9 +67,11 @@ console.log("LED {{pin}} JS run");
 FarPi.registerCallback(function(){
     var LED_element = document.getElementById("LED_{{pin}}");
     if(FarPi.state["{{pin}}"].state){
-        LED_element.style.backgroundColor = "#ff6600";
+        LED_element.classList.add("on_glow");
+        LED_element.querySelectorAll(".LED_indicator")[0].classList.add("LED_on", "on_glow");
     } else {
-        LED_element.style.backgroundColor = "transparent";
+        LED_element.classList.remove("on_glow");
+        LED_element.querySelectorAll(".LED_indicator")[0].classList.remove("LED_on", "on_glow");
     }
     //console.log("LED update {{pin}}");
 });
@@ -86,28 +90,3 @@ class PushButtonSwitch(ui_base.Component):
     _html = """<PushButtonSwitch html>"""
     _js = """<PushButtonSwitch js>"""
     _css = """<PushButtonSwitch css>"""
-
-
-class HeartBeat(ui_base.Component):
-    _html = """
-<div class="HeartBeat">
-    <div id="HeartBeat">Heartbeat</div>
-</div>
-"""
-
-    _js = """
-/* Heartbeat js */
-console.log("Heartbeat JS run");
-
-FarPi.registerCallback(function(){
-    var heartbeat_element = document.getElementById("HeartBeat");
-    if(FarPi.state["cycle"] % {{beat}}){
-        heartbeat_element.style.backgroundColor = "#ff6600";
-    } else {
-        heartbeat_element.style.backgroundColor = "transparent";
-    }
-    //console.log("Heartbeat update")
-});
-"""
-    _css = """/* Heartbeat css */"""
-

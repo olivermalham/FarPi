@@ -18,6 +18,7 @@ var FarPi = {
         this.socket.onmessage = function(e) {
             //console.log(e.data);
             FarPi.state = JSON.parse(e.data);
+            FarPi.heartbeat();
             for(var i in FarPi._callbacks){
                 FarPi._callbacks[i]();
             }
@@ -29,6 +30,14 @@ var FarPi = {
     _callbacks: [],
     registerCallback: function(callback){
         this._callbacks.push(callback);
+    },
+
+    heartbeat: function(){
+        var heartbeat_element = document.getElementById("HeartBeat");
+        if(FarPi.state["cycle"] % 2){
+            heartbeat_element.classList.toggle("HeartBeatGlow");
+        };
+        //console.log("Heartbeat update")
     },
 
     // State attribute is populated by JSON decoding server response

@@ -22,7 +22,11 @@ class HAL(object):
     """
 
     def __init__(self, *args, **kwargs):
+        # Simple counter that gets incremented on every refresh
         self.cycle = 0
+
+        # Message to the client. Up to the client to store them if required
+        self.message = "HAL Intialised"
 
     def action(self, name, **kwargs):
         """ Dispatch an action received via the WebSockets server
@@ -49,7 +53,7 @@ class HAL(object):
                 if issubclass(entry.__class__, HALComponent):
                     result = result + '"{}":{},'.format(entry_name, entry.serialise(entry_name))
                 else:
-                    result = result + '"{}":{},'.format(entry_name, str(entry))
+                    result = result + '"{}":"{}",'.format(entry_name, str(entry))
         result = result[:-1] + "}"
         return result
 
