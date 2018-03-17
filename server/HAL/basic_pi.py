@@ -1,26 +1,43 @@
 from hal import *
-#import RPI
+# import RPI
 
 
 class BasicPiGPIO(HALComponent):
     """ Basic GPIO pin.
 
     """
-    def __init__(self, pin_number=1, directon=1, *args, **kwargs):
+    def __init__(self, pin_number=1, direction=1, *args, **kwargs):
         super(HALComponent, self).__init__()
         self.state = False
         self._pin_number = pin_number
-        self._direction = directon
+        self._direction = direction
         # self._pin = RPI.gpio TODO!
 
     def refresh(self):
         # TODO: Use RPIO to get the pin value
         pass
 
-    def action_toggle(self, msg=""):
-        print "BasicPiGPIO action_toggle msg:",msg
+    def action_toggle(self):
         self.state = not self.state
+        print "BasicPiGPIO action_toggle now:", self.state
 
+    def action_set(self, value):
+        print "BasicPiGPIO action_set value:", value
+        self.state = bool(value)
+
+class DummySensor(HALComponent):
+    """ Dummy sensor provides a gradual ramp up of a value.  Resets to zero once it passes 1.0.
+
+    """
+    def __init__(self, delta=0.1, *args, **kwargs):
+        super(HALComponent, self).__init__()
+        self.state = 0.0
+        self.delta = delta
+
+    def refresh(self):
+        self.state += self.delta
+        if self.state > 1.0:
+            self.state = 0.0
 
 class BasicPi(HAL):
     """ Concrete HAL class for accessing basic Raspberry Pi hardware.
@@ -67,3 +84,6 @@ class BasicPi(HAL):
         self.bcm25 = BasicPiGPIO(pin_number=25, directon=0)
         self.bcm26 = BasicPiGPIO(pin_number=26, directon=0)
         self.bcm27 = BasicPiGPIO(pin_number=27, directon=0)
+
+        self.dummy = DummySensor(delta=0.1)
+

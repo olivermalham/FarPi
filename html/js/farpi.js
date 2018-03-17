@@ -9,6 +9,10 @@ var FarPi = {
         this.socket.send(document.getElementById('msg').value);
     },
 
+    action: function(target, arguments) {
+        this.socket.send("{\"action\":\""+target+"\", \"parameters\":{"+arguments+"}}");
+    },
+
     // Called when the page is loaded. Opens a websocket connection to the server
     // and registers the callback to handle the returned server state.
     onLoad: function(target) {
@@ -38,6 +42,12 @@ var FarPi = {
             heartbeat_element.classList.toggle("HeartBeatGlow");
         };
         //console.log("Heartbeat update")
+    },
+
+    trap_context: function() {
+        event = window.event;
+        event.preventDefault();
+        return true;
     },
 
     // State attribute is populated by JSON decoding server response

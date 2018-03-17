@@ -3,13 +3,14 @@ import importlib
 import logging
 import traceback
 import json
+import datetime
 
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
 
-
 log = logging.getLogger(__name__)
+
 
 class FarPiStateHandler(tornado.websocket.WebSocketHandler):
     """ Core of the FarPi system
@@ -112,9 +113,13 @@ class FarPiGUIHandler(tornado.web.RequestHandler):
         else:
             print "Error, unknown extension ({})".format(extension)
 
+
 if __name__ == "__main__":
     # TODO: Need to implement proper logging
     print "FarPi Server v0.1"
+    print "-----------------"
+    time = datetime.datetime.now()
+    print "Starting at",time.isoformat()
 
     if len(sys.argv) != 2:
         print "No application specified!"

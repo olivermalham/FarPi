@@ -1,5 +1,6 @@
 import json
 
+
 class HAL(object):
     """ Hardware Abstraction Layer
 
@@ -26,7 +27,7 @@ class HAL(object):
         self.cycle = 0
 
         # Message to the client. Up to the client to store them if required
-        self.message = "HAL Intialised"
+        self.message = "HAL Initialised"
 
     def action(self, name, **kwargs):
         """ Dispatch an action received via the WebSockets server
