@@ -81,40 +81,40 @@ FarPi.registerCallback(function(){
 
 class ToggleSwitch(ui_base.Component):
     _html = """
-    <div class="LED interactive" id="Toggle_{{pin}}" onclick="Toggle_{{pin}}()">
-        <span class="toggle_switch"><span class="toggle_indicator">&nbsp;</span></span>
-        <span class="label">{{label}}</span>
-    </div>
+<div class="LED interactive" id="Toggle_{{pin}}" onclick="Toggle_{{pin}}()">
+    <span class="toggle_switch"><span class="toggle_indicator">&nbsp;</span></span>
+    <span class="label">{{label}}</span>
+</div>
 """
 
     _js = """
-    /* ToggleSwitch js */
-    console.log("ToggleSwitch {{pin}} JS run");
+/* ToggleSwitch js */
+console.log("ToggleSwitch {{pin}} JS run");
 
-    function Toggle_{{pin}} (){
-        console.log("Toggle pin");
-        FarPi.action("{{action}}", '');
-    };
+function Toggle_{{pin}} (){
+    console.log("Toggle pin");
+    FarPi.action("{{action}}", '');
+};
 
-    FarPi.registerCallback(function(){
-        var switch_element = document.getElementById("Toggle_{{pin}}");
-        if(FarPi.state["{{pin}}"].state){
-            switch_element.classList.add("on_glow");
-            switch_element.querySelectorAll(".toggle_switch")[0].classList.add("toggle_switch_on", "on_glow");
-            switch_element.querySelectorAll(".toggle_switch")[0].querySelectorAll(".toggle_indicator")[0].classList.add("toggle_on");
-        } else {
-            switch_element.classList.remove("on_glow");
-            switch_element.querySelectorAll(".toggle_switch")[0].classList.remove("toggle_switch_on", "on_glow");
-            switch_element.querySelectorAll(".toggle_switch")[0].querySelectorAll(".toggle_indicator")[0].classList.remove("toggle_on");
-        }
-    });
+FarPi.registerCallback(function(){
+    var switch_element = document.getElementById("Toggle_{{pin}}");
+    if(FarPi.state["{{pin}}"].state){
+        switch_element.classList.add("on_glow");
+        switch_element.querySelectorAll(".toggle_switch")[0].classList.add("toggle_switch_on", "on_glow");
+        switch_element.querySelectorAll(".toggle_switch")[0].querySelectorAll(".toggle_indicator")[0].classList.add("toggle_on");
+    } else {
+        switch_element.classList.remove("on_glow");
+        switch_element.querySelectorAll(".toggle_switch")[0].classList.remove("toggle_switch_on", "on_glow");
+        switch_element.querySelectorAll(".toggle_switch")[0].querySelectorAll(".toggle_indicator")[0].classList.remove("toggle_on");
+    }
+});
 
 """
 
 
 class PushButtonSwitch(ui_base.Component):
     _html = """
- <div class="LED interactive" id="PushButton_{{pin}}" onmousedown="ButtonDown_{{pin}}()" onmouseup="ButtonUp_{{pin}}()"
+<div class="LED interactive" id="PushButton_{{pin}}" onmousedown="ButtonDown_{{pin}}()" onmouseup="ButtonUp_{{pin}}()"
   ontouchstart="ButtonDown_{{pin}}()" ontouchend="ButtonUp_{{pin}}()" oncontextmenu="FarPi.trap_context()">
     <span class="LED_indicator">&nbsp;</span>
     <span class="label">{{label}}</span>
@@ -153,7 +153,7 @@ FarPi.registerCallback(function(){
 
 class LineGauge(ui_base.Component):
     _html = """
-<div class="LineGauge" id="LineGauge_{{source}}">
+<div class="on_glow LineGauge" id="LineGauge_{{source}}">
     <span class="LineGauge_indicator">
         <span class="LineGauge_bar">&nbsp;</span>
     </span>
@@ -175,3 +175,13 @@ FarPi.registerCallback(function(){
 });
 
 """
+
+class Row(ui_base.Container):
+    """ Basic row container.
+
+    """
+    # Opening HTML fragment for the main container
+    _prefix = """\n<!-- Row -->\n<div class="row">\n"""
+
+    # Closing HTML fragment for the main container
+    _postfix = """\n</div> <!-- Row -->\n"""

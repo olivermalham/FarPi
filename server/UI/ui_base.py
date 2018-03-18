@@ -68,10 +68,10 @@ class Container(object):
     _postfix="""\n</div>\n"""
 
     # HTML fragment added immediately before each child HTML section
-    _child_prefix="""<span>"""
+    _child_prefix=""""""
 
     # HTML fragment added immediately after each child HTML section
-    _child_postfix="""</span>"""
+    _child_postfix=""""""
 
     # Javascript template to provide extra functionality not available in the base code. Optional.
     _javascript = ""

@@ -38,6 +38,21 @@ hr {
     box-shadow: 0 0 15px var(--glow);
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+/*
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 1em 1em 1em 1em;
+    border-color: var(--active);
+*/
+    margin: 10px;
+}
+
 .HeartBeat {
     border-style: solid;
     border-width: 1px;
@@ -59,7 +74,6 @@ hr {
 }
 
 .panel {
-    display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -94,6 +108,13 @@ hr {
     height: 1em;
     vertical-align: middle;
     transition: background 0.5s, box-shadow 0.5s, border-color 0.25s;
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version */
 }
 
 .label {
@@ -137,6 +158,13 @@ hr {
     height: 1em;
     vertical-align: middle;
     transition: background 0.5s, box-shadow 0.5s, border-color 0.25s, margin 0.25s;
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version */
 }
 
 .toggle_switch_on {
@@ -148,21 +176,6 @@ hr {
     background: var(--highlight);
 }
 
-.interactive:hover {
-    border-color: var(--highlight);
-    cursor: pointer;
-}
-
-
-.LED_on {
-    background: var(--highlight);
-}
-
-.on_glow {
-    border-color: var(--highlight);
-    box-shadow: 0 0 25px var(--glow);
-}
-
 .LineGauge {
     border-style: solid;
     border-width: 1px;
@@ -170,7 +183,7 @@ hr {
     border-color: var(--inactive);
     background-color: var(--background);
     box-shadow: 0 0 15px var(--inactive);
-    /*margin: 10px;*/
+    margin: 10px;
     vertical-align: middle;
     padding: 10px;
     transition: background 0.5s, box-shadow 0.5s, border-color 0.25s;
@@ -208,4 +221,19 @@ hr {
     height: 100%;
     vertical-align: middle;
     transition: width 0.25s;
+}
+
+.interactive:hover {
+    border-color: var(--highlight);
+    cursor: pointer;
+}
+
+
+.LED_on {
+    background: var(--highlight);
+}
+
+.on_glow {
+    border-color: var(--highlight);
+    box-shadow: 0 0 25px var(--glow);
 }
