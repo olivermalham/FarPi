@@ -27,7 +27,7 @@ class FarPiStateHandler(tornado.websocket.WebSocketHandler):
         Send a copy of the HAL state as soon as the connection opens.
         :return:
         """
-        print("WebSocket opened")
+        print("WebSocket opened to IP {}".format(self.request.remote_ip))
         FarPiStateHandler.clients.append(self)
         self.write_message(application.hal.serialise())
 
@@ -40,7 +40,7 @@ class FarPiStateHandler(tornado.websocket.WebSocketHandler):
         :return:
         """
         global application
-        print "on_message received:", message
+
         if len(message) > 0:
             try:
                 self.dispatch(message)
@@ -104,7 +104,7 @@ class FarPiGUIHandler(tornado.web.RequestHandler):
            extension == "" or \
            extension.upper() == '.HTML' or \
            extension.upper() == '.HTM':
-            result = application.ui._page_template.format(far_pi=application.ui()[0])
+            result = application.ui()[0]
             self.write(result)
         elif extension.upper() == '.JS':
             self.write(application.ui()[1])
@@ -126,7 +126,7 @@ if __name__ == "__main__":
         exit()
 
     # The name of the application package is passed on the command line.
-    # This gets imported and must define various attributes (see example_app.py)
+    # This gets imported and must define various attributes (see base_app.py)
     app_name = sys.argv[1]
     print "Loading Application {}".format(app_name)
     try:

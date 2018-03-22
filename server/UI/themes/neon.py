@@ -39,12 +39,12 @@ class Panel(ui_base.Container):
     <link rel="stylesheet" href="/farpiGUI.css">
 </head>
 <body onload="FarPi.onLoad('ws://localhost:8888/farpi');">
-<div class="HeartBeat" id="HeartBeat"></div>
-<div id="title">- FarPi -</div>
+<div class="HeartBeat" id="HeartBeat">- FarPi -</div>
+<div id="title">- {{name}} -</div>
 <hr />
 <center>
 
-{far_pi}
+{% raw far_pi %}
 
 </center>
 </body>
@@ -54,7 +54,7 @@ class Panel(ui_base.Container):
 
 class LED(ui_base.Component):
     _html = """
-<div class="LED" id="LED_{{pin}}">
+<div class="LED" id="LED_{{pin}}_{{_id}}">
     <span class="LED_indicator">&nbsp;</span>
     <span class="label">{{label}}</span>
 </div>
@@ -63,10 +63,10 @@ class LED(ui_base.Component):
 
     _js = """
 /* LED js */
-console.log("LED {{pin}} JS run");
+console.log("LED {{pin}}_{{_id}} JS run");
 
 FarPi.registerCallback(function(){
-    var LED_element = document.getElementById("LED_{{pin}}");
+    var LED_element = document.getElementById("LED_{{pin}}_{{_id}}");
     if(FarPi.state["{{pin}}"].state){
         LED_element.classList.add("on_glow");
         LED_element.querySelectorAll(".LED_indicator")[0].classList.add("LED_on", "on_glow");
@@ -81,7 +81,7 @@ FarPi.registerCallback(function(){
 
 class ToggleSwitch(ui_base.Component):
     _html = """
-<div class="LED interactive" id="Toggle_{{pin}}" onclick="Toggle_{{pin}}()">
+<div class="LED interactive" id="Toggle_{{pin}}_{{_id}}" onclick="Toggle_{{pin}}_{{_id}}()">
     <span class="toggle_switch"><span class="toggle_indicator">&nbsp;</span></span>
     <span class="label">{{label}}</span>
 </div>
@@ -89,15 +89,15 @@ class ToggleSwitch(ui_base.Component):
 
     _js = """
 /* ToggleSwitch js */
-console.log("ToggleSwitch {{pin}} JS run");
+console.log("ToggleSwitch {{pin}}_{{_id}} JS run");
 
-function Toggle_{{pin}} (){
-    console.log("Toggle pin");
+function Toggle_{{pin}}_{{_id}} (){
+    console.log("Toggle pin {{pin}}_{{_id}}");
     FarPi.action("{{action}}", '');
 };
 
 FarPi.registerCallback(function(){
-    var switch_element = document.getElementById("Toggle_{{pin}}");
+    var switch_element = document.getElementById("Toggle_{{pin}}_{{_id}}");
     if(FarPi.state["{{pin}}"].state){
         switch_element.classList.add("on_glow");
         switch_element.querySelectorAll(".toggle_switch")[0].classList.add("toggle_switch_on", "on_glow");
@@ -114,8 +114,8 @@ FarPi.registerCallback(function(){
 
 class PushButtonSwitch(ui_base.Component):
     _html = """
-<div class="LED interactive" id="PushButton_{{pin}}" onmousedown="ButtonDown_{{pin}}()" onmouseup="ButtonUp_{{pin}}()"
-  ontouchstart="ButtonDown_{{pin}}()" ontouchend="ButtonUp_{{pin}}()" oncontextmenu="FarPi.trap_context()">
+<div class="LED interactive" id="PushButton_{{pin}}_{{_id}}" onmousedown="ButtonDown_{{pin}}_{{_id}}()" onmouseup="ButtonUp_{{pin}}_{{_id}}()"
+  ontouchstart="ButtonDown_{{pin}}_{{_id}}()" ontouchend="ButtonUp_{{pin}}_{{_id}}()" oncontextmenu="FarPi.trap_context()">
     <span class="LED_indicator">&nbsp;</span>
     <span class="label">{{label}}</span>
 </div>
@@ -123,22 +123,22 @@ class PushButtonSwitch(ui_base.Component):
 
     _js = """
 /* PushButtonSwitch js */
-console.log("PushbuttonSwitch {{pin}} JS run");
+console.log("PushbuttonSwitch {{pin}}_{{_id}} JS run");
 
-function ButtonDown_{{pin}} (){
+function ButtonDown_{{pin}}_{{_id}} (){
     console.log("Button {{pin}} down");
     FarPi.action("{{pin}}.action_set", '"value":1');
 };
 
-function ButtonUp_{{pin}} (){
+function ButtonUp_{{pin}}_{{_id}} (){
     console.log("Button {{pin}} up");
     FarPi.action("{{pin}}.action_set", '"value":0');
 };
 
-var pushbutton = document.getElementById("PushButton_{{pin}}");
+//var pushbutton = document.getElementById("PushButton_{{pin}}_{{_id}}");
 
 FarPi.registerCallback(function(){
-    var LED_element = document.getElementById("PushButton_{{pin}}");
+    var LED_element = document.getElementById("PushButton_{{pin}}_{{_id}}");
     if(FarPi.state["{{pin}}"].state){
         LED_element.classList.add("on_glow");
         LED_element.querySelectorAll(".LED_indicator")[0].classList.add("LED_on", "on_glow");
@@ -185,3 +185,27 @@ class Row(ui_base.Container):
 
     # Closing HTML fragment for the main container
     _postfix = """\n</div> <!-- Row -->\n"""
+
+
+class MessageBox(ui_base.Component):
+    """ Simple textbox for displaying accumulated messages from the server
+
+    """
+    _html = """
+    
+<textarea readonly class="MessageBox" id="MessageBox_{{_id}}"></textarea>    
+    
+"""
+    _js = """
+/* MessageBox */
+
+var MessageBoxBuffer_{{_id}};
+FarPi.registerCallback(function(){
+    messageBox = document.getElementById("MessageBox_{{_id}}")
+    if(FarPi.state["message"].length > 0){
+        messageBox.value = messageBox.value + FarPi.state["message"] + "\\n";
+        messageBox.scrollTop = messageBox.scrollHeight;
+    };
+});
+    
+"""

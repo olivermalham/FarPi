@@ -22,9 +22,21 @@ body {
 #title { 	
     color: var(--glow);
 	width: 100%;
+	padding: 0;
+	border: 0;
     padding-top:20px;
     font-family: 'Abel', sans-serif;
     font-size: 70pt;
+	text-align: center;
+	margin: 0;
+}
+
+#subTitle {
+    color: var(--glow);
+	width: 100%;
+    padding-top: 5px;
+    font-family: 'Abel', sans-serif;
+    font-size: 25pt;
 	text-align: center;
 }
 
@@ -56,21 +68,29 @@ hr {
 .HeartBeat {
     border-style: solid;
     border-width: 1px;
-    border-radius: 50%;
+    border-radius: 1em;
     border-color: var(--active);
     background: var(--inactive);
     display: inline-block;
     margin: 15px;
-    width: 10px;
-    height: 10px;
+    padding-left: 1em;
+    padding-right: 1em;
+    /*width: 10px;
+    height: 10px;*/
+    vertical-align: middle;
+    font-size: 8pt;
+    font-weight: bold;
+    color: var(--highlight);
     float: right;
-    transition: background 0.5s, box-shadow 0.5s, border-color 0.5s;
+    transition: background 0.5s, box-shadow 0.5s, border-color 0.5s, color 0.5s;
+    z-index: 1000;
 }
 
 .HeartBeatGlow {
     border-color: var(--highlight);
     box-shadow: 0 0 25px var(--glow);
-    background: var(--glow);
+    background: var(--highlight);
+    color: var(--inactive);
 }
 
 .panel {
@@ -85,7 +105,7 @@ hr {
     border-radius: 1em 0.25em 0.25em 1em;
     border-color: var(--inactive);
     background-color: var(--background);
-    box-shadow: 0 0 15px var(--inactive);
+    box-shadow: 0 0 25px var(--inactive);
     margin: 10px;
     vertical-align: middle;
     padding: 10px;
@@ -221,6 +241,24 @@ hr {
     height: 100%;
     vertical-align: middle;
     transition: width 0.25s;
+}
+
+.MessageBox {
+    width: 80ex;
+    height: 15em;
+    padding: 1em;
+    box-sizing: border-box;
+    border: 1px solid var(--active);
+    border-radius: 1em;
+    background-color: var(--background);
+    resize: none;
+    color: var(--highlight);
+    font-size: 10pt;
+    overflow: hidden;
+}
+
+.MessageBox:hover {
+    overflow: auto;
 }
 
 .interactive:hover {

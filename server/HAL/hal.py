@@ -27,7 +27,7 @@ class HAL(object):
         self.cycle = 0
 
         # Message to the client. Up to the client to store them if required
-        self.message = "HAL Initialised"
+        self.message = "FarPi - HAL Initialised"
 
     def action(self, name, **kwargs):
         """ Dispatch an action received via the WebSockets server
@@ -40,6 +40,8 @@ class HAL(object):
         """
         target = eval("self."+name)
         if callable(target):
+            # Pass the HAL instance down to the component
+            kwargs["hal"] = self
             target(**kwargs)
 
     def serialise(self):
@@ -56,6 +58,10 @@ class HAL(object):
                 else:
                     result = result + '"{}":"{}",'.format(entry_name, str(entry))
         result = result[:-1] + "}"
+
+        # Clear the message text now that its been serialised and sent to the client.
+        self.message = ""
+
         return result
 
     def refresh(self):

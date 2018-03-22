@@ -17,12 +17,12 @@ class BasicPiGPIO(HALComponent):
         # TODO: Use RPIO to get the pin value
         pass
 
-    def action_toggle(self):
+    def action_toggle(self, hal):
         self.state = not self.state
-        print "BasicPiGPIO action_toggle now:", self.state
+        hal.message = "BasicPiGPIO action_toggle now:{}".format(self.state)
 
-    def action_set(self, value):
-        print "BasicPiGPIO action_set value:", value
+    def action_set(self, value, hal):
+        hal.message = "BasicPiGPIO action_set value:{}".format(value)
         self.state = bool(value)
 
 class DummySensor(HALComponent):
@@ -50,7 +50,6 @@ class BasicPi(HAL):
 
         # Add all the GPIO pins, setting pin number and direction
         self.bcm00 = BasicPiGPIO(pin_number=0, directon=0)
-        self.bcm00.state = True
         self.bcm01 = BasicPiGPIO(pin_number=1, directon=0)
         self.bcm02 = BasicPiGPIO(pin_number=2, directon=0)
         self.bcm03 = BasicPiGPIO(pin_number=3, directon=0)

@@ -80,9 +80,11 @@ class Container(object):
     _css = ""
 
     # Page template defines the page that will surround the GUI defined by the UI
-    # objects. Should be a string, will be run through the Python .format method
-    # to replace {far_pi} with the generated control panel.
-    _page_template = ""
+    # objects. Should be a string. Topmost container must contain at least a {% raw far_pi %} tag.
+    _page_template = """"""
+
+    # Store the constructors keyword arguments for page template population
+    _parameters = {}
 
     def __init__(self, *args, **kwargs):
         """ Wraps all child element HTML in it's own.
@@ -97,6 +99,7 @@ class Container(object):
         self.css = Template(self._css).generate(**kwargs)
         self.child_prefix = Template(self._child_prefix).generate(**kwargs)
         self.child_postfix = Template(self._child_postfix).generate(**kwargs)
+        self._parameters = kwargs
         self._children = args
 
     def __call__(self):
@@ -115,23 +118,32 @@ class Container(object):
             css += child_css
             
         html += self.html_postfix
-        
+
+        # If we have a page template defined, then process it and return as the HTML chunk
+        if len(self._page_template) > 0:
+            parameters = self._parameters
+            parameters["far_pi"] = html
+            html = Template(self._page_template).generate(**parameters)
+
         return html, js, css
 
 
 class Component(object):
     """ Base class for FarPi UI components.
-
-
     """
     _html = """<some html>"""
     _js = """<some js>"""
     _css = """<some css>"""
 
+    # Class counter, used to ensure JS callbacks have unique names
+    _id = 0
+
     def __init__(self, *args, **kwargs):
+        kwargs["_id"] = Component._id
         self.html = Template(self._html).generate(**kwargs)
         self.js = Template(self._js).generate(**kwargs)
         self.css = Template(self._css).generate(**kwargs)
+        Component._id += 1
 
     def __call__(self, *args, **kwargs):
         return self.html, self.js, self.css
