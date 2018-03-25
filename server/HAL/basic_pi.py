@@ -1,5 +1,5 @@
 from hal import *
-# import RPI
+from RPi import GPIO
 
 
 class BasicPiGPIO(HALComponent):
@@ -11,19 +11,20 @@ class BasicPiGPIO(HALComponent):
         self.state = False
         self._pin_number = pin_number
         self._direction = direction
-        # self._pin = RPI.gpio TODO!
 
     def refresh(self):
-        # TODO: Use RPIO to get the pin value
-        pass
+        if self._direction == GPIO.GPIO.IN:
+            self.state = GPIO.input(self._pin_number)
 
     def action_toggle(self, hal):
         self.state = not self.state
         hal.message = "BasicPiGPIO action_toggle now:{}".format(self.state)
+        GPIO.output(self._pin_number, self.state)
 
     def action_set(self, value, hal):
         hal.message = "BasicPiGPIO action_set value:{}".format(value)
         self.state = bool(value)
+        GPIO.output(self._pin_number, self.state)
 
 class DummySensor(HALComponent):
     """ Dummy sensor provides a gradual ramp up of a value.  Resets to zero once it passes 1.0.
@@ -47,6 +48,9 @@ class BasicPi(HAL):
     def __init__(self):
         # Make sure the HAL system is initialised fully first
         super(BasicPi, self).__init__()
+
+        # We're using the BCM pin number scheme
+        GPIO.setmode(GPIO.BCM)
 
         # Add all the GPIO pins, setting pin number and direction
         self.bcm00 = BasicPiGPIO(pin_number=0, directon=0)
@@ -86,3 +90,6 @@ class BasicPi(HAL):
 
         self.dummy = DummySensor(delta=0.1)
 
+    def clean_up(self):
+        super(BasicPi, self).clean_up()
+        GPIO.cleanup()

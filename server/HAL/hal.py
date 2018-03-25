@@ -29,6 +29,13 @@ class HAL(object):
         # Message to the client. Up to the client to store them if required
         self.message = "FarPi - HAL Initialised"
 
+    def clean_up(self):
+        """ Make sure any resources the HAL uses get released.
+
+        :return:
+        """
+        pass
+
     def action(self, name, **kwargs):
         """ Dispatch an action received via the WebSockets server
 

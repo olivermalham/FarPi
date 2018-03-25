@@ -158,5 +158,8 @@ if __name__ == "__main__":
     periodic.start()
     print "Server starting on port {}...".format(application.port)
 
-    # Kick off the Tornado processing loop
-    tornado.ioloop.IOLoop.current().start()
+    try:
+        # Kick off the Tornado processing loop
+        tornado.ioloop.IOLoop.current().start()
+    except KeyboardInterrupt:
+        app.hal.clean_up()

@@ -16,7 +16,7 @@ var FarPi = {
     // Called when the page is loaded. Opens a websocket connection to the server
     // and registers the callback to handle the returned server state.
     onLoad: function(target) {
-        address = "ws://" + location.hostname + ":" + location.port + "/" + target;
+        var address = "ws://" + location.hostname + ":" + location.port + "/" + target;
         console.log("Connecting to "+address)
         this.socket = new WebSocket(address);
 
