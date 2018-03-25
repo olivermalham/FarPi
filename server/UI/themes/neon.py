@@ -32,10 +32,10 @@ class Panel(ui_base.Container):
 
 <head>
     <title>FarPi</title>
-    <link href="https://fonts.googleapis.com/css?family=Abel" rel="stylesheet">
     <script src="/js/farpi.js"></script>
     <script src="/farpiGUI.js"></script>
     <link rel="stylesheet" href="/css/farpi.css">
+    <link rel="stylesheet" href="/css/Abel.css">
     <link rel="stylesheet" href="/farpiGUI.css">
 </head>
 <body onload="FarPi.onLoad('ws://localhost:8888/farpi');">
