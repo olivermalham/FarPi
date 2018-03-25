@@ -6,11 +6,15 @@ class BasicPiGPIO(HALComponent):
     """ Basic GPIO pin.
 
     """
-    def __init__(self, pin_number=1, direction=1, *args, **kwargs):
+    def __init__(self, pin_number=1, direction=GPIO.OUT, pull=None, *args, **kwargs):
         super(HALComponent, self).__init__()
         self.state = False
         self._pin_number = pin_number
         self._direction = direction
+        if pull is not None:
+            GPIO.settup(pin_number, direction, pull_up_down=pull)
+        else:
+            GPIO.settup(pin_number, direction)
 
     def refresh(self):
         if self._direction == GPIO.IN:
