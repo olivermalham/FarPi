@@ -13,7 +13,7 @@ class BasicPiGPIO(HALComponent):
         self._direction = direction
 
     def refresh(self):
-        if self._direction == GPIO.GPIO.IN:
+        if self._direction == GPIO.IN:
             self.state = GPIO.input(self._pin_number)
 
     def action_toggle(self, hal):
