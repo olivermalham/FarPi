@@ -38,7 +38,7 @@ class Panel(ui_base.Container):
     <link rel="stylesheet" href="/css/Abel.css">
     <link rel="stylesheet" href="/farpiGUI.css">
 </head>
-<body onload="FarPi.onLoad('ws://localhost:8888/farpi');">
+<body onload="FarPi.onLoad('farpi');">
 <div class="HeartBeat" id="HeartBeat">- FarPi -</div>
 <div id="title">- {{name}} -</div>
 <hr />
