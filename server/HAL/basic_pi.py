@@ -12,9 +12,9 @@ class BasicPiGPIO(HALComponent):
         self._pin_number = pin_number
         self._direction = direction
         if pull is not None:
-            GPIO.settup(pin_number, direction, pull_up_down=pull)
+            GPIO.setup(pin_number, direction, pull_up_down=pull)
         else:
-            GPIO.settup(pin_number, direction)
+            GPIO.setup(pin_number, direction)
 
     def refresh(self):
         if self._direction == GPIO.IN:
