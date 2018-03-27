@@ -1,6 +1,9 @@
 from hal import *
 import pigpio
 
+# TODO: Add a smooth-servo component that uses cubic hermite interpolation to smooth the movement. Ideally in a way
+# TODO: that keeps all servos movements synchronised.
+# TODO: Also add an IndexServo component that only permits movement between two or more discretely defined locations.
 
 class Servo(HALComponent):
     """ Simple component for controlling a servo on any GPIO pin.
@@ -14,10 +17,6 @@ class Servo(HALComponent):
         self.state = start
         self._lower_bound = lower
         self._upper_bound = upper
-
-    def refresh(self):
-        # TODO:
-        pass
 
     def action_toggle(self, hal):
         """ Toggle the servo position between the two end points.
@@ -51,6 +50,7 @@ class ServoHAL(HAL):
     """ Slightly more specialised HAL that uses pigio for multi-channel servo control.
 
     Note that the pigpio daemon needs to be running on the localhost, port 7777.
+    All this does over the standard HAL is connect to the pigpio daemon.
 
     """
     def __init__(self, *args, **kwargs):
