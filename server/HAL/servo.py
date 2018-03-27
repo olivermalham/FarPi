@@ -8,7 +8,7 @@ class Servo(HALComponent):
         super(Servo, self).__init__(*args, **kwargs)
         self._pin_number = pin
         # State should be between 0 and 1.0
-        self._state = start
+        self.state = start
         self._lower_bound = lower
         self._upper_bound = upper
 
@@ -17,19 +17,19 @@ class Servo(HALComponent):
         pass
 
     def action_toggle(self, hal):
-        hal.message = "Servo action_toggle now:{}".format(self._state)
+        hal.message = "Servo action_toggle now:{}".format(self.state)
 
-        if self._state < 0.5:
+        if self.state < 0.5:
             hal.pi.set_servo_pulsewidth(self._pin_number, self._lower_bound)
-            self._state = 1.0
+            self.state = 1.0
         else:
             hal.pi.set_servo_pulsewidth(self._pin_number, self._upper_bound)
-            self._state = 0.0
+            self.state = 0.0
 
     def action_set(self, value, hal):
-        self._state = value
-        hal.message = "Servo action_set now:{}".format(self._state)
-        pulse = self._state*(self._upper_bound - self._lower_bound) + self._lower_bound
+        self.state = value
+        hal.message = "Servo action_set now:{}".format(self.state)
+        pulse = self.state * (self._upper_bound - self._lower_bound) + self._lower_bound
         hal.pi.set_servo_pulsewidth(self._pin_number, pulse)
 
 
