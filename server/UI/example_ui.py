@@ -9,7 +9,7 @@ ui = Panel(
                 LED(pin="bcm00", label="LED"),
                 PushButtonSwitch(pin="bcm01", label="Push button"),
                 ToggleSwitch(pin="bcm02", action="bcm02.action_toggle", label="Toggle switch"),
-                LineGauge(source="dummy", label="Line Gauge")
+                LineGauge(source="dummy", label="Line Gauge"),
         ),
         Row(
                 MessageBox()
