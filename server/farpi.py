@@ -162,4 +162,4 @@ if __name__ == "__main__":
         # Kick off the Tornado processing loop
         tornado.ioloop.IOLoop.current().start()
     except KeyboardInterrupt:
-        app.hal.clean_up()
+        application.hal.clean_up()

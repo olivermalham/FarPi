@@ -19,7 +19,7 @@ class Servo(HALComponent):
     def action_toggle(self, hal):
         hal.message = "Servo action_toggle now:{}".format(self._state)
 
-        if self._state < (self._upper_bound - self._lower_bound):
+        if self._state < (self._upper_bound - self._lower_bound) + self._lower_bound:
             hal.pi.set_servo_pulsewidth(self._pin_number, self._lower_bound)
             self._state = self._lower_bound
         else:
