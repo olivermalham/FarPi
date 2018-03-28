@@ -45,6 +45,9 @@ class Servo(HALComponent):
         pulse = self.state * (self._upper_bound - self._lower_bound) + self._lower_bound
         hal.pi.set_servo_pulsewidth(self._pin_number, pulse)
 
+    def refresh(self):
+        pass
+
 
 class ServoHAL(HAL):
     """ Slightly more specialised HAL that uses pigio for multi-channel servo control.
