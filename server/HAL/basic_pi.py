@@ -38,10 +38,15 @@ class DummySensor(HALComponent):
         super(HALComponent, self).__init__()
         self.state = 0.0
         self.delta = delta
+        self.dir = 1.0
 
     def refresh(self):
-        self.state += self.delta
-        if self.state > 1.0:
+        self.state += self.dir * self.delta
+        if self.state >= 1.0:
+            self.dir = -1.0
+            self.state = 1.0
+        elif self.state <= 0.0:
+            self.dir = 1.0
             self.state = 0.0
 
 class BasicPi(HAL):
@@ -92,7 +97,7 @@ class BasicPi(HAL):
         self.bcm26 = BasicPiGPIO(pin_number=26, directon=0)
         self.bcm27 = BasicPiGPIO(pin_number=27, directon=0)
 
-        self.dummy = DummySensor(delta=0.1)
+        self.dummy = DummySensor(delta=0.02)
 
     def clean_up(self):
         super(BasicPi, self).clean_up()

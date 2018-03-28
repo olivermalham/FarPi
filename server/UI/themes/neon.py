@@ -18,7 +18,33 @@ class Panel(ui_base.Container):
     _child_postfix = """ """
 
     # Javascript template to provide extra functionality not available in the base code. Optional.
-    _javascript = ""
+    _javascript = """
+
+function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+  var angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
+
+  return {
+    x: centerX + (radius * Math.cos(angleInRadians)),
+    y: centerY + (radius * Math.sin(angleInRadians))
+  };
+}
+
+function describeArc(x, y, radius, startAngle, endAngle){
+
+    var start = polarToCartesian(x, y, radius, endAngle);
+    var end = polarToCartesian(x, y, radius, startAngle);
+
+    var largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+
+    var d = [
+        "M", start.x, start.y, 
+        "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
+    ].join(" ");
+
+    return d;       
+}
+
+"""
 
     # CSS stylesheet template to provide extra styles if required. Option.
     _css = ""
@@ -153,7 +179,7 @@ FarPi.registerCallback(function(){
 
 class LineGauge(ui_base.Component):
     _html = """
-<div class="on_glow LineGauge" id="LineGauge_{{source}}">
+<div class="on_glow LineGauge" id="LineGauge_{{source}}_{{_id}}">
     <span class="LineGauge_indicator">
         <span class="LineGauge_bar">&nbsp;</span>
     </span>
@@ -167,11 +193,36 @@ class LineGauge(ui_base.Component):
 console.log("Line Gauge {{source}} JS run");
 
 FarPi.registerCallback(function(){
-    var gauge_element = document.getElementById("LineGauge_{{source}}").querySelectorAll(".LineGauge_indicator")[0];
+    var gauge_element = document.getElementById("LineGauge_{{source}}_{{_id}}").querySelectorAll(".LineGauge_indicator")[0];
     var gauge_bar = gauge_element.querySelectorAll(".LineGauge_bar")[0];
     var gauge_max = gauge_element.clientWidth;
     var gauge_width = FarPi.state["{{source}}"].state * gauge_element.clientWidth;
     gauge_bar.style.width = gauge_width+"px";
+});
+
+"""
+
+
+class ArcGauge(ui_base.Component):
+    _html = """
+<div class="on_glow ArcGauge">
+    <svg class="ArcGaugeContainer">
+        <path id="ArcGaugeScaleOutline_{{source}}_{{_id}}" class="ArcGauge_scale_outline" />
+        <path id="ArcGaugeScaleBG_{{source}}_{{_id}}" class="ArcGauge_scale_bg" />
+        <path id="ArcGaugeBar_{{source}}_{{_id}}" class="ArcGauge_bar" />
+    </svg>
+    <span class="label">{{label}}</span>
+</div>
+
+"""
+
+    _js = """
+
+FarPi.registerCallback(function(){
+    var angle = FarPi.state["{{source}}"].state * ({{max}} - {{min}}) + {{min}};
+    document.getElementById("ArcGaugeScaleOutline_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, {{min}}, {{max}}));
+    document.getElementById("ArcGaugeScaleBG_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, {{min}}, {{max}}));
+    document.getElementById("ArcGaugeBar_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, {{min}}, angle));
 });
 
 """
