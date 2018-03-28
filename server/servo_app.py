@@ -2,11 +2,11 @@
 from base_app import *
 
 # The User Interface (UI) package defines the interface that the user will see
-import server.UI.servo_ui
+import UI.servo_ui
 
 # The Hardware Abstraction Layer (HAL) package represents the hardware attached to the server
 # that the user will interact with via the UI
-from server.HAL.servo import ServoHAL
+from HAL.servo import ServoHAL
 
 # Number of milliseconds to delay between updates to clients
 refresh_ms = 500
@@ -15,4 +15,4 @@ refresh_ms = 500
 hal = ServoHAL()
 
 # Create the object that defines the user interface layout and components
-ui = server.UI.servo_ui.ui
+ui = UI.servo_ui.ui
