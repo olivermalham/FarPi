@@ -3,7 +3,6 @@ import pigpio
 
 # TODO: Add a smooth-servo component that uses cubic hermite interpolation to smooth the movement. Ideally in a way
 # TODO: that keeps all servos movements synchronised.
-# TODO: Also add an IndexServo component that only permits movement between two or more discretely defined locations.
 
 class Servo(HALComponent):
     """ Simple component for controlling a servo on any GPIO pin.
@@ -17,6 +16,8 @@ class Servo(HALComponent):
         self.state = start
         self._lower_bound = lower
         self._upper_bound = upper
+        self._update = True
+        self._hal = None
 
     def action_toggle(self, hal):
         """ Toggle the servo position between the two end points.
@@ -24,13 +25,16 @@ class Servo(HALComponent):
         :param hal:
         :return:
         """
+        if self._hal is None:
+            self._hal = hal
+
         hal.message = "Servo action_toggle now:{}".format(self.state)
 
+        self._update = True
+
         if self.state < 0.5:
-            hal.pi.set_servo_pulsewidth(self._pin_number, self._lower_bound)
             self.state = 1.0
         else:
-            hal.pi.set_servo_pulsewidth(self._pin_number, self._upper_bound)
             self.state = 0.0
 
     def action_set(self, value, hal):
@@ -40,13 +44,87 @@ class Servo(HALComponent):
         :param hal:
         :return:
         """
+        if self._hal is None:
+            self._hal = hal
+
+        self._update = True
+
         self.state = value
         hal.message = "Servo action_set now:{}".format(self.state)
-        pulse = self.state * (self._upper_bound - self._lower_bound) + self._lower_bound
-        hal.pi.set_servo_pulsewidth(self._pin_number, pulse)
 
     def refresh(self):
-        pass
+        if self._update:
+            pulse = self.state * (self._upper_bound - self._lower_bound) + self._lower_bound
+            self._hal.pi.set_servo_pulsewidth(self._pin_number, pulse)
+            self._update = False
+
+
+class IndexedServo(HALComponent):
+    """ Simple component for controlling a servo on any GPIO pin.
+
+    Uses DMA to generate accurate PWM signals, via the pigpio library.
+    Indexed servo will only move the attached servo to one of N pre-defined positions.
+    """
+    def __init__(self, pin=1, lower=1000, upper=2000, start=0, positions=(0.0, 1.0), *args, **kwargs):
+        super(IndexedServo, self).__init__(*args, **kwargs)
+        self._pin_number = pin
+        self._index = positions
+
+        # State should be between 0 and 1.0
+        self.state = positions[start]
+        self._lower_bound = lower
+        self._upper_bound = upper
+        self._update = True
+        self._hal = None
+
+    def action_toggle_up(self, hal):
+        """ Toggle the servo position between the two end points.
+
+        :param hal:
+        :return:
+        """
+        if self._hal is None:
+            self._hal = hal
+
+        hal.message = "IndexedServo action_toggle now:{}".format(self.state)
+        self._update = True
+        if self.state < len(self._index):
+            self.state = self.state + 1
+
+    def action_toggle_down(self, hal):
+        """ Toggle the servo position between the two end points.
+
+        :param hal:
+        :return:
+        """
+        if self._hal is None:
+            self._hal = hal
+
+        hal.message = "IndexedServo action_toggle_up:{}".format(self.state)
+        self._update = True
+        if self.state > 0:
+            self.state = self.state - 1
+
+    def action_set(self, value, hal):
+        """ Move the servo to any arbitrary position between the two endpoints.
+
+        :param value:
+        :param hal:
+        :return:
+        """
+        if self._hal is None:
+            self._hal = hal
+
+        self._update = True
+
+        self.state = value
+        hal.message = "IndexedServo action_set now:{}".format(self.state)
+
+    def refresh(self):
+        if self._update:
+            pulse = self._index[self.state] * (self._upper_bound - self._lower_bound) + self._lower_bound
+            self._hal.pi.set_servo_pulsewidth(self._pin_number, pulse)
+            self._update = False
 
 
 class ServoHAL(HAL):
@@ -61,7 +139,7 @@ class ServoHAL(HAL):
         self.pi = pigpio.pi('localhost', 7777)
 
         self.servo1 = Servo(pin=3)
+        self.servo2 = IndexedServo(pin=4, positions=[0.0, 0.25, 0.50, 0.75, 1.0])
 
     def clean_up(self):
         pass
-
