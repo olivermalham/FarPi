@@ -16,7 +16,7 @@ class BasicPiGPIO(HALComponent):
         else:
             GPIO.setup(pin_number, direction)
 
-    def refresh(self):
+    def refresh(self, hal):
         if self._direction == GPIO.IN:
             self.state = GPIO.input(self._pin_number)
 
@@ -40,7 +40,7 @@ class DummySensor(HALComponent):
         self.delta = delta
         self.dir = 1.0
 
-    def refresh(self):
+    def refresh(self, hal):
         self.state += self.dir * self.delta
         if self.state >= 1.0:
             self.dir = -1.0

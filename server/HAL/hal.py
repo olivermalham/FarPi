@@ -83,7 +83,7 @@ class HAL(object):
             if not entry.startswith("_"):
                 component = getattr(self, entry)
                 if issubclass(component.__class__, HALComponent):
-                    component.refresh()
+                    component.refresh(self)
 
 
 class HALComponent(object):
@@ -107,7 +107,7 @@ class HALComponent(object):
         result["actions"] = actions
         return json.dumps(result)
 
-    def refresh(self):
+    def refresh(self, hal):
         """ Interrogate the underlying hardware and update our state to match.
 
         :return: Nothing

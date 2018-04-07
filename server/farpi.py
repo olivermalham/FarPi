@@ -145,8 +145,7 @@ if __name__ == "__main__":
          dict(path=application.settings['static_path']+'js/', default_filename='index.html')),
         (r"/css/(.*)", tornado.web.StaticFileHandler,
          dict(path=application.settings['static_path']+'css/', default_filename='index.html')),
-        (r"/(.*)", tornado.web.StaticFileHandler,
-         dict(path=application.settings['static_path'], default_filename='index.html')),
+        (r"/(.*)", FarPiGUIHandler)
         ]
 
     # Create the Tornado application, start it listening on the configured port

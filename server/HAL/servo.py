@@ -17,7 +17,6 @@ class Servo(HALComponent):
         self._lower_bound = lower
         self._upper_bound = upper
         self._update = True
-        self._hal = None
 
     def action_toggle(self, hal):
         """ Toggle the servo position between the two end points.
@@ -25,9 +24,6 @@ class Servo(HALComponent):
         :param hal:
         :return:
         """
-        if self._hal is None:
-            self._hal = hal
-
         hal.message = "Servo action_toggle now:{}".format(self.state)
 
         self._update = True
@@ -44,18 +40,15 @@ class Servo(HALComponent):
         :param hal:
         :return:
         """
-        if self._hal is None:
-            self._hal = hal
-
         self._update = True
 
         self.state = value
         hal.message = "Servo action_set now:{}".format(self.state)
 
-    def refresh(self):
+    def refresh(self, hal):
         if self._update:
             pulse = self.state * (self._upper_bound - self._lower_bound) + self._lower_bound
-            self._hal.pi.set_servo_pulsewidth(self._pin_number, pulse)
+            hal.pi.set_servo_pulsewidth(self._pin_number, pulse)
             self._update = False
 
 
@@ -69,6 +62,8 @@ class IndexedServo(HALComponent):
         super(IndexedServo, self).__init__(*args, **kwargs)
         self._pin_number = pin
         self._index = positions
+        self.current_index = start
+        self.max_index = len(positions) - 1
 
         # State should be between 0 and 1.0
         self.state = positions[start]
@@ -88,8 +83,8 @@ class IndexedServo(HALComponent):
 
         hal.message = "IndexedServo action_toggle now:{}".format(self.state)
         self._update = True
-        if self.state < len(self._index):
-            self.state = self.state + 1
+        if self.current_index < self.max_index:
+            self.current_index = self.current_index + 1
 
     def action_toggle_down(self, hal):
         """ Toggle the servo position between the two end points.
@@ -102,8 +97,8 @@ class IndexedServo(HALComponent):
 
         hal.message = "IndexedServo action_toggle_up:{}".format(self.state)
         self._update = True
-        if self.state > 0:
-            self.state = self.state - 1
+        if self.current_index > 0:
+            self.current_index = self.current_index - 1
 
     def action_set(self, value, hal):
         """ Move the servo to any arbitrary position between the two endpoints.
@@ -115,15 +110,20 @@ class IndexedServo(HALComponent):
         if self._hal is None:
             self._hal = hal
 
-        self._update = True
+        if value >= self.max_index:
+            value = self.max_index
+        if value < 0:
+            value = 0
 
-        self.state = value
+        self._update = True
+        self.current_index = int(value)
+        self.state = self._index[self.current_index]
         hal.message = "IndexedServo action_set now:{}".format(self.state)
 
-    def refresh(self):
+    def refresh(self, hal):
         if self._update:
-            pulse = self._index[self.state] * (self._upper_bound - self._lower_bound) + self._lower_bound
-            self._hal.pi.set_servo_pulsewidth(self._pin_number, pulse)
+            self.state = self._index[self.current_index] * (self._upper_bound - self._lower_bound) + self._lower_bound
+            hal.pi.set_servo_pulsewidth(self._pin_number, self.state)
             self._update = False
 
 

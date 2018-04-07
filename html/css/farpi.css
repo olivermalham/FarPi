@@ -20,7 +20,7 @@ body {
 }
 
 #title { 	
-    color: var(--glow);
+    color: var(--highlight);
 	width: 100%;
 	padding: 0;
 	border: 0;
