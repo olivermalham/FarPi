@@ -12,7 +12,7 @@ class Servo(HALComponent):
     def __init__(self, pin=1, start=0.0, lower=1000, upper=2000, *args, **kwargs):
         super(Servo, self).__init__(*args, **kwargs)
         self._pin_number = pin
-        # State should be between 0 and 1.0
+        # Group should be between 0 and 1.0
         self.state = start
         self._lower_bound = lower
         self._upper_bound = upper
@@ -65,7 +65,7 @@ class IndexedServo(HALComponent):
         self.current_index = start
         self.max_index = len(positions) - 1
 
-        # State should be between 0 and 1.0
+        # Group should be between 0 and 1.0
         self.state = positions[start]
         self._lower_bound = lower
         self._upper_bound = upper

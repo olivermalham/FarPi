@@ -45,7 +45,7 @@ class HAL(object):
         :param kwargs: One or more key word arguments, decoded from JSON
         :return: Nothing
         """
-        target = eval("self."+name)
+        target = eval(name, self.__dict__)
         if callable(target):
             # Pass the HAL instance down to the component
             kwargs["hal"] = self

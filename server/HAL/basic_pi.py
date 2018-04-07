@@ -1,4 +1,5 @@
 from hal import *
+from virtual import *
 from RPi import GPIO
 
 
@@ -30,24 +31,6 @@ class BasicPiGPIO(HALComponent):
         self.state = bool(value)
         GPIO.output(self._pin_number, self.state)
 
-class DummySensor(HALComponent):
-    """ Dummy sensor provides a gradual ramp up of a value.  Resets to zero once it passes 1.0.
-
-    """
-    def __init__(self, delta=0.1, *args, **kwargs):
-        super(HALComponent, self).__init__()
-        self.state = 0.0
-        self.delta = delta
-        self.dir = 1.0
-
-    def refresh(self, hal):
-        self.state += self.dir * self.delta
-        if self.state >= 1.0:
-            self.dir = -1.0
-            self.state = 1.0
-        elif self.state <= 0.0:
-            self.dir = 1.0
-            self.state = 0.0
 
 class BasicPi(HAL):
     """ Concrete HAL class for accessing basic Raspberry Pi hardware.
@@ -97,7 +80,7 @@ class BasicPi(HAL):
         self.bcm26 = BasicPiGPIO(pin_number=26, directon=0)
         self.bcm27 = BasicPiGPIO(pin_number=27, directon=0)
 
-        self.dummy = DummySensor(delta=0.02)
+        self.dummy = GeneratorSawTooth(delta=0.02)
 
     def clean_up(self):
         super(BasicPi, self).clean_up()
