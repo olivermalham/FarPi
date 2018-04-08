@@ -121,7 +121,6 @@ class IfThisThen(HALComponent):
         self.iftt = IfThisThen(this="bcm01.state > 0.5 and bcm02.state <= 0.1",
                                then="bcm03.state=1.0",
                                otherwise="hal.message('IfThisThen otherwise statement')")
-
     """
     def __init__(self, this, then, otherwise=None):
         super(HALComponent, self).__init__()

@@ -29,19 +29,17 @@ function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
   };
 }
 
-function describeArc(x, y, radius, startAngle, endAngle){
+function describeArc(x, y, radius, startAngle, endAngle, largeArcFlag){
 
     var start = polarToCartesian(x, y, radius, endAngle);
     var end = polarToCartesian(x, y, radius, startAngle);
 
-    var largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-
     var d = [
-        "M", start.x, start.y, 
+        "M", start.x, start.y,
         "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
     ].join(" ");
 
-    return d;       
+    return d;
 }
 
 """
@@ -161,8 +159,6 @@ function ButtonUp_{{pin}}_{{_id}} (){
     FarPi.action("{{pin}}.action_set", '"value":0');
 };
 
-//var pushbutton = document.getElementById("PushButton_{{pin}}_{{_id}}");
-
 FarPi.registerCallback(function(){
     var LED_element = document.getElementById("PushButton_{{pin}}_{{_id}}");
     if(FarPi.state["{{pin}}"].state){
@@ -210,20 +206,22 @@ class ArcGauge(ui_base.Component):
         <path id="ArcGaugeScaleOutline_{{source}}_{{_id}}" class="ArcGauge_scale_outline" />
         <path id="ArcGaugeScaleBG_{{source}}_{{_id}}" class="ArcGauge_scale_bg" />
         <path id="ArcGaugeBar_{{source}}_{{_id}}" class="ArcGauge_bar" />
+        <text x="50%" y="50%" text-anchor="middle" alignment-baseline="middle" 
+            class="ArcGaugeText" id="ArcGaugeValue_{{source}}_{{_id}}">00.0</text>
+        <text x="50%" y="95" text-anchor="middle" class="ArcGaugeLabel">{{label}}</text>
     </svg>
-    <span class="label">{{label}}</span>
 </div>
 
 """
 
     _js = """
 
-FarPi.registerCallback(function(){
+function arc_gauge(){
     var angle = FarPi.state["{{source}}"].state * ({{max}} - {{min}}) + {{min}};
-    document.getElementById("ArcGaugeScaleOutline_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, {{min}}, {{max}}));
-    document.getElementById("ArcGaugeScaleBG_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, {{min}}, {{max}}));
-    document.getElementById("ArcGaugeBar_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, {{min}}, angle));
-});
+    document.getElementById("ArcGaugeScaleOutline_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, 240, 120, 1));
+    document.getElementById("ArcGaugeScaleBG_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, 240, 120, 1));
+    document.getElementById("ArcGaugeBar_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, 240, angle, 0));
+};
 
 """
 
