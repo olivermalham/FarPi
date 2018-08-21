@@ -215,13 +215,22 @@ class ArcGauge(ui_base.Component):
 """
 
     _js = """
+/* ArcGauge js */
+console.log("Arc Gauge {{source}} JS run");
 
-function arc_gauge(){
-    var angle = FarPi.state["{{source}}"].state * ({{max}} - {{min}}) + {{min}};
+FarPi.registerCallback(function(){
+    var value = FarPi.state["{{source}}"].state;
+    var angle = 240 + (240.0 * (value / 1.0));
+    var big_arc = 0;
+    if(angle > 420) { 
+        angle = angle - 360;
+        big_arc = 1;
+    };
     document.getElementById("ArcGaugeScaleOutline_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, 240, 120, 1));
     document.getElementById("ArcGaugeScaleBG_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, 240, 120, 1));
-    document.getElementById("ArcGaugeBar_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, 240, angle, 0));
-};
+    document.getElementById("ArcGaugeBar_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, 240, angle, big_arc));
+    //document.getElementById("ArcGaugeValue_{{source}}_{{_id}}").setText(FarPi.state["{{source}}"].state);
+});
 
 """
 

@@ -8,11 +8,11 @@
 }
 
 body {
-    background-image: url("background.jpg");
+    background-image: url("background_grid.png");
     background-repeat: no-repeat;
     background-position: center center;
     background-attachment: fixed;
-    /*background-size: cover;*/
+    background-size: cover;
 	min-height: 100%;
 	color: var(--label);
     font-family: 'Abel', sans-serif;
@@ -26,7 +26,7 @@ body {
 	border: 0;
     padding-top:20px;
     font-family: 'Abel', sans-serif;
-    font-size: 70pt;
+    font-size: 30pt;
 	text-align: center;
 	margin: 0;
 }
@@ -56,12 +56,6 @@ hr {
     justify-content: center;
     align-items: center;
     width: 100%;
-/*
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 1em 1em 1em 1em;
-    border-color: var(--active);
-*/
     margin: 10px;
 }
 
@@ -75,8 +69,6 @@ hr {
     margin: 15px;
     padding-left: 1em;
     padding-right: 1em;
-    /*width: 10px;
-    height: 10px;*/
     vertical-align: middle;
     font-size: 8pt;
     font-weight: bold;
@@ -140,7 +132,7 @@ hr {
 .label {
     display: inline-block;
     height: 1em;
-    font-size: 20pt;
+    font-size: 15pt;
     vertical-align: middle;
     transition: color 0.5s;
 
@@ -261,8 +253,8 @@ hr {
 }
 
 .MessageBox {
-    width: 80ex;
-    height: 15em;
+    width: 60ex;
+    height: 10em;
     padding: 1em;
     box-sizing: border-box;
     border: 1px solid var(--active);

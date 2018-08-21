@@ -36,10 +36,16 @@ function describeArc(x, y, radius, startAngle, endAngle, largeArcFlag){
 }
 
 function arc_gauge(){
-    var angle = 300;
+    var value = 0.0;
+    var angle = 240 + (240.0 * (value / 1.0));
+    var big_arc = 0;
+    if(angle > 360) { 
+        angle = angle - 360;
+        big_arc = 1;
+    };
     document.getElementById("ArcGaugeScaleOutline").setAttribute("d", describeArc(50, 50, 40, 240, 120, 1));
     document.getElementById("ArcGaugeScaleBG").setAttribute("d", describeArc(50, 50, 40, 240, 120, 1));
-    document.getElementById("ArcGaugeBar").setAttribute("d", describeArc(50, 50, 40, 240, angle, 0));
+    document.getElementById("ArcGaugeBar").setAttribute("d", describeArc(50, 50, 40, 240, angle, big_arc));
 };
 
 
@@ -100,7 +106,8 @@ function test_on_load(){
                 <path id="ArcGaugeScaleOutline" class="ArcGauge_scale_outline" />
                 <path id="ArcGaugeScaleBG" class="ArcGauge_scale_bg" />
                 <path id="ArcGaugeBar" class="ArcGauge_bar" />
-                <text x="50%" y="50%" text-anchor="middle" alignment-baseline="middle" class="ArcGaugeText">35.4</text>
+                <text x="50%" y="50%" text-anchor="middle" alignment-baseline="middle" 
+                    class="ArcGaugeText">35.4</text>
                 <text x="50%" y="95" text-anchor="middle" class="ArcGaugeLabel">Voltage</text>
             </svg>
         </div>

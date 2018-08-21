@@ -80,8 +80,6 @@ class BasicPi(HAL):
         self.bcm26 = BasicPiGPIO(pin_number=26, directon=0)
         self.bcm27 = BasicPiGPIO(pin_number=27, directon=0)
 
-        self.dummy = GeneratorSawTooth(delta=0.02)
-
     def clean_up(self):
         super(BasicPi, self).clean_up()
         GPIO.cleanup()
