@@ -229,7 +229,7 @@ FarPi.registerCallback(function(){
     document.getElementById("ArcGaugeScaleOutline_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, 240, 120, 1));
     document.getElementById("ArcGaugeScaleBG_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, 240, 120, 1));
     document.getElementById("ArcGaugeBar_{{source}}_{{_id}}").setAttribute("d", describeArc(50, 50, 40, 240, angle, big_arc));
-    //document.getElementById("ArcGaugeValue_{{source}}_{{_id}}").setText(FarPi.state["{{source}}"].state);
+    document.getElementById("ArcGaugeValue_{{source}}_{{_id}}").textContent = FarPi.state["{{source}}"].state;
 });
 
 """

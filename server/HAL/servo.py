@@ -1,4 +1,5 @@
 from hal import *
+from basic_pi import *
 import pigpio
 
 # TODO: Add a smooth-servo component that uses cubic hermite interpolation to smooth the movement. Ideally in a way
@@ -127,7 +128,7 @@ class IndexedServo(HALComponent):
             self._update = False
 
 
-class ServoHAL(HAL):
+class ServoHAL(BasicPi):
     """ Slightly more specialised HAL that uses pigio for multi-channel servo control.
 
     Note that the pigpio daemon needs to be running on the localhost, port 7777.
