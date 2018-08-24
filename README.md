@@ -5,16 +5,16 @@ Welcome to FarPi! FarPi is a lightweight server that allows you to remote contro
 ## Quick Start
 Running FarPi is very easy. Fire up your Raspberry Pi, open a shell (command line). Navigate to the directory where you installed FarPi and run these commands:
 
-''' 
+```
 cd server/
 python far_pi.py all_pi_app
-'''
+```
 
 Then open a web browser on the Pi, and go to:
 
-'''
+```
 http://localhost:8888/
-'''
+```
 
 And you should see the basic panel that lets you contol all the Pi's GPIO pins via toggle switches. Because FarPi runs as a webserver, you can access your control panel from anywhere in the world, as long as you have configured your networking appropriately (too big a subject for this little readme file!).
 
@@ -27,7 +27,7 @@ FarPi is split into a number of software components that have specific jobs.
 ### Application File
 The application file holds all the other components together. It serves as the primary configuration file for a control panel. You should have one application file for each control panel that you set up. Here is a basic application file:
 
-'''python
+```python
 # Import the default settings from base_app
 from base_app import *
 
@@ -46,7 +46,7 @@ hal = BasicPi()
 
 # Create the object that defines the user interface layout and components
 ui = UI.example_ui.ui
-'''
+```
 
 As you can see, there is not much to it. To customise to your own project, first change the import statement for the HAL module you want to use. Change the refresh delay if you want, but bear in mind that reducing the size of this delay will increase network traffic and load on the Raspberry Pi's processor. Change the line that creates the hal object so it matches the custom HAL you want to use. Finally, change "example_pi" to what ever user interface module you want to use. The HAL and UI modules are decribed below.
 
