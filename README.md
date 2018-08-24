@@ -54,33 +54,33 @@ As you can see, there is not much to it. To customise to your own project, first
 The HAL objects create the bridge between the FarPi server and the actual Raspberry Pi hardware. They are all stored in the HAL subdirectory. A base class in hal.py defines the basic functionality. The important files in this folder are:
 
 #### hal.py
-This contains the code that defines the basic functionality of the HAL system. If you are going to write your own custom HAL, read the documentation in this file. Your custom HAL should subclass the HAL class in here, and your custom components should subclass the HALComponent class.
+This contains the code that defines the basic functionality of the HAL system. If you are going to write your own custom HAL, read the documentation in this file. Your custom HAL should subclass the `HAL` class in here, and your custom components should subclass the `HALComponent` class.
 
 
 #### basic_pi.py
-The file defines a single HALComponent, BasicPiGPIO, which represents a basic GPIO pin. Direction can be set to in or out, pull up or down and pin number are all configurable. Uses the GPIO module from the RPi library.
+The file defines a single `HALComponent`, `BasicPiGPIO`, which represents a basic GPIO pin. Direction can be set to in or out, pull up or down and pin number are all configurable. Uses the GPIO module from the RPi library.
 
-The BasicPi HAL class defined here just makes available all GPIO pins as outputs with no pull-ups or downs. Uses the BCM pin numbering scheme.
+The `BasicPi` HAL class defined here just makes available all GPIO pins as outputs with no pull-ups or downs. Uses the BCM pin numbering scheme.
 
 #### virtual.py
 The virtual module contains a bunch of HALComponents that provide advanced logic and behaviour. This is only a quick overview, check the source code comments for detailed info. 
 
-Group is not a component, it's a helper class that lets you group multiple HALComponent names together. Primarily used to make the HAL object declarations syntax cleaner.
+`Group` is not a component, it's a helper class that lets you group multiple HALComponent names together. Primarily used to make the HAL object declarations syntax cleaner.
 
-GroupToggle lets you switch a group of other HALComponnents between two sets of pre-defined values.
+`GroupToggle` lets you switch a group of other HALComponnents between two sets of pre-defined values.
 
-GeneratorSawTooth simulates a saw-tooth waveform between a lower and upper bound. Steps by a delta value on every update, so frequemcy is dependant on the refresh interval you set in your app file.
+`GeneratorSawTooth` simulates a saw-tooth waveform between a lower and upper bound. Steps by a delta value on every update, so frequemcy is dependant on the refresh interval you set in your app file.
 
-TripWire is similar to GroupToggle, except that it switches when the value of another HALComponent crosses a threshold value. Could be used for instance to turn on a couple of cooling fans if a temperature sensor passes 30 degrees.
+`TripWire` is similar to `GroupToggle`, except that it switches when the value of another HALComponent crosses a threshold value. Could be used for instance to turn on a couple of cooling fans if a temperature sensor passes 30 degrees.
 
-IfThisThen is a very powerful virtual component. Using it requires a bit more Python knowledge than the others. Every refresh, it evaluates a "this" expression. If "this" evaluates to True, the "then" expression is executed. If "this" evaluates to False, the "otherwise" expression is executed. All of these expressions are fragments of Python code that are executed using the parent HAL object as the namespace.
+`IfThisThen` is a very powerful virtual component. Using it requires a bit more Python knowledge than the others. Every refresh, it evaluates a "this" expression. If "this" evaluates to True, the "then" expression is executed. If "this" evaluates to False, the "otherwise" expression is executed. All of these expressions are fragments of Python code that are executed using the parent HAL object as the namespace.
 
 #### servo.py
 This file provides a small extension to the BasicHAL module so that R/C servoes can be controlled from any GPIO pin. It uses the Python bindings for the PiGPIO library. If you have a project that uses R/C servoes, you'll want to use ServoHAL as the base class for your own HAL. Two components are provided:
 
-Servo - a basic interface to a single servo on a GPIO pin. Allows the position to be set to any arbitary point, or toggle the position between the two end points. The end points are configurable for maximum flexibility.
+`Servo` - a basic interface to a single servo on a GPIO pin. Allows the position to be set to any arbitary point, or toggle the position between the two end points. The end points are configurable for maximum flexibility.
 
-IndexedServo - similar to the basic Servo component, but is initialise with a list of preset positions. The servo can then be toggle up or down and it will move through the positions defined in the list. It can also be set to any one of the preconfigured positions without stepping through the intermediate positions.
+`IndexedServo` - similar to the basic Servo component, but is initialise with a list of preset positions. The servo can then be toggle up or down and it will move through the positions defined in the list. It can also be set to any one of the preconfigured positions without stepping through the intermediate positions.
 
 ### UI - User Interface
 
