@@ -46,7 +46,7 @@ class FarPiStateHandler(tornado.websocket.WebSocketHandler):
                 self.dispatch(message)
             except Exception as e:
                 # TODO: Need to handle errors better than this
-                print "Exception:", e
+                print("Exception:{}".format(e))
                 self.write_message('{"error":"An Error Occurred"}')
 
     def on_close(self):
@@ -111,29 +111,29 @@ class FarPiGUIHandler(tornado.web.RequestHandler):
         elif extension.upper() == '.CSS':
             self.write(application.ui()[2])
         else:
-            print "Error, unknown extension ({})".format(extension)
+            print("Error, unknown extension ({})".format(extension))
 
 
 if __name__ == "__main__":
     # TODO: Need to implement proper logging
-    print "FarPi Server v0.1"
-    print "-----------------"
+    print("FarPi Server v0.1")
+    print("-----------------")
     time = datetime.datetime.now()
-    print "Starting at",time.isoformat()
+    print("Starting at",time.isoformat())
 
     if len(sys.argv) != 2:
-        print "No application specified!"
+        print("No application specified!")
         exit()
 
     # The name of the application package is passed on the command line.
     # This gets imported and must define various attributes (see base_app.py)
     app_name = sys.argv[1]
-    print "Loading Application {}".format(app_name)
+    print("Loading Application {}".format(app_name))
     try:
         application = importlib.import_module(app_name)
 
     except Exception:
-        print "Error loading {}!".format(app_name)
+        print("Error loading {}!".format(app_name))
         traceback.print_exc()
         exit()
 
@@ -155,7 +155,7 @@ if __name__ == "__main__":
     # Create a periodic callback for refreshing the HAL and broadcasting it to all connected clients
     periodic = tornado.ioloop.PeriodicCallback(FarPiStateHandler.refresh, application.refresh_ms)
     periodic.start()
-    print "Server starting on port {}...".format(application.port)
+    print("Server starting on port {}...".format(application.port))
 
     try:
         # Kick off the Tornado processing loop
