@@ -7,7 +7,7 @@ settings = {
     "default_filename": "index.html",
     "cookie_secret": "__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
     "login_url": "/login",
-    "xsrf_cookies": True,
+    "xsrf_cookies": False,
 }
 
 # Web server paths

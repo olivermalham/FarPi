@@ -1,8 +1,5 @@
 from base_app import *
 
-# The User Interface (UI) package defines the interface that the user will see
-import UI.all_pi
-
 # The Hardware Abstraction Layer (HAL) package represents the hardware attached to the server
 # that the user will interact with via the UI
 from HAL.basic_pi import BasicPi
