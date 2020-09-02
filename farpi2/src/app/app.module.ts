@@ -3,18 +3,23 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BaseControlComponent } from './base-control/base-control.component';
+import { HeartbeatComponent } from './controls/heartbeat/heartbeat.component';
+
+import { FarPiHostService } from './far-pi-host.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BaseControlComponent
+    HeartbeatComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    FarPiHostService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
