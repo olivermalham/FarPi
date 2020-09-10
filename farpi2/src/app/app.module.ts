@@ -6,11 +6,15 @@ import { AppComponent } from './app.component';
 import { HeartbeatComponent } from './controls/heartbeat/heartbeat.component';
 
 import { FarPiHostService } from './far-pi-host.service';
+import { MessageboxComponent } from './controls/messagebox/messagebox.component';
+import { LedComponent } from './controls/led/led.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeartbeatComponent
+    HeartbeatComponent,
+    MessageboxComponent,
+    LedComponent
   ],
   imports: [
     BrowserModule,

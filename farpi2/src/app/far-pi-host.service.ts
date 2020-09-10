@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
 import { webSocket } from 'rxjs/webSocket';
-import { Heartbeat } from './models/heartbeat';
+
+import { State } from './models/state';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FarPiHostService {
 
-  socket = webSocket('ws://localhost:8888/farpi');
+  private _state: BehaviorSubject<State> = new BehaviorSubject(new State(""));
 
-  public heartbeat = new Heartbeat;
+  public readonly state: Observable<State> = this._state.asObservable();
+
+  socket = webSocket('ws://localhost:8888/farpi');
 
   constructor() {
     this.socket.subscribe(
@@ -21,7 +25,8 @@ export class FarPiHostService {
 
   handle_update(packet){
     // Called whenever there is a message from the server.
-    console.log('message received: ' + packet);
+    // console.log('message received: ' + packet);
+    this._state.next(new State(packet));
   }
 
   handle_error(error){

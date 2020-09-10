@@ -72,6 +72,26 @@ class GeneratorSawTooth(HALComponent):
             self.state = self.low
 
 
+class GeneratorSquareWave(HALComponent):
+    """ Square wave generator
+
+    Produces an output that ramps from (low) to (high) with a step size of (delta)
+    """
+
+    def __init__(self, period=10, *args, **kwargs):
+        super(HALComponent, self).__init__()
+        self.state = 0
+        self.period = period / 2
+        self.count = 0
+
+    def refresh(self, hal):
+        self.count = self.count + 1
+        
+        if self.count > self.period:
+            self.state = not self.state
+            self.count = 0
+
+
 class TripWire(HALComponent):
     """ TripWire - Toggles a group of HALComponents to a preset "on" state if a sensor value passes a threshold,
     otherwise set an "off" state. Set falling=False to trip when the sensor is below the threshold.

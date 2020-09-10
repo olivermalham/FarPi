@@ -13,7 +13,7 @@ class MockGPIO(HALComponent):
         self._direction = direction
 
     def refresh(self, hal):
-        pass
+        self.state = not self.state
 #        if self._direction:
 #            self.state = state
 
@@ -42,6 +42,8 @@ class MockPi(HAL):
         self.bcm01 = MockGPIO(pin_number=1, directon=0)
         self.bcm02 = MockGPIO(pin_number=2, directon=0)
         self.bcm03 = MockGPIO(pin_number=3, directon=0)
+
+        self.wave = GeneratorSquareWave()
 
     def clean_up(self):
         super(MockPi, self).clean_up()

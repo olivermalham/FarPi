@@ -67,7 +67,7 @@ class HAL(object):
         result = result[:-1] + "}"
 
         # Clear the message text now that its been serialised and sent to the client.
-        self.message = ""
+        self.message = "Test Message"
 
         return result
 
