@@ -1,5 +1,5 @@
-from hal import *
-from virtual import *
+from .hal import *
+from .virtual import *
 from RPi import GPIO
 
 

@@ -1,4 +1,4 @@
-from hal import HALComponent
+from .hal import HALComponent
 
 
 """
@@ -43,12 +43,12 @@ class GroupToggle(HALComponent):
         hal.message = "GroupToggle action_toggle now:{}".format(self.state)
         if self.state:
             for target in self._on.targets:
-                print "Setting {} = {}".format(target, self._on.targets[target])
+                print("Setting {} = {}".format(target, self._on.targets[target]))
                 component = getattr(hal, target)
                 component.state = self._on.targets[target]
         else:
             for target in self._off.targets:
-                print "Setting {} = {}".format(target, self._off.targets[target])
+                print("Setting {} = {}".format(target, self._off.targets[target]))
                 component = getattr(hal, target)
                 component.state = self._off.targets[target]
 

@@ -12,8 +12,8 @@ export class HeartbeatComponent implements OnInit {
   public beat: number = 0;
 
   public classes= {
-    "HeartBeat": true,
-    "HeartBeatGlow": false
+    "farpi-HeartBeat": true,
+    "farpi-HeartBeatGlow": false
   } ;
 
   constructor(private farpi_service: FarPiHostService) { }
@@ -25,8 +25,8 @@ export class HeartbeatComponent implements OnInit {
   update(state: any){
     this.beat = state.frame % 2;
     this.classes = {
-      "HeartBeat": true,
-      "HeartBeatGlow": (this.beat > 0)
+      "farpi-HeartBeat": true,
+      "farpi-HeartBeatGlow": (this.beat > 0)
     }
   }
 }

@@ -8,7 +8,7 @@ $background: #012d52;
 $label: #AAAAAA;
 
 
-body {
+.farpi {
     background-image: url("assets/background_grid.png");
     background-repeat: no-repeat;
     background-position: center center;
@@ -22,7 +22,7 @@ body {
     display: block;
 }
 
-.title { 	
+.farpi-title { 	
     color: $highlight;
 	width: 100%;
 	padding: 0;
@@ -34,7 +34,7 @@ body {
 	margin: 0;
 }
 
-.subTitle {
+.farpi-subTitle {
     color: $glow;
 	width: 100%;
     padding-top: 5px;
@@ -43,7 +43,7 @@ body {
 	text-align: center;
 }
 
-hr {
+.farpi-hr {
     display: block;
     border: 0 none;
     border-top: 1px solid;
@@ -53,7 +53,7 @@ hr {
     box-shadow: 0 0 15px $glow;
 }
 
-.row {
+.farpi-row {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -62,29 +62,29 @@ hr {
     margin: 10px;
 }
 
-.panel {
+.farpi-panel {
     justify-content: center;
     align-items: center;
     width: 100%;
 }
 
-.LED {
+.farpi-LED {
     border-style: solid;
     border-width: 1px;
     border-radius: 1em 0.25em 0.25em 1em;
-    border-color: $inactive;
+    border-color: $active;
     background-color: $background;
     box-shadow: 0 0 25px $inactive;
     margin: 10px;
     vertical-align: middle;
     padding: 10px;
     transition: background 0.5s, box-shadow 0.5s, border-color 0.25s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: left;
+    align-items: left;
+    font-size: 12pt;
 }
 
-.LED_indicator {
+.farpi-LED_indicator {
     border-style: solid;
     border-width: 1px;
     border-radius: 50%;
@@ -97,7 +97,7 @@ hr {
     height: 1em;
     vertical-align: middle;
     transition: background 0.5s, box-shadow 0.5s, border-color 0.25s;
-
+    
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
     -khtml-user-select: none; /* Konqueror HTML */
@@ -106,10 +106,9 @@ hr {
     user-select: none; /* Non-prefixed version */
 }
 
-.label {
+.farpi-label {
     display: inline-block;
-    height: 1em;
-    font-size: 15pt;
+    height: 100%; // 1em;
     vertical-align: middle;
     transition: color 0.5s;
 
@@ -121,7 +120,7 @@ hr {
     user-select: none; /* Non-prefixed version */
 }
 
-.GaugeLabel {
+.farpi-GaugeLabel {
     display: inline-block;
     height: 1em;
     font-size: 12pt;
@@ -138,7 +137,7 @@ hr {
     user-select: none; /* Non-prefixed version */
 }
 
-.toggle_switch {
+.farpi-toggle_switch {
     border-style: solid;
     border-color: $active;
     border-width: 1px;
@@ -152,7 +151,7 @@ hr {
     transition: background 0.5s, box-shadow 0.5s, border-color 0.25s;
 }
 
-.toggle_indicator {
+.farpi-toggle_indicator {
     border-style: solid;
     border-width: 0px;
     border-radius: 50%;
@@ -173,16 +172,16 @@ hr {
     user-select: none; /* Non-prefixed version */
 }
 
-.toggle_switch_on {
+.farpi-toggle_switch_on {
     background: $active;
 }
 
-.toggle_on {
+.farpi-toggle_on {
     margin-left: 1em;
     background: $highlight;
 }
 
-.LineGauge {
+.farpi-LineGauge {
     border-style: solid;
     border-width: 1px;
     border-radius: 1em 0.25em 0.25em 1em;
@@ -198,7 +197,7 @@ hr {
     align-items: center;
 }
 
-.LineGauge_indicator {
+.farpi-LineGauge_indicator {
     border-style: solid;
     border-width: 1px;
     border-radius: 0 0 0 0;
@@ -214,7 +213,7 @@ hr {
     transition: background 0.5s, box-shadow 0.5s, border-color 0.25s;
 }
 
-.LineGauge_bar {
+.farpi-LineGauge_bar {
     border-style: solid;
     border-width: 1px;
     border-radius: 0 0 0 0;
@@ -229,8 +228,8 @@ hr {
     transition: width 0.25s;
 }
 
-.MessageBox {
-    width: 60ex;
+.farpi-MessageBox {
+    width: 100%;
     height: 10em;
     padding: 1em;
     box-sizing: border-box;
@@ -243,11 +242,11 @@ hr {
     overflow: hidden;
 }
 
-.MessageBox:hover {
+.farpi-MessageBox:hover {
     overflow: auto;
 }
 
-.ArcGauge {
+.farpi-ArcGauge {
     border-style: solid;
     border-width: 1px;
     border-radius: 1em 1em 1em 1em;
@@ -263,57 +262,57 @@ hr {
     align-items: center;
 }
 
-.ArcGaugeContainer {
+.farpi-ArcGaugeContainer {
     width: 100px;
     height: 100px;
 }
 
-.ArcGauge_scale_bg {
+.farpi-ArcGauge_scale_bg {
     fill-opacity: 0;
     stroke: $inactive;
     stroke-width: 16px;
     stroke-linecap: round;
 }
 
-.ArcGauge_scale_outline {
+.farpi-ArcGauge_scale_outline {
     fill-opacity: 0;
     stroke: $active;
     stroke-width: 18px;
     stroke-linecap: round;
 }
 
-.ArcGauge_bar {
+.farpi-ArcGauge_bar {
     fill-opacity: 0;
     stroke: $highlight;
     stroke-width: 10px;
     stroke-linecap: round;
 }
 
-.ArcGaugeText {
+.farpi-ArcGaugeText {
     fill: $highlight;
     font-size: 30px;
 }
 
-.ArcGaugeLabel {
+.farpi-ArcGaugeLabel {
     fill: $highlight;
     font-size: 22px;
 }
 
-.interactive:hover {
+.farpi-interactive:hover {
     border-color: $highlight;
     cursor: pointer;
 }
 
-.LED_on {
+.farpi-LED_on {
     background: $highlight;
 }
 
-.on_glow {
+.farpi-on_glow {
     border-color: $highlight;
     box-shadow: 0 0 25px $glow;
 }
 
-.HeartBeat {
+.farpi-HeartBeat {
     border-style: solid;
     border-width: 1px;
     border-radius: 1em;
@@ -332,7 +331,7 @@ hr {
     z-index: 1000;
 }
 
-.HeartBeatGlow {
+.farpi-HeartBeatGlow {
     border-color: $highlight;
     box-shadow: 0 0 25px $glow;
     background: $highlight;

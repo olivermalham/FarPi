@@ -1,1 +1,1 @@
-from hal import *
+from .hal import *
