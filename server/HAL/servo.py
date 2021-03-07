@@ -1,5 +1,5 @@
-from hal import *
-from basic_pi import *
+from .hal import *
+from .basic_pi import *
 import pigpio
 
 # TODO: Add a smooth-servo component that uses cubic hermite interpolation to smooth the movement. Ideally in a way

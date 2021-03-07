@@ -16,7 +16,7 @@ var FarPi = {
     // Called when the page is loaded. Opens a websocket connection to the server
     // and registers the callback to handle the returned server state.
     onLoad: function(target) {
-        var address = "ws://" + location.hostname + ":" + location.port + "/" + target;
+        var address = target;
         console.log("Connecting to "+address)
         this.socket = new WebSocket(address);
 
@@ -40,7 +40,7 @@ var FarPi = {
     heartbeat: function(){
         var heartbeat_element = document.getElementById("HeartBeat");
         if(FarPi.state["cycle"] % 2){
-            heartbeat_element.classList.toggle("HeartBeatGlow");
+            // heartbeat_element.classList.toggle("HeartBeatGlow");
         };
         //console.log("Heartbeat update")
     },

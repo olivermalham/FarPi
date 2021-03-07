@@ -46,7 +46,7 @@ class FarPiStateHandler(tornado.websocket.WebSocketHandler):
                 self.dispatch(message)
             except Exception as e:
                 # TODO: Need to handle errors better than this
-                print "Exception:", e
+                print("Exception:{}".format(e))
                 self.write_message('{"error":"An Error Occurred"}')
 
     def on_close(self):
@@ -57,6 +57,11 @@ class FarPiStateHandler(tornado.websocket.WebSocketHandler):
         """
         print("WebSocket closed")
         FarPiStateHandler.clients.remove(self)
+
+    def check_origin(self, origin):
+        """ Note that this is probably a secutiry risk - this over-ride allows any origin URL
+        """
+        return True
 
     def dispatch(self, message):
         """ Dispatch a FarPi RPC call into the HAL.
@@ -95,57 +100,34 @@ class FarPiStateHandler(tornado.websocket.WebSocketHandler):
             client.write_message(application.hal.serialise())
 
 
-class FarPiGUIHandler(tornado.web.RequestHandler):
-    """
-
-    """
-    def get(self, extension):
-        if extension is None or \
-           extension == "" or \
-           extension.upper() == '.HTML' or \
-           extension.upper() == '.HTM':
-            result = application.ui()[0]
-            self.write(result)
-        elif extension.upper() == '.JS':
-            self.write(application.ui()[1])
-        elif extension.upper() == '.CSS':
-            self.write(application.ui()[2])
-        else:
-            print "Error, unknown extension ({})".format(extension)
-
-
 if __name__ == "__main__":
     # TODO: Need to implement proper logging
-    print "FarPi Server v0.1"
-    print "-----------------"
+    print("FarPi Server v0.1")
+    print("-----------------")
     time = datetime.datetime.now()
-    print "Starting at",time.isoformat()
+    print("Starting at",time.isoformat())
 
     if len(sys.argv) != 2:
-        print "No application specified!"
+        print("No application specified!")
         exit()
 
     # The name of the application package is passed on the command line.
     # This gets imported and must define various attributes (see base_app.py)
     app_name = sys.argv[1]
-    print "Loading Application {}".format(app_name)
+    print("Loading Application {}".format(app_name))
     try:
         application = importlib.import_module(app_name)
 
     except Exception:
-        print "Error loading {}!".format(app_name)
+        print("Error loading {}!".format(app_name))
         traceback.print_exc()
         exit()
 
     # TODO: Need a better way of configuring the URLs in the application package
     urls = [
         (r"/farpi", FarPiStateHandler),
-        (r"/farpiGUI(.*)", FarPiGUIHandler),
-        (r"/js/(.*)", tornado.web.StaticFileHandler,
-         dict(path=application.settings['static_path']+'js/', default_filename='index.html')),
-        (r"/css/(.*)", tornado.web.StaticFileHandler,
-         dict(path=application.settings['static_path']+'css/', default_filename='index.html')),
-        (r"/(.*)", FarPiGUIHandler)
+        (r"/(.*)", tornado.web.StaticFileHandler,
+         dict(path=application.settings['static_path'], default_filename='index.html')),
         ]
 
     # Create the Tornado application, start it listening on the configured port
@@ -155,7 +137,7 @@ if __name__ == "__main__":
     # Create a periodic callback for refreshing the HAL and broadcasting it to all connected clients
     periodic = tornado.ioloop.PeriodicCallback(FarPiStateHandler.refresh, application.refresh_ms)
     periodic.start()
-    print "Server starting on port {}...".format(application.port)
+    print("Server starting on port {}...".format(application.port))
 
     try:
         # Kick off the Tornado processing loop

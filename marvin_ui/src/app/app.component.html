@@ -1,0 +1,28 @@
+<div>
+  <!-- Toolbar -->
+  <div data-augmented-ui="border br-clip-x bl-clip-x" class="farpi-title" role="banner">
+    <span>Marvin</span>
+    <app-heartbeat></app-heartbeat>
+  </div>
+  <div>
+   <!-- class="farpi-panel" role="main"> -->
+    <div>
+      <!-- class="row"> -->
+      <app-led label="BCM00" pin="bcm00" class="col-sm-3"></app-led>
+      <!-- <app-led label="BCM01" pin="bcm01" class="col-sm-3"></app-led>
+      <app-led label="BCM02" pin="bcm02" class="col-sm-3"></app-led>
+      <app-led label="BCM03" pin="bcm03" class="col-sm-3"></app-led> -->
+    </div>
+    <div class="row">
+      <app-messagebox class="col-sm-6 offset-sm-3"></app-messagebox>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+
+    </footer>
+
+  </div>
+
+  <router-outlet></router-outlet>
+</div>

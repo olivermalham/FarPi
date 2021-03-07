@@ -1,4 +1,4 @@
-from hal import HALComponent
+from .hal import HALComponent
 
 
 """
@@ -43,12 +43,12 @@ class GroupToggle(HALComponent):
         hal.message = "GroupToggle action_toggle now:{}".format(self.state)
         if self.state:
             for target in self._on.targets:
-                print "Setting {} = {}".format(target, self._on.targets[target])
+                print("Setting {} = {}".format(target, self._on.targets[target]))
                 component = getattr(hal, target)
                 component.state = self._on.targets[target]
         else:
             for target in self._off.targets:
-                print "Setting {} = {}".format(target, self._off.targets[target])
+                print("Setting {} = {}".format(target, self._off.targets[target]))
                 component = getattr(hal, target)
                 component.state = self._off.targets[target]
 
@@ -70,6 +70,26 @@ class GeneratorSawTooth(HALComponent):
         self.state += self.delta
         if self.state >= self.high:
             self.state = self.low
+
+
+class GeneratorSquareWave(HALComponent):
+    """ Square wave generator
+
+    Produces an output that ramps from (low) to (high) with a step size of (delta)
+    """
+
+    def __init__(self, period=10, *args, **kwargs):
+        super(HALComponent, self).__init__()
+        self.state = 0
+        self.period = period / 2
+        self.count = 0
+
+    def refresh(self, hal):
+        self.count = self.count + 1
+        
+        if self.count > self.period:
+            self.state = not self.state
+            self.count = 0
 
 
 class TripWire(HALComponent):
