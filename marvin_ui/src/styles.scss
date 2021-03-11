@@ -22,39 +22,26 @@ $label: #AAAAAA;
     display: block;
 }
 
-// .farpi-title { 	
-//     color: $highlight;
-// 	width: 100%;
-// 	padding: 0;
-// 	border: 0;
-//     padding-top:20px;
-//     font-family: 'Abel', sans-serif;
-//     font-size: 30pt;
-// 	text-align: center;
-// 	margin: 0;
-// }
-
 .farpi-title {
     --aug-bl: 20px;
-    --aug-br: 20px;
     --aug-bl-inset2: 90%;
+    --aug-br: 20px;
+    --aug-br-inset1: 0%;
     --aug-border-all: 0px;
     --aug-border-bottom: 1px;
     --aug-border-bg: #fdde87;
     color: $highlight;
-    width: 100%;
-    //margin: 1em;
     background: #000000;
     font-size:12pt;
     vertical-align: middle;
     justify-content: left;
     align-items: left;
-    padding: 10px;
-    padding-left: 15px;
     padding-top:20px;
+    padding-bottom: 20px;
     font-family: 'Abel', sans-serif;
     font-size: 30pt;
 	text-align: center;
+    margin-bottom: 20px;
 }
 
 .farpi-subTitle {
@@ -89,6 +76,25 @@ $label: #AAAAAA;
     justify-content: center;
     align-items: center;
     width: 100%;
+    padding: 1em;
+}
+
+.farpi-container {
+    --aug-tr: 10px;
+    --aug-bl: 10px;
+    --aug-br: 10px;
+    --aug-border-all: 1px;
+    --aug-border-bg: #fdde87;
+    --aug-br-inset2: 70%;
+    --aug-b: 10px;
+    --aug-b-extend1: 50%;
+    color: #fdde87;
+    margin: 1em;
+    font-size:12pt;
+    vertical-align: middle;
+    justify-content: left;
+    align-items: left;
+    padding: 0;
 }
 
 .farpi-label {
@@ -213,24 +219,6 @@ $label: #AAAAAA;
     transition: width 0.25s;
 }
 
-.farpi-MessageBox {
-    width: 100%;
-    height: 10em;
-    padding: 1em;
-    box-sizing: border-box;
-    border: 1px solid $active;
-    border-radius: 1em;
-    background-color: $background;
-    resize: none;
-    color: $highlight;
-    font-size: 10pt;
-    overflow: hidden;
-}
-
-.farpi-MessageBox:hover {
-    overflow: auto;
-}
-
 .farpi-ArcGauge {
     border-style: solid;
     border-width: 1px;
@@ -295,34 +283,6 @@ $label: #AAAAAA;
 .farpi-on_glow {
     border-color: $highlight;
     box-shadow: 0 0 25px $glow;
-}
-
-.farpi-HeartBeat {
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 1em;
-    border-color: $active;
-    background: $inactive;
-    display: inline-block;
-    margin: 15px;
-    padding-left: 1em;
-    padding-right: 1em;
-    margin-top: 4em;
-    margin-right: 50px;
-    vertical-align: middle;
-    font-size: 8pt;
-    font-weight: bold;
-    color: $highlight;
-    float: right;
-    transition: background 0.5s, box-shadow 0.5s, border-color 0.5s, color 0.5s;
-    z-index: 1000;
-}
-
-.farpi-HeartBeatGlow {
-    border-color: $highlight;
-    box-shadow: 0 0 25px $glow;
-    background: $highlight;
-    color: $inactive;
 }
 
 .my-augfiguration {

@@ -1,0 +1,40 @@
+$highlight: #fdde87;
+$glow: #fdde87;
+$inactive: #523201;
+$active: #fdde87;
+$background: #523201;
+$label: #AAAAAA;
+
+.farpi-HeartBeat {
+    --aug-tl: 5px;
+    --aug-tr: 5px;
+    --aug-bl: 5px;
+    --aug-br: 5px;
+    --aug-border-all: 1px;
+    --aug-border-bg: #523201;
+    border-color: $active;
+    background: $inactive;
+    //display: inline-block;
+    //margin: 15px;
+    height: 10px;
+    width: 8%; //80px;
+    // padding-left: 1em;
+    // padding-right: 1em;
+    //margin-top: 200px;;
+    //margin-right: 15px;
+    margin-left: 91%;
+    //vertical-align: bottom;
+    //font-size: 10pt;
+    //font-weight: bold;
+    color: $highlight;
+    float: left;
+    transition: background 0.5s, box-shadow 0.5s, border-color 0.5s, color 0.5s;
+    z-index: 1000;
+}
+
+.farpi-HeartBeatGlow {
+    //border-color: $highlight;
+    box-shadow: 0 0 25px $glow;
+    background: $highlight;
+    color: $inactive;
+}
