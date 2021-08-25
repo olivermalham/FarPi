@@ -8,6 +8,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +19,8 @@ import { MessageboxComponent } from './controls/messagebox/messagebox.component'
 import { LedComponent } from './controls/led/led.component';
 import { ToolbarComponent } from './controls/marvin_toolbar/marvin_toolbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ControlPanelComponent } from './controls/control-panel/control-panel.component';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +28,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HeartbeatComponent,
     MessageboxComponent,
     LedComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    ControlPanelComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +41,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatGridListModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatChipsModule
   ],
   providers: [
     FarPiHostService
