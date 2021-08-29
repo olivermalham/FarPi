@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FarPiHostService } from '../../far-pi-host.service';
 
 @Component({
-  selector: 'app-messagebox',
-  templateUrl: './messagebox.component.html',
-  styleUrls: ['./messagebox.component.scss']
+  selector: 'console',
+  templateUrl: './console.component.html',
+  styleUrls: ['./console.component.scss']
 })
-export class MessageboxComponent implements OnInit {
+export class ConsoleComponent implements OnInit {
 
   public buffer: string = "";
 

@@ -2,13 +2,14 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FarPiHostService } from '../../far-pi-host.service';
 
 @Component({
-  selector: 'app-led',
+  selector: 'led',
   templateUrl: './led.component.html',
   styleUrls: ['./led.component.scss']
 })
 export class LedComponent implements OnInit {
 
   public state: boolean = false;
+  public stateColour: string = "none";
 
   @Input() 
   public label: string;
@@ -24,6 +25,11 @@ export class LedComponent implements OnInit {
 
   update(state: any){
     this.state = state[this.pin].state;
+    if(this.state) {
+      this.stateColour = "primary";
+    } else {
+      this.stateColour = "none";
+    }
   }
 
 }

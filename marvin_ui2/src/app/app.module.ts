@@ -9,13 +9,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatInputModule } from '@angular/material/input';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeartbeatComponent } from './controls/heartbeat/heartbeat.component';
 
 import { FarPiHostService } from './far-pi-host.service';
-import { MessageboxComponent } from './controls/messagebox/messagebox.component';
+import { ConsoleComponent } from './controls/console/console.component';
 import { LedComponent } from './controls/led/led.component';
 import { ToolbarComponent } from './controls/marvin_toolbar/marvin_toolbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,7 +27,7 @@ import { ControlPanelComponent } from './controls/control-panel/control-panel.co
   declarations: [
     AppComponent,
     HeartbeatComponent,
-    MessageboxComponent,
+    ConsoleComponent,
     LedComponent,
     ToolbarComponent,
     ControlPanelComponent
@@ -42,7 +43,8 @@ import { ControlPanelComponent } from './controls/control-panel/control-panel.co
     MatCardModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
-    MatChipsModule
+    MatChipsModule,
+    MatInputModule
   ],
   providers: [
     FarPiHostService

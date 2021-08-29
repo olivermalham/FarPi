@@ -76,6 +76,9 @@ class FarPiStateHandler(tornado.websocket.WebSocketHandler):
         :return: Nothing, but an immediate state update broadcast is sent upon completion
         """
         parsed_msg = json.loads(message)
+        print("Packet received:")
+        print(parsed_msg)
+        
         if "action" in parsed_msg.keys():
             method_name = parsed_msg["action"]
             method_parameters = parsed_msg["parameters"] if "parameters" in parsed_msg.keys() else {}

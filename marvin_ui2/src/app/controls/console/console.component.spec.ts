@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MessageboxComponent } from './messagebox.component';
+import { ConsoleComponent } from './console.component';
 
-describe('MessageboxComponent', () => {
-  let component: MessageboxComponent;
-  let fixture: ComponentFixture<MessageboxComponent>;
+describe('ConsoleComponent', () => {
+  let component: ConsoleComponent;
+  let fixture: ComponentFixture<ConsoleComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MessageboxComponent ]
+      declarations: [ ConsoleComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MessageboxComponent);
+    fixture = TestBed.createComponent(ConsoleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

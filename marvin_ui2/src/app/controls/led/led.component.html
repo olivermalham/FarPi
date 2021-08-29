@@ -1,4 +1,5 @@
-<div class="farpi-LED" [class.farpi-on_glow]="state">
-    <span class="farpi-LED_indicator" [class.farpi-LED_on]="state">&nbsp;</span>
-    <span class="farpi-label">{{ label }}</span>
-</div>
+<mat-chip selected [color]="stateColour">
+    <mat-icon *ngIf="state">radio_button_checked</mat-icon>
+    <mat-icon *ngIf="!state">radio_button_unchecked</mat-icon>&nbsp;&nbsp;{{ label }}
+</mat-chip>
+

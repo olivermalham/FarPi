@@ -25,7 +25,7 @@ export class FarPiHostService {
 
   handle_update(packet){
     // Called whenever there is a message from the server.
-    // console.log('message received: ' + packet);
+    console.log('message received: ' + packet);
     this._state.next(new State(packet));
   }
 
