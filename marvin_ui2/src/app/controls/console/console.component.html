@@ -11,14 +11,14 @@
     <mat-card-content>
         <div>
             <!-- <mat-form-field class="console-output" appearance="fill"> -->
-                <textarea matInput readonly class="console-output">{{ buffer }}</textarea>
+                <textarea matInput readonly class="console-output" #consoleText>{{ buffer }}</textarea>
             <!-- </mat-form-field> -->
         </div>
     </mat-card-content>
     <mat-card-actions>
         <mat-form-field appearance="fill"  class="command-input">
             <mat-label>Command Input</mat-label>
-            <input matInput>
+            <input matInput type="text" [(ngModel)]="command_line" (keydown.enter)="send_command()">
         </mat-form-field>
     </mat-card-actions>
 </mat-card>

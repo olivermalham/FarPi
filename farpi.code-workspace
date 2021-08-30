@@ -5,6 +5,15 @@
 		},
 		{
 			"path": "server"
+		},
+		{
+			"path": "marvin_ui2"
+		},
+		{
+			"path": "marvin_ui"
 		}
-	]
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
 }

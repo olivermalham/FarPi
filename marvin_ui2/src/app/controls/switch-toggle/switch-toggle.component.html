@@ -1,0 +1,6 @@
+<mat-chip selected [color]="stateColour" (click)="action()">
+    <mat-icon *ngIf="state">toggle_on</mat-icon>
+    <mat-icon *ngIf="!state">toggle_off</mat-icon>&nbsp;&nbsp;{{ label }}
+</mat-chip>
+
+

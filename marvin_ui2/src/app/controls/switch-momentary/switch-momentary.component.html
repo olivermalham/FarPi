@@ -1,0 +1,6 @@
+<mat-chip selected [color]="stateColour" (mousedown)="action_down()" (mouseup)="action_up()">
+    <mat-icon *ngIf="state">radio_button_checked</mat-icon>
+    <mat-icon *ngIf="!state">radio_button_unchecked</mat-icon>&nbsp;&nbsp;{{ label }}
+</mat-chip>
+
+

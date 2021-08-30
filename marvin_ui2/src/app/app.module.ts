@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,7 +22,8 @@ import { LedComponent } from './controls/led/led.component';
 import { ToolbarComponent } from './controls/marvin_toolbar/marvin_toolbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ControlPanelComponent } from './controls/control-panel/control-panel.component';
-
+import { SwitchMomentaryComponent } from './controls/switch-momentary/switch-momentary.component';
+import { SwitchToggleComponent } from './controls/switch-toggle/switch-toggle.component';
 
 @NgModule({
   declarations: [
@@ -30,11 +32,14 @@ import { ControlPanelComponent } from './controls/control-panel/control-panel.co
     ConsoleComponent,
     LedComponent,
     ToolbarComponent,
-    ControlPanelComponent
+    ControlPanelComponent,
+    SwitchMomentaryComponent,
+    SwitchToggleComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     BrowserAnimationsModule,
     MatToolbarModule,
     MatIconModule,

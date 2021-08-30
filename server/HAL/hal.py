@@ -29,6 +29,8 @@ class HAL(object):
         # Message to the client. Up to the client to store them if required
         self.message = "FarPi - HAL Initialised"
 
+        self.error = ""
+
     def clean_up(self):
         """ Make sure any resources the HAL uses get released.
 
@@ -67,7 +69,8 @@ class HAL(object):
         result = result[:-1] + "}"
 
         # Clear the message text now that its been serialised and sent to the client.
-        self.message = "Test Message"
+        self.message = ""
+        self.error = ""
 
         return result
 

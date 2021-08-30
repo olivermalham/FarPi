@@ -47,7 +47,8 @@ class FarPiStateHandler(tornado.websocket.WebSocketHandler):
             except Exception as e:
                 # TODO: Need to handle errors better than this
                 print("Exception:{}".format(e))
-                self.write_message('{"error":"An Error Occurred"}')
+                application.hal.error = f"An Error Occurred - {e}"
+                self.broadcast_state()
 
     def on_close(self):
         """ Close a websocket connection. Removes the instance from the client list so updates
@@ -76,9 +77,9 @@ class FarPiStateHandler(tornado.websocket.WebSocketHandler):
         :return: Nothing, but an immediate state update broadcast is sent upon completion
         """
         parsed_msg = json.loads(message)
-        print("Packet received:")
-        print(parsed_msg)
-        
+        print(f"Packet received: {message}")
+        print(f"Parsed message: {parsed_msg}")
+
         if "action" in parsed_msg.keys():
             method_name = parsed_msg["action"]
             method_parameters = parsed_msg["parameters"] if "parameters" in parsed_msg.keys() else {}

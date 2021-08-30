@@ -25,7 +25,6 @@ export class FarPiHostService {
 
   handle_update(packet){
     // Called whenever there is a message from the server.
-    console.log('message received: ' + packet);
     this._state.next(new State(packet));
   }
 
@@ -37,5 +36,13 @@ export class FarPiHostService {
   handle_closed(){
     // Called when connection is closed (for whatever reason).
     console.log('complete')
+  }
+
+  send_command(action, parameters){
+
+    let packet = { action: action, parameters: parameters};
+
+    console.log('send command ' + packet)
+    this.socket.next(packet);
   }
 }
