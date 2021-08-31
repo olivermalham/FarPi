@@ -6,10 +6,9 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 
-from tornado_image_streamer import camera_utils
-from tornado_image_streamer import image_stream_handler
-from tornado_image_streamer import tornado_utils
-from tornado_image_streamer import __version__
+import camera_utils
+import image_stream_handler
+import tornado_utils
 
 
 @click.command()
@@ -21,8 +20,8 @@ from tornado_image_streamer import __version__
               type=click.Choice(['get', 'push']),
               help='The mode of operation (default: push).')
 @click.option('-v', '--verbosity', count=True, help='The verbosity level.')
-@click.version_option(version=__version__)
-def main(port=8888, simulate=False, mode='push', verbosity=0):
+@click.version_option(version="Olly's hacked version")
+def main(port=8889, simulate=False, mode='push', verbosity=1):
     """Tornado web server that streams webcam images over the network."""
     tornado_utils.config_logging(verbosity)
 

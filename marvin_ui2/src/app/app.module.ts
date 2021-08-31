@@ -14,9 +14,11 @@ import { MatInputModule } from '@angular/material/input';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeartbeatComponent } from './controls/heartbeat/heartbeat.component';
 
 import { FarPiHostService } from './far-pi-host.service';
+import { FarPiCameraServiceService } from './far-pi-camera-service.service';
+
+import { HeartbeatComponent } from './controls/heartbeat/heartbeat.component';
 import { ConsoleComponent } from './controls/console/console.component';
 import { LedComponent } from './controls/led/led.component';
 import { ToolbarComponent } from './controls/marvin_toolbar/marvin_toolbar.component';
@@ -24,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ControlPanelComponent } from './controls/control-panel/control-panel.component';
 import { SwitchMomentaryComponent } from './controls/switch-momentary/switch-momentary.component';
 import { SwitchToggleComponent } from './controls/switch-toggle/switch-toggle.component';
+import { CameraComponent } from './controls/camera/camera.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,8 @@ import { SwitchToggleComponent } from './controls/switch-toggle/switch-toggle.co
     ToolbarComponent,
     ControlPanelComponent,
     SwitchMomentaryComponent,
-    SwitchToggleComponent
+    SwitchToggleComponent,
+    CameraComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +56,8 @@ import { SwitchToggleComponent } from './controls/switch-toggle/switch-toggle.co
     MatInputModule
   ],
   providers: [
-    FarPiHostService
+    FarPiHostService,
+    FarPiCameraServiceService
   ],
   bootstrap: [AppComponent]
 })

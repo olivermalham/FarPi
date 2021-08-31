@@ -24,7 +24,14 @@ class IndexPageHandler(tornado.web.RequestHandler):
 
     def get(self, *args, **kwargs):
         """TBW."""
+        logger.info(f'Get method')
         self.render(self.default_filename, app=self.application)
+    
+    def check_origin(self, origin):
+        """ Note that this is probably a secutiry risk - this over-ride allows any origin URL
+        """
+        logger.info(f'Check origin {origin}')
+        return True
 
 
 class ImageStreamHandler(tornado.websocket.WebSocketHandler):
@@ -38,6 +45,11 @@ class ImageStreamHandler(tornado.websocket.WebSocketHandler):
     def on_connection_close(self):
         """TBW."""
         self.close()
+
+    def check_origin(self, origin):
+        """ Note that this is probably a secutiry risk - this over-ride allows any origin URL
+        """
+        return True
 
     @staticmethod
     def start(application):
@@ -149,3 +161,9 @@ class ImagePushStreamHandler(tornado.websocket.WebSocketHandler):
                 # self.write_message(message)  # echo
         except Exception as exc:
             logger.exception(exc)
+
+    def check_origin(self, origin):
+        """ Note that this is probably a secutiry risk - this over-ride allows any origin URL
+        """
+        logger.info(f'Check origin {origin}')
+        return True

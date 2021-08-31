@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "marvin_ui"
+		},
+		{
+			"path": "tornado-image-streamer-master"
 		}
 	],
 	"settings": {

@@ -1,0 +1,9 @@
+<mat-card>
+    <mat-card-header>
+        <div mat-card-avatar><mat-icon>videocam</mat-icon></div>
+        <mat-card-title>Navigation Camera</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <img id="camera-image" [src]="image" style="width:500px;" (load)="onload"/>
+    </mat-card-content>
+</mat-card>

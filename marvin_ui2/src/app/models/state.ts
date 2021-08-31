@@ -6,7 +6,7 @@ export class Pin {
 export class State {
     frame: Number = 0;
     message: string = "";
-    error: string = "";
+    error: string = ""; 
     bcm00: Pin;
     bcm01: Pin;
     bcm02: Pin;
