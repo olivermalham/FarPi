@@ -19,8 +19,6 @@ export class CameraComponent implements OnInit {
       err => this.handle_error(err),
       () => this.handle_closed
     );
-    //this.socket.next("?");
-    //this.image = document.getElementById("camera-feed");
   }
 
   ngOnInit(): void {
@@ -33,7 +31,6 @@ export class CameraComponent implements OnInit {
         URL.revokeObjectURL(this.image.changingThisBreaksApplicationSecurity);
       }
       this.image = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(packet.data));
-      // image.onload = function() { URL.revokeObjectURL(image.src) }
     }
   }
 
@@ -51,45 +48,3 @@ export class CameraComponent implements OnInit {
     console.log('complete')
   }
 }
-
-/*
-ws_imagestream = new_web_socket('imagestream');
-
-ws_imagestream.onmessage = function(e) {
-    var interval = parseInt($('#fps').val());
-    if (e.data instanceof Blob) {
-        if (interval > 0) {
-            update_fps()
-            image.src = URL.createObjectURL(e.data);
-            image.onload = function() {
-                URL.revokeObjectURL(image.src);
-            }
-        }
-    }
-    if (window.stream_mode == "get") {
-        setTimeout(function(){ws_imagestream.send('?')}, interval);
-    }
-}
-
-ws_imagestream.onopen = function() {
-    console.log('connected ws_imagestream...');
-    ws_imagestream.send('?');
-};
-ws_imagestream.onclose = function() {
-    console.log('closed ws_imagestream');
-};
-ws_imagestream.send('?');
-});
-
-function new_web_socket(uri_path) {
-var protocol = 'ws:';
-if (window.location.protocol === 'https:') {
-    protocol = 'wss:';
-}
-var host = window.location.host;
-var path = window.location.pathname;
-var url = protocol + '//' + host + path + uri_path;
-var ws = new WebSocket(url);
-console.log(url);
-return ws;
-}*/
