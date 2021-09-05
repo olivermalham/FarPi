@@ -49,6 +49,64 @@ class MockPiConsole(HALComponent):
     def command_status(self, *args, hal):
         print(f"Received console Status command")
         hal.message = "Status is GREEN"
+        
+
+class MarvinMotion(HALComponent):
+    """ Component that communicates with the Marvin-core subsystem to handle low level movement 
+    """
+    def __init__(self):
+        super(HALComponent, self).__init__()
+
+        # self._motion_fifo = open("/etc/marvin/motion", "w")
+        self._motion_fifo = open("/etc/marvin/motion_test", "w")
+
+        self.head_pitch = 500
+        self.head_yaw = 500
+
+        self._motion_packet = {"wheel": [
+                                    {"distance":0, "speed": 0.25, "angle": 500}, 
+                                    {"distance":0, "speed": 0.25, "angle": 500}, 
+                                    {"distance":0, "speed": 0.25}, 
+                                    {"distance":0, "speed": 0.25}, 
+                                    {"distance":0, "speed": 0.25, "angle": 500}, 
+                                    {"distance":0, "speed": 0.25, "angle": 500}], 
+                                "head": {"pitch": self.head_pitch, "yaw": self.head_yaw}
+                                }
+    
+    def refresh(self, hal):
+        """ Use this to return the status of the current servo positions and motors
+        """
+        pass
+
+    def action_move(self, hal, **kwargs):
+        print(f"Received marvin motion command")
+        hal.message = f"Marvin Motion - {kwargs}"
+        self._motion_fifo.write("""{"wheel": [{"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25}, {"distance":0, "speed": 0.25}, {"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25, "angle": 500}], "head": {"pitch": 500, "yaw": 500}}""")
+        self._motion_fifo.flush()
+    
+    def action_move_head(self, hal, **kwargs):
+        print(f"Received marvin head motion command")
+        hal.message = f"Marvin Head Motion - {kwargs}"
+        self._motion_packet["head"][kwargs["direction"]] = kwargs["angle"]
+        self._update_motion()
+        
+    def action_stop(self, hal):
+        print(f"Received marvin hard stop command")
+        hal.message = f"Marvin hard stop!"
+        self._motion_fifo.write("""{"wheel": [{"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25}, {"distance":0, "speed": 0.25}, {"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25, "angle": 500}], "head": {"pitch": 500, "yaw": 500}}""")
+        self._motion_fifo.flush()
+    
+    def action_center_head(self, hal):
+        print(f"Received marvin head motion command")
+        hal.message = f"Marvin Head Center"
+        self._motion_fifo.write("""{"wheel": [{"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25}, {"distance":0, "speed": 0.25}, {"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25, "angle": 500}], "head": {"pitch": 500, "yaw": 500}}""")
+        self._motion_fifo.flush()
+
+    def _update_motion(self):
+        print(json.dumps(self._motion_packet))
+        self._motion_fifo.write(json.dumps(self._motion_packet))
+        self._motion_fifo.flush()
+
 
 
 class MockPi(HAL):
@@ -71,6 +129,8 @@ class MockPi(HAL):
 
         self.wave = GeneratorSquareWave()
         self.commandLine = MockPiConsole()
+
+        self.motion = MarvinMotion()
 
     def clean_up(self):
         super(MockPi, self).clean_up()

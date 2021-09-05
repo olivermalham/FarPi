@@ -27,6 +27,7 @@ import { ControlPanelComponent } from './controls/control-panel/control-panel.co
 import { SwitchMomentaryComponent } from './controls/switch-momentary/switch-momentary.component';
 import { SwitchToggleComponent } from './controls/switch-toggle/switch-toggle.component';
 import { CameraComponent } from './controls/camera/camera.component';
+import { DPadComponent } from './controls/d-pad/d-pad.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { CameraComponent } from './controls/camera/camera.component';
     ControlPanelComponent,
     SwitchMomentaryComponent,
     SwitchToggleComponent,
-    CameraComponent
+    CameraComponent,
+    DPadComponent
   ],
   imports: [
     BrowserModule,
