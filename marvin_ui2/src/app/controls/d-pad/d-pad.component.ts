@@ -19,12 +19,12 @@ export class DPadComponent implements OnInit {
 
   action_move_left(){
     console.log("D-Pad Action turn left triggered");
-    this.farpi_service.send_command("motion.action_move", {"direction":"left", "distance":"20"});
+    this.farpi_service.send_command("motion.action_turn", {"angle":-20, "speed":20});
   }
 
   action_move_right(){
     console.log("D-Pad Action turn right triggered");
-    this.farpi_service.send_command("motion.action_move", {"direction":"right", "distance":"20"});
+    this.farpi_service.send_command("motion.action_turn", {"angle":20, "speed":20});
   }
 
   action_move_cancel(){
@@ -34,22 +34,22 @@ export class DPadComponent implements OnInit {
 
   action_move_forward(){
     console.log("D-Pad Action move forward triggered");
-    this.farpi_service.send_command("motion.action_move", {"direction":"forward", "distance":"20"});
+    this.farpi_service.send_command("motion.action_move", {"distance":200, speed:100});
   }
 
   action_move_back(){
     console.log("D-Pad Action move back triggered");
-    this.farpi_service.send_command("motion.action_move", {"direction":"reverse", "distance":"20"});
+    this.farpi_service.send_command("motion.action_move", {"distance":-200, speed:100});
   }
 
   action_head_up(){
     console.log("D-Pad Action head up triggered");
-    this.farpi_service.send_command("motion.action_move_head", {"direction":"pitch", "angle":"20"});
+    this.farpi_service.send_command("motion.action_move_head", {"direction":"pitch", "angle":20});
   }
 
   action_head_down(){
     console.log("D-Pad Action head down triggered");
-    this.farpi_service.send_command("motion.action_move_head", {"direction":"pitch", "angle":"-20"});
+    this.farpi_service.send_command("motion.action_move_head", {"direction":"pitch", "angle":-20});
   }
 
   action_head_center(){
@@ -59,11 +59,11 @@ export class DPadComponent implements OnInit {
 
   action_head_left(){
     console.log("D-Pad Action head left triggered");
-    this.farpi_service.send_command("motion.action_move_head", {"direction":"yaw", "angle":"-20"});
+    this.farpi_service.send_command("motion.action_move_head", {"direction":"yaw", "angle":-20});
   }
 
   action_head_right(){
     console.log("D-Pad Action head right triggered");
-    this.farpi_service.send_command("motion.action_move_head", {"direction":"yaw", "angle":"20"});
+    this.farpi_service.send_command("motion.action_move_head", {"direction":"yaw", "angle":20});
   }
 }

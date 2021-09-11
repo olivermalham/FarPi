@@ -60,17 +60,10 @@ class MarvinMotion(HALComponent):
         # self._motion_fifo = open("/etc/marvin/motion", "w")
         self._motion_fifo = open("/etc/marvin/motion_test", "w")
 
-        self.head_pitch = 500
-        self.head_yaw = 500
-
-        self._motion_packet = {"wheel": [
-                                    {"distance":0, "speed": 0.25, "angle": 500}, 
-                                    {"distance":0, "speed": 0.25, "angle": 500}, 
-                                    {"distance":0, "speed": 0.25}, 
-                                    {"distance":0, "speed": 0.25}, 
-                                    {"distance":0, "speed": 0.25, "angle": 500}, 
-                                    {"distance":0, "speed": 0.25, "angle": 500}], 
-                                "head": {"pitch": self.head_pitch, "yaw": self.head_yaw}
+        self._motion_packet = { "move": {"distance":0, "speed": 0.0},
+                                "turn": {"angle":0, "speed": 0.0}, 
+                                "head": {"pitch": 0, "yaw": 0},
+                                "action": None
                                 }
     
     def refresh(self, hal):
@@ -81,32 +74,39 @@ class MarvinMotion(HALComponent):
     def action_move(self, hal, **kwargs):
         print(f"Received marvin motion command")
         hal.message = f"Marvin Motion - {kwargs}"
-        self._motion_fifo.write("""{"wheel": [{"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25}, {"distance":0, "speed": 0.25}, {"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25, "angle": 500}], "head": {"pitch": 500, "yaw": 500}}""")
-        self._motion_fifo.flush()
+        self._motion_packet["move"]["distance"] = int(kwargs["distance"])
+        self._motion_packet["move"]["speed"] = int(kwargs["speed"])
+        self._update_motion()
     
+    def action_turn(self, hal, **kwargs):
+        print(f"Received marvin motion command")
+        hal.message = f"Marvin Motion - {kwargs}"
+        self._motion_packet["turn"]["angle"] = int(kwargs["angle"])
+        self._motion_packet["turn"]["speed"] = int(kwargs["speed"])
+        self._update_motion()
+
     def action_move_head(self, hal, **kwargs):
         print(f"Received marvin head motion command")
         hal.message = f"Marvin Head Motion - {kwargs}"
-        self._motion_packet["head"][kwargs["direction"]] = kwargs["angle"]
+        self._motion_packet["head"]["direction"] = int(kwargs["angle"])
         self._update_motion()
         
-    def action_stop(self, hal):
+    def action_stop(self, hal, **kwargs):
         print(f"Received marvin hard stop command")
         hal.message = f"Marvin hard stop!"
-        self._motion_fifo.write("""{"wheel": [{"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25}, {"distance":0, "speed": 0.25}, {"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25, "angle": 500}], "head": {"pitch": 500, "yaw": 500}}""")
-        self._motion_fifo.flush()
+        self._motion_packet["action"] = "hard_stop"
+        self._update_motion()
     
     def action_center_head(self, hal):
         print(f"Received marvin head motion command")
         hal.message = f"Marvin Head Center"
-        self._motion_fifo.write("""{"wheel": [{"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25}, {"distance":0, "speed": 0.25}, {"distance":0, "speed": 0.25, "angle": 500}, {"distance":0, "speed": 0.25, "angle": 500}], "head": {"pitch": 500, "yaw": 500}}""")
-        self._motion_fifo.flush()
+        self._motion_packet["head"]["pitch"] = 0
+        self._motion_packet["head"]["yaw"] = 0
+        self._update_motion()
 
     def _update_motion(self):
         print(json.dumps(self._motion_packet))
         self._motion_fifo.write(json.dumps(self._motion_packet))
-        self._motion_fifo.flush()
-
 
 
 class MockPi(HAL):
