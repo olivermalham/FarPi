@@ -59,7 +59,6 @@ import { DPadComponent } from './controls/d-pad/d-pad.component';
   ],
   providers: [
     FarPiHostService,
-    FarPiCameraServiceService
   ],
   bootstrap: [AppComponent]
 })
