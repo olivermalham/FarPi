@@ -16,7 +16,7 @@ def gen_frames():
         if not success:
             break
         else:
-            frame = draw_overlay(frame, frame_count)
+            frame = draw_overlay(frame, f"Marvin Status\nFrames: {frame_count}")
             ret, buffer = cv2.imencode('.jpg', frame)
 
             frame = buffer.tobytes()
@@ -36,14 +36,20 @@ def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-def draw_overlay(frame, frame_count=0):
+def draw_overlay(frame, overlay_text):
     # Frames are ndarray objects, [y, x, blue, green, red]
     frame = draw_crosshair(frame)
     font = cv2.FONT_HERSHEY_PLAIN
     fontScale = 1.2
     color = (0, 255, 0)
     thickness = 1
-    frame = cv2.putText(frame, f'Marvin Video Feed {frame_count}', (10, 470), font, fontScale, color, thickness, cv2.LINE_AA)
+    line_height = 15
+
+    lines = overlay_text.split("\n")
+    orig = 470 - len(lines)*line_height
+    for line in lines:
+        frame = cv2.putText(frame, line, (10, orig), font, fontScale, color, thickness, cv2.LINE_AA)
+        orig = orig + line_height
     return frame
 
 
