@@ -51,6 +51,10 @@ def video_feed():
 
 if __name__ == "__main__":
     port = int(sys.argv[1])
-    camera_number = int(sys.argv[2])
     print(f"Port Number {port}")
+
+    # Start streaming
+    config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
+    pipeline.start(config)
+    
     app.run(host='0.0.0.0', port=port, debug=False)  # Note: Setting debug to true causes the video capture to fail
