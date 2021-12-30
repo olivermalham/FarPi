@@ -1,12 +1,14 @@
 # Import necessary libraries
+import sys
 from flask import Flask, render_template, Response
 import cv2
 # Initialize the Flask app
 app = Flask(__name__)
 
 # This works with normal cameras, but not the Realsense depth stream. Need to figure out how to get hold of that data.
-camera = cv2.VideoCapture(0)
-
+camera = None #cv2.VideoCapture(1)
+overlay = False
+port = 5000
 
 def gen_frames():
     frame_count = 0
@@ -16,7 +18,8 @@ def gen_frames():
         if not success:
             break
         else:
-            frame = draw_overlay(frame, f"Marvin Status\nFrames: {frame_count}")
+            if overlay:
+                frame = draw_overlay(frame, f"Marvin Status\nFrames: {frame_count}")
             ret, buffer = cv2.imencode('.jpg', frame)
 
             frame = buffer.tobytes()
@@ -45,8 +48,10 @@ def draw_overlay(frame, overlay_text):
     thickness = 1
     line_height = 15
 
+    height = len(frame)
+
     lines = overlay_text.split("\n")
-    orig = 470 - len(lines)*line_height
+    orig = (height) - len(lines)*line_height
     for line in lines:
         frame = cv2.putText(frame, line, (10, orig), font, fontScale, color, thickness, cv2.LINE_AA)
         orig = orig + line_height
@@ -54,26 +59,37 @@ def draw_overlay(frame, overlay_text):
 
 
 def draw_crosshair(frame):
+    width = len(frame)
+    height = len(frame[0])
+
+    width_cen = int(width/2)
+    height_cen = int(height/2)
+    
     # Main cross hair lines
-    cv2.line(frame, (320, 0), (320, 480), (0, 255, 0), 1)
-    cv2.line(frame, (0, 240), (640, 240), (0, 255, 0), 1)
+    cv2.line(frame, (height_cen, 0), (height_cen, width), (0, 255, 0), 1)
+    cv2.line(frame, (0, width_cen), (height, width_cen), (0, 255, 0), 1)
 
     minor_tick = 5
     major_tick = 10
 
     # Minor ticks
-    for i in range(20, 640, 40):
-        cv2.line(frame, (i, 240-minor_tick), (i, 240+minor_tick), (0, 255, 0), 1)
-    for i in range(20, 480, 40):
-        cv2.line(frame, (320-minor_tick, i), (320+minor_tick, i), (0, 255, 0), 1)
+    for i in range(20, height, 40):
+        cv2.line(frame, (i, width_cen-minor_tick), (i, width_cen+minor_tick), (0, 255, 0), 1)
+    for i in range(20, width, 40):
+        cv2.line(frame, (height_cen-minor_tick, i), (height_cen+minor_tick, i), (0, 255, 0), 1)
 
     # Major ticks
-    for i in range(40, 620, 40):
-        cv2.line(frame, (i, 240-major_tick), (i, 240+major_tick), (0, 255, 0), 1)
-    for i in range(40, 460, 40):
-        cv2.line(frame, (320-major_tick, i), (320+major_tick, i), (0, 255, 0), 1)
+    for i in range(40, height, 40):
+        cv2.line(frame, (i, width_cen-major_tick), (i, width_cen+major_tick), (0, 255, 0), 1)
+    for i in range(40, width, 40):
+        cv2.line(frame, (height_cen-major_tick, i), (height_cen+major_tick, i), (0, 255, 0), 1)
     return frame
 
 
 if __name__ == "__main__":
-    app.run(debug=False)  # Note: Setting debug to true causes the video capture to fail
+    port = int(sys.argv[1])
+    camera_number = int(sys.argv[2])
+    overlay = len(sys.argv) >= 4 and sys.argv[3] == "overlay"
+    print(f"Port Number {port}; Camera Number {camera_number}; Overlay? {overlay}")
+    camera = cv2.VideoCapture(camera_number)
+    app.run(host='0.0.0.0', port=port, debug=False)  # Note: Setting debug to true causes the video capture to fail
