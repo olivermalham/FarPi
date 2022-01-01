@@ -1,0 +1,11 @@
+
+Build container:
+docker build -t marvin_ui2 .
+
+Run container:
+docker exec -it {container_id/container name} /bin/bash
+
+
+Access shell in container:
+docker exec -it {container_id/container name} /bin/bash
+

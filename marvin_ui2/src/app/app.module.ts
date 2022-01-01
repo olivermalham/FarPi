@@ -16,7 +16,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { FarPiHostService } from './far-pi-host.service';
-import { FarPiCameraServiceService } from './far-pi-camera-service.service';
 
 import { HeartbeatComponent } from './controls/heartbeat/heartbeat.component';
 import { ConsoleComponent } from './controls/console/console.component';
@@ -59,7 +58,6 @@ import { DPadComponent } from './controls/d-pad/d-pad.component';
   ],
   providers: [
     FarPiHostService,
-    FarPiCameraServiceService
   ],
   bootstrap: [AppComponent]
 })

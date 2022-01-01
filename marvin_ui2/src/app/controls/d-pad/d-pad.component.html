@@ -1,65 +1,65 @@
-<mat-card>
+<mat-card >
     <mat-card-header>
         <div mat-card-avatar><mat-icon>gamepad</mat-icon></div>
         <mat-card-title>Motion Control</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <mat-grid-list cols="6" rowHeight="3em" style="width:30em;">
+        <mat-grid-list cols="6" rowHeight="3em">
             <!-- Movement buttons -->
             <!-- Top row -->
             <mat-grid-tile colspan="3">
-                <button mat-raised-button color="primary" (click)="action_move_forward()">
+                <button mat-raised-button color="primary" (click)="action_move_forward()" style="width:30%">
                     <mat-icon>north</mat-icon>
                 </button>
             </mat-grid-tile>
             <mat-grid-tile colspan="3">
-                <button mat-raised-button color="primary" (click)="action_head_up()">
+                <button mat-raised-button color="primary" (click)="action_head_up()" style="width:30%">
                     <mat-icon>expand_less</mat-icon>
                 </button>
             </mat-grid-tile>
-            
+
             <!-- Center row -->
             <mat-grid-tile>
-                <button mat-raised-button color="primary" (click)="action_move_left()">
+                <button mat-raised-button color="primary" (click)="action_move_left()" style="width:90%">
                     <mat-icon>undo</mat-icon>
                 </button>
             </mat-grid-tile>
             <mat-grid-tile>
-                <button mat-raised-button color="primary" (click)="action_move_cancel()">
+                <button mat-raised-button color="primary" (click)="action_move_cancel()" style="width:90%">
                     <mat-icon>error_outline</mat-icon>
                 </button>
             </mat-grid-tile>
             <mat-grid-tile>
-                <button mat-raised-button color="primary" (click)="action_move_right()">
+                <button mat-raised-button color="primary" (click)="action_move_right()" style="width:90%">
                     <mat-icon>redo</mat-icon>
                 </button>
             </mat-grid-tile>
 
             <mat-grid-tile>
-                <button mat-raised-button color="primary" (click)="action_head_left()">
+                <button mat-raised-button color="primary" (click)="action_head_left()" style="width:90%">
                     <mat-icon>chevron_left</mat-icon>
                 </button>
             </mat-grid-tile>
             <mat-grid-tile>
-                <button mat-raised-button color="primary" (click)="action_head_center()">
+                <button mat-raised-button color="primary" (click)="action_head_center()" style="width:90%">
                     <mat-icon>location_searching</mat-icon>
                 </button>
             </mat-grid-tile>
             <mat-grid-tile>
-                <button mat-raised-button color="primary" (click)="action_head_right()">
+                <button mat-raised-button color="primary" (click)="action_head_right()" style="width:90%">
                     <mat-icon>chevron_right</mat-icon>
                 </button>
             </mat-grid-tile>
 
-            
+
             <!-- Bottom row -->
             <mat-grid-tile colspan="3">
-                <button mat-raised-button color="primary" (click)="action_move_back()">
+                <button mat-raised-button color="primary" (click)="action_move_back()" style="width:30%">
                     <mat-icon>south</mat-icon>
                 </button>
             </mat-grid-tile>
             <mat-grid-tile colspan="3">
-                <button mat-raised-button color="primary" (click)="action_head_down()">
+                <button mat-raised-button color="primary" (click)="action_head_down()" style="width:30%">
                     <mat-icon>expand_more</mat-icon>
                 </button>
             </mat-grid-tile>
