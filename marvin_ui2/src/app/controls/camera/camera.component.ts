@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class CameraComponent implements OnInit {
 
-  socket = webSocket({url: 'ws://localhost:8889/imagestream',
+  socket = webSocket({url: 'ws://192.168.0.42:8889/imagestream',
                       deserializer: msg => msg});
   image;
 

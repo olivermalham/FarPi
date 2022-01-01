@@ -11,7 +11,7 @@ export class FarPiCameraServiceService {
 
   //public readonly state: Observable<State> = this._state.asObservable();
 
-  socket = webSocket('ws://localhost:8889/camera');
+  socket = webSocket('ws://192.168.0.42:8889/camera');
 
   constructor() {
     this.socket.subscribe(
