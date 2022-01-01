@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Marvin Control Centre';
+  vision_server = "192.168.0.19:5000";
 }

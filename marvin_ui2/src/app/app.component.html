@@ -1,18 +1,31 @@
 <marvin-toolbar></marvin-toolbar>
 
 <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm">
-        <camera></camera>
-        <camera></camera>
-        <camera></camera>
-      </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <camera label="Navigation Camera" url="http://{{vision_server}}/video_feed"></camera>
     </div>
-    <div class="row">
-        <div class="col-sm">
-            <control-panel></control-panel>
-            <d-pad></d-pad>
-            <console></console>
-        </div>
+    <div class="col-sm">
+      <camera label="Depth Camera" url="http://{{vision_server}}/depth_feed"></camera>
     </div>
+    <div class="col-sm">
+      <camera label="IR Camera" url="http://{{vision_server}}/ir_feed"></camera>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <d-pad></d-pad>
+    </div>
+    <div class="col-sm">
+        <control-panel></control-panel>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <console></console>
+    </div>
+  </div>
 </div>
