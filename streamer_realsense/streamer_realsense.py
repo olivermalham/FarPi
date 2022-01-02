@@ -74,10 +74,11 @@ def gen_depth_frames():
         depth_frame = frames.get_depth_frame()
         # Convert images to numpy arrays
         depth_image = np.asanyarray(depth_frame.get_data())
-        depth_image = draw_overlay(depth_image, f"{frame_count}")
 
         # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
         depth_colormapped = cv2.applyColorMap(cv2.convertScaleAbs(depth_image), cv2.COLORMAP_JET)
+
+        depth_colormapped = draw_overlay(depth_colormapped, f"{frame_count}")
 
         ret, buffer = cv2.imencode('.jpg', depth_colormapped)
 
