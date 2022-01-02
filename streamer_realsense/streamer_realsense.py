@@ -18,11 +18,11 @@ config = rs.config()
 pipeline_wrapper = rs.pipeline_wrapper(pipeline)
 pipeline_profile = config.resolve(pipeline_wrapper)
 
+
 def draw_overlay(frame, overlay_text):
     # Frames are ndarray objects, [y, x, blue, green, red]
-    frame = draw_crosshair(frame)
     font = cv2.FONT_HERSHEY_PLAIN
-    fontScale = 1.2
+    fontscale = 1.2
     color = (0, 255, 0)
     thickness = 1
     line_height = 15
@@ -30,9 +30,9 @@ def draw_overlay(frame, overlay_text):
     height = len(frame)
 
     lines = overlay_text.split("\n")
-    orig = (height) - len(lines)*line_height
+    orig = height - len(lines)*line_height
     for line in lines:
-        frame = cv2.putText(frame, line, (10, orig), font, fontScale, color, thickness, cv2.LINE_AA)
+        frame = cv2.putText(frame, line, (10, orig), font, fontscale, color, thickness, cv2.LINE_AA)
         orig = orig + line_height
     return frame
 
@@ -44,7 +44,7 @@ def draw_crosshair(frame):
     width_cen = int(width/2)
     height_cen = int(height/2)
 
-    # Main cross hair lines
+    # Main crosshair lines
     cv2.line(frame, (height_cen, 0), (height_cen, width), (0, 255, 0), 1)
     cv2.line(frame, (0, width_cen), (height, width_cen), (0, 255, 0), 1)
 
@@ -65,14 +65,16 @@ def draw_crosshair(frame):
     return frame
 
 
-
 def gen_depth_frames():
+    frame_count = 0
     while True:
+        frame_count = frame_count + 1
         # Wait for a coherent pair of frames: depth and color
         frames = pipeline.wait_for_frames()
         depth_frame = frames.get_depth_frame()
         # Convert images to numpy arrays
         depth_image = np.asanyarray(depth_frame.get_data())
+        depth_image = draw_overlay(depth_image, f"{frame_count}")
 
         # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
         depth_colormapped = cv2.applyColorMap(cv2.convertScaleAbs(depth_image), cv2.COLORMAP_JET)
@@ -83,14 +85,18 @@ def gen_depth_frames():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
+
 def gen_colour_frames():
+    frame_count = 0
     while True:
+        frame_count = frame_count + 1
         # Wait for a coherent pair of frames: depth and color
         frames = pipeline.wait_for_frames()
         colour_frame = frames.get_color_frame()
         # Convert images to numpy arrays
         colour_image = np.asanyarray(colour_frame.get_data())
-        colour_image = draw_overlay(colour_image, f"Marvin Video Feed")
+        colour_image = draw_overlay(colour_image, f"{frame_count}\nMarvin Video Feed")
+        colour_image = draw_crosshair(colour_image)
 
         ret, buffer = cv2.imencode('.jpg', colour_image)
 
@@ -98,13 +104,17 @@ def gen_colour_frames():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
+
 def gen_ir_frames():
+    frame_count = 0
     while True:
+        frame_count = frame_count + 1
         # Wait for a coherent pair of frames: depth and color
         frames = pipeline.wait_for_frames()
         ir_frame = frames.get_infrared_frame()
         # Convert images to numpy arrays
         ir_image = np.asanyarray(ir_frame.get_data())
+        ir_image = draw_overlay(ir_image, f"{frame_count}")
 
         ret, buffer = cv2.imencode('.jpg', ir_image)
 
