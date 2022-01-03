@@ -84,11 +84,28 @@ class MarvinMotion(HALComponent):
             serial.Serial(SERVO_SERIAL_PORT, 115200, timeout=0.2),
             timeout=0.5
         )
+
+        self.head_pitch = self._servo_controller.get_position(HEAD_PITCH)
+        sleep(0.1)
+        self.head_yaw = self._servo_controller.get_position(HEAD_YAW)
+        sleep(0.1)
+        self.wheel1_angle = self._servo_controller.get_position(WHEEL_1)
+        sleep(0.1)
+        self.wheel2_angle = self._servo_controller.get_position(WHEEL_2)
+        sleep(0.1)
+        self.wheel5_angle = self._servo_controller.get_position(WHEEL_5)
+        sleep(0.1)
+        self.wheel6_angle = self._servo_controller.get_position(WHEEL_6)
+        sleep(0.1)
     
     def refresh(self, hal):
         """ Use this to return the status of the current servo positions and motors
         """
-        pass
+        # TODO: These sleep intervals need to be fixed, this gets called frequently, risk of collision!
+        self.head_pitch = self._servo_controller.get_position(HEAD_PITCH)
+        sleep(0.1)
+        self.head_yaw = self._servo_controller.get_position(HEAD_YAW)
+        sleep(0.1)
 
     def action_move(self, hal, **kwargs):
         print(f"Received marvin motion command")
@@ -106,17 +123,27 @@ class MarvinMotion(HALComponent):
 
     def action_head_yaw(self, hal, **kwargs):
         print(f"Received marvin head yaw command")
-        angle = int(kwargs["angle"])
+        if "delta" in kwargs:
+            angle = self.head_yaw + int(kwargs["delta"])
+        else:
+            angle = int(kwargs["angle"])
+
         hal.message = f"Marvin Head Yaw f{angle} degrees"
         self._servo_controller.move(HEAD_YAW, angle, 1000)
         sleep(0.1)
+        self.head_yaw = angle  # TODO: This should be fetched from the servo dynamically!
 
     def action_head_pitch(self, hal, **kwargs):
         print(f"Received marvin head pitch command")
-        angle = int(kwargs["angle"])
+        if "delta" in kwargs:
+            angle = self.head_pitch + int(kwargs["delta"])
+        else:
+            angle = int(kwargs["angle"])
+
         hal.message = f"Marvin Head Pitch f{angle} degrees"
         self._servo_controller.move(HEAD_PITCH, angle, 1000)
         sleep(0.1)
+        self.head_pitch = angle  # TODO: This should be fetched from the servo dynamically!
         
     def action_stop(self, hal, **kwargs):
         print(f"Received marvin hard stop command")
@@ -135,6 +162,8 @@ class MarvinMotion(HALComponent):
         sleep(0.1)
         self._servo_controller.move_start(HEAD_YAW)
         sleep(0.1)
+        self.head_yaw = 500  # TODO: This should be fetched from the servo dynamically!
+        self.head_pitch = 500  # TODO: This should be fetched from the servo dynamically!
 
     def _update_motors(self):
         print(json.dumps(self._motion_packet))
