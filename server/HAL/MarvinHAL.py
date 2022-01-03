@@ -1,5 +1,19 @@
+import serial
+from time import sleep
+import servo_lib
 from .hal import *
 from .virtual import *
+
+# UART serial port for servo bus
+SERVO_SERIAL_PORT = '/dev/serial0'
+
+# Constants that define servo bus ids for each function
+HEAD_PITCH = 5
+HEAD_YAW = 6
+WHEEL_1 = 1
+WHEEL_2 = 2
+WHEEL_5 = 3
+WHEEL_6 = 4
 
 
 class MarvinGPIO(HALComponent):
@@ -59,13 +73,17 @@ class MarvinMotion(HALComponent):
         super(HALComponent, self).__init__()
 
         # self._motion_fifo = open("/etc/marvin/motion", "w")
-        self._motion_fifo = open("/etc/marvin/motion_test", "w")
+        # self._motion_fifo = open("/etc/marvin/motion_test", "w")
 
         self._motion_packet = { "move": {"distance":0, "speed": 0.0},
                                 "turn": {"angle":0, "speed": 0.0}, 
                                 "head": {"pitch": 0, "yaw": 0},
                                 "action": None
                                 }
+        self.servo_controller = servo_lib.lewansoul_lx16a.ServoController(
+            serial.Serial(SERVO_SERIAL_PORT, 115200, timeout=0.2),
+            timeout=0.5
+        )
     
     def refresh(self, hal):
         """ Use this to return the status of the current servo positions and motors
@@ -77,37 +95,49 @@ class MarvinMotion(HALComponent):
         hal.message = f"Marvin Motion - {kwargs}"
         self._motion_packet["move"]["distance"] = int(kwargs["distance"])
         self._motion_packet["move"]["speed"] = int(kwargs["speed"])
-        self._update_motion()
+        self._update_motors()
     
     def action_turn(self, hal, **kwargs):
         print(f"Received marvin motion command")
         hal.message = f"Marvin Motion - {kwargs}"
         self._motion_packet["turn"]["angle"] = int(kwargs["angle"])
         self._motion_packet["turn"]["speed"] = int(kwargs["speed"])
-        self._update_motion()
+        self._update_motors()
 
-    def action_move_head(self, hal, **kwargs):
-        print(f"Received marvin head motion command")
-        hal.message = f"Marvin Head Motion - {kwargs}"
-        self._motion_packet["head"]["direction"] = int(kwargs["angle"])
-        self._update_motion()
+    def action_head_yaw(self, hal, **kwargs):
+        print(f"Received marvin head yaw command")
+        angle = int(kwargs["angle"])
+        hal.message = f"Marvin Head Yaw f{angle} degrees"
+        self.servo_controller.move(HEAD_YAW, angle, 1)
+        sleep(0.1)
+
+    def action_head_pitch(self, hal, **kwargs):
+        print(f"Received marvin head pitch command")
+        angle = int(kwargs["angle"])
+        hal.message = f"Marvin Head Pitch f{angle} degrees"
+        self.servo_controller.move(HEAD_PITCH, angle, 1)
+        sleep(0.1)
         
     def action_stop(self, hal, **kwargs):
         print(f"Received marvin hard stop command")
         hal.message = f"Marvin hard stop!"
         self._motion_packet["action"] = "hard_stop"
-        self._update_motion()
+        self._update_motors()
     
     def action_center_head(self, hal):
         print(f"Received marvin head motion command")
         hal.message = f"Marvin Head Center"
-        self._motion_packet["head"]["pitch"] = 0
-        self._motion_packet["head"]["yaw"] = 0
-        self._update_motion()
+        self.servo_controller.move_prepare(HEAD_PITCH, 500, 2)
+        sleep(0.1)
+        self.servo_controller.move_prepare(HEAD_YAW, 500, 2)
+        sleep(0.1)
+        self.servo_controller.move_start(HEAD_PITCH)
+        sleep(0.1)
+        self.servo_controller.move_start(HEAD_YAW)
+        sleep(0.1)
 
-    def _update_motion(self):
+    def _update_motors(self):
         print(json.dumps(self._motion_packet))
-        self._motion_fifo.write(json.dumps(self._motion_packet))
 
 
 class MarvinHAL(HAL):
