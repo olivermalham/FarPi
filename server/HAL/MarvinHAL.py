@@ -127,13 +127,15 @@ class MarvinMotion(HALComponent):
         print(f"Received marvin head yaw command")
         if "delta" in kwargs:
             angle = self.head_yaw + int(kwargs["delta"])
+            time = 100
         else:
             angle = int(kwargs["angle"])
+            time = 500
         angle = self.head_yaw_limits[0] if angle < self.head_yaw_limits[0] else angle
         angle = self.head_yaw_limits[1] if angle > self.head_yaw_limits[1] else angle
 
         hal.message = f"Marvin Head Yaw f{angle} degrees"
-        self._servo_controller.move(HEAD_YAW, angle, 1000)
+        self._servo_controller.move(HEAD_YAW, angle, time)
         sleep(0.1)
         self.head_yaw = angle  # TODO: This should be fetched from the servo dynamically!
 
@@ -141,14 +143,16 @@ class MarvinMotion(HALComponent):
         print(f"Received marvin head pitch command")
         if "delta" in kwargs:
             angle = self.head_pitch + int(kwargs["delta"])
+            time = 100
         else:
             angle = int(kwargs["angle"])
+            time = 500
 
         angle = self.head_pitch_limits[0] if angle < self.head_pitch_limits[0] else angle
         angle = self.head_pitch_limits[1] if angle > self.head_pitch_limits[1] else angle
 
         hal.message = f"Marvin Head Pitch f{angle} degrees"
-        self._servo_controller.move(HEAD_PITCH, angle, 1000)
+        self._servo_controller.move(HEAD_PITCH, angle, time)
         sleep(0.1)
         self.head_pitch = angle  # TODO: This should be fetched from the servo dynamically!
         

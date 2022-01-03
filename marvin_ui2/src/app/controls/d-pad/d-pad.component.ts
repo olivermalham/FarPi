@@ -44,12 +44,12 @@ export class DPadComponent implements OnInit {
 
   action_head_up(){
     console.log("D-Pad Action head up triggered");
-    this.farpi_service.send_command("motion.action_head_pitch", {"angle":50});
+    this.farpi_service.send_command("motion.action_head_pitch", {"delta":50});
   }
 
   action_head_down(){
     console.log("D-Pad Action head down triggered");
-    this.farpi_service.send_command("motion.action_head_pitch", {"angle":-50});
+    this.farpi_service.send_command("motion.action_head_pitch", {"delta":-50});
   }
 
   action_head_center(){
