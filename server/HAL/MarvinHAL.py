@@ -1,8 +1,8 @@
 import serial
 from time import sleep
-import servo_lib
 from .hal import *
 from .virtual import *
+from .servo_lib.lewansoul_lx16a import ServoController
 
 # UART serial port for servo bus
 SERVO_SERIAL_PORT = '/dev/serial0'
@@ -80,7 +80,7 @@ class MarvinMotion(HALComponent):
                                 "head": {"pitch": 0, "yaw": 0},
                                 "action": None
                                 }
-        self.servo_controller = servo_lib.lewansoul_lx16a.ServoController(
+        self.servo_controller = ServoController(
             serial.Serial(SERVO_SERIAL_PORT, 115200, timeout=0.2),
             timeout=0.5
         )
