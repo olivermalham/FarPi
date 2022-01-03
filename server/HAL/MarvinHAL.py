@@ -86,8 +86,10 @@ class MarvinMotion(HALComponent):
         )
 
         self.head_pitch = self._servo_controller.get_position(HEAD_PITCH)
+        self.head_pitch_limits = (350, 650)
         sleep(0.1)
         self.head_yaw = self._servo_controller.get_position(HEAD_YAW)
+        self.head_yaw_limits = (0, 1000)
         sleep(0.1)
         self.wheel1_angle = self._servo_controller.get_position(WHEEL_1)
         sleep(0.1)
@@ -127,6 +129,8 @@ class MarvinMotion(HALComponent):
             angle = self.head_yaw + int(kwargs["delta"])
         else:
             angle = int(kwargs["angle"])
+        angle = self.head_yaw_limits[0] if angle < self.head_yaw_limits[0] else angle
+        angle = self.head_yaw_limits[1] if angle > self.head_yaw_limits[1] else angle
 
         hal.message = f"Marvin Head Yaw f{angle} degrees"
         self._servo_controller.move(HEAD_YAW, angle, 1000)
@@ -139,6 +143,9 @@ class MarvinMotion(HALComponent):
             angle = self.head_pitch + int(kwargs["delta"])
         else:
             angle = int(kwargs["angle"])
+
+        angle = self.head_pitch_limits[0] if angle < self.head_pitch_limits[0] else angle
+        angle = self.head_pitch_limits[1] if angle > self.head_pitch_limits[1] else angle
 
         hal.message = f"Marvin Head Pitch f{angle} degrees"
         self._servo_controller.move(HEAD_PITCH, angle, 1000)

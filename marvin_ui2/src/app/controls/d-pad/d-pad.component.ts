@@ -44,12 +44,12 @@ export class DPadComponent implements OnInit {
 
   action_head_up(){
     console.log("D-Pad Action head up triggered");
-    this.farpi_service.send_command("motion.action_head_pitch", {"angle":600});
+    this.farpi_service.send_command("motion.action_head_pitch", {"angle":50});
   }
 
   action_head_down(){
     console.log("D-Pad Action head down triggered");
-    this.farpi_service.send_command("motion.action_head_pitch", {"angle":300});
+    this.farpi_service.send_command("motion.action_head_pitch", {"angle":-50});
   }
 
   action_head_center(){
@@ -59,11 +59,11 @@ export class DPadComponent implements OnInit {
 
   action_head_left(){
     console.log("D-Pad Action head left triggered");
-    this.farpi_service.send_command("motion.action_head_yaw", {"angle":800});
+    this.farpi_service.send_command("motion.action_head_yaw", {"delta":50});
   }
 
   action_head_right(){
     console.log("D-Pad Action head right triggered");
-    this.farpi_service.send_command("motion.action_head_yaw", {"angle":200});
+    this.farpi_service.send_command("motion.action_head_yaw", {"delta":-50});
   }
 }
