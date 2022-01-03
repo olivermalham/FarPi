@@ -8,8 +8,8 @@ from .servo_lib.lewansoul_lx16a import ServoController
 SERVO_SERIAL_PORT = '/dev/serial0'
 
 # Constants that define servo bus ids for each function
-HEAD_PITCH = 5
-HEAD_YAW = 6
+HEAD_PITCH = 6
+HEAD_YAW = 5
 WHEEL_1 = 1
 WHEEL_2 = 2
 WHEEL_5 = 3
@@ -80,7 +80,7 @@ class MarvinMotion(HALComponent):
                                 "head": {"pitch": 0, "yaw": 0},
                                 "action": None
                                 }
-        self.servo_controller = ServoController(
+        self._servo_controller = ServoController(
             serial.Serial(SERVO_SERIAL_PORT, 115200, timeout=0.2),
             timeout=0.5
         )
@@ -108,14 +108,14 @@ class MarvinMotion(HALComponent):
         print(f"Received marvin head yaw command")
         angle = int(kwargs["angle"])
         hal.message = f"Marvin Head Yaw f{angle} degrees"
-        self.servo_controller.move(HEAD_YAW, angle, 1)
+        self._servo_controller.move(HEAD_YAW, angle, 1000)
         sleep(0.1)
 
     def action_head_pitch(self, hal, **kwargs):
         print(f"Received marvin head pitch command")
         angle = int(kwargs["angle"])
         hal.message = f"Marvin Head Pitch f{angle} degrees"
-        self.servo_controller.move(HEAD_PITCH, angle, 1)
+        self._servo_controller.move(HEAD_PITCH, angle, 1000)
         sleep(0.1)
         
     def action_stop(self, hal, **kwargs):
@@ -124,16 +124,16 @@ class MarvinMotion(HALComponent):
         self._motion_packet["action"] = "hard_stop"
         self._update_motors()
     
-    def action_center_head(self, hal):
+    def action_head_center(self, hal):
         print(f"Received marvin head motion command")
         hal.message = f"Marvin Head Center"
-        self.servo_controller.move_prepare(HEAD_PITCH, 500, 2)
+        self._servo_controller.move_prepare(HEAD_PITCH, 500, 1000)
         sleep(0.1)
-        self.servo_controller.move_prepare(HEAD_YAW, 500, 2)
+        self._servo_controller.move_prepare(HEAD_YAW, 500, 1000)
         sleep(0.1)
-        self.servo_controller.move_start(HEAD_PITCH)
+        self._servo_controller.move_start(HEAD_PITCH)
         sleep(0.1)
-        self.servo_controller.move_start(HEAD_YAW)
+        self._servo_controller.move_start(HEAD_YAW)
         sleep(0.1)
 
     def _update_motors(self):
