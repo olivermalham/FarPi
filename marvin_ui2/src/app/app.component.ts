@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Marvin Control Centre';
-  vision_server = "192.168.142.2:5000";
+  vision_server = "192.168.0.142:5000"; // Note: Marvin uses iptables to forward traffic for port 5000 to the Nano
 }
