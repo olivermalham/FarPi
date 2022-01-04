@@ -1,3 +1,4 @@
+from collections import namedtuple
 import serial
 from time import sleep
 from .hal import *
@@ -8,12 +9,14 @@ from .servo_lib.lewansoul_lx16a import ServoController
 SERVO_SERIAL_PORT = '/dev/serial0'
 
 # Constants that define servo bus ids for each function
-HEAD_PITCH = 6
-HEAD_YAW = 5
 WHEEL_1 = 1
 WHEEL_2 = 2
 WHEEL_5 = 3
 WHEEL_6 = 4
+HEAD_YAW = 5
+HEAD_PITCH = 6
+
+ServoCalib = namedtuple("ServoCalib", "scale origin limit_low limit_high")
 
 
 class MarvinGPIO(HALComponent):
@@ -80,6 +83,19 @@ class MarvinMotion(HALComponent):
                                 "head": {"pitch": 0, "yaw": 0},
                                 "action": None
                                 }
+
+        # Servo calibration settings for converting from degrees to servo units
+        # Note that entry 0 is None as we're mapping servo id's here, which start at 1
+        # Limits are in degrees, not servo units. Origin is the offset corresponding to
+        # zero degrees. Making the scale value negative should reverse the movement
+        self.servo_calib = [None,
+                            ServoCalib(scale=3.7, origin=500, limit_low=-135.0, limit_high=135.0),
+                            ServoCalib(scale=3.7, origin=500, limit_low=-135.0, limit_high=135.0),
+                            ServoCalib(scale=3.7, origin=500, limit_low=-135.0, limit_high=135.0),
+                            ServoCalib(scale=3.7, origin=500, limit_low=-135.0, limit_high=135.0),
+                            ServoCalib(scale=3.7, origin=500, limit_low=-135.0, limit_high=135.0),  # Yaw
+                            ServoCalib(scale=3.7, origin=500, limit_low=-41.0, limit_high=41.0)]  # Pitch
+
         self._servo_controller = ServoController(
             serial.Serial(SERVO_SERIAL_PORT, 115200, timeout=0.2),
             timeout=0.5
@@ -131,11 +147,9 @@ class MarvinMotion(HALComponent):
         else:
             angle = int(kwargs["angle"])
             time = 500
-        angle = self.head_yaw_limits[0] if angle < self.head_yaw_limits[0] else angle
-        angle = self.head_yaw_limits[1] if angle > self.head_yaw_limits[1] else angle
 
-        hal.message = f"Marvin Head Yaw f{angle} degrees"
-        self._servo_controller.move(HEAD_YAW, angle, time)
+        hal.message = f"Marvin Head Yaw {angle} degrees"
+        self._servo_controller.move(HEAD_YAW, self._transform_angle(HEAD_YAW, angle), time)
         sleep(0.1)
         self.head_yaw = angle  # TODO: This should be fetched from the servo dynamically!
 
@@ -148,11 +162,8 @@ class MarvinMotion(HALComponent):
             angle = int(kwargs["angle"])
             time = 500
 
-        angle = self.head_pitch_limits[0] if angle < self.head_pitch_limits[0] else angle
-        angle = self.head_pitch_limits[1] if angle > self.head_pitch_limits[1] else angle
-
-        hal.message = f"Marvin Head Pitch f{angle} degrees"
-        self._servo_controller.move(HEAD_PITCH, angle, time)
+        hal.message = f"Marvin Head Pitch {angle} degrees"
+        self._servo_controller.move(HEAD_PITCH, self._transform_angle(HEAD_PITCH, angle), time)
         sleep(0.1)
         self.head_pitch = angle  # TODO: This should be fetched from the servo dynamically!
         
@@ -165,19 +176,24 @@ class MarvinMotion(HALComponent):
     def action_head_center(self, hal):
         print(f"Received marvin head motion command")
         hal.message = f"Marvin Head Center"
-        self._servo_controller.move_prepare(HEAD_PITCH, 500, 1000)
+        self._servo_controller.move(HEAD_PITCH, self.servo_calib[HEAD_PITCH].origin, 1000)
         sleep(0.1)
-        self._servo_controller.move_prepare(HEAD_YAW, 500, 1000)
+        self._servo_controller.move(HEAD_YAW, self.servo_calib[HEAD_YAW].origin, 1000)
         sleep(0.1)
-        self._servo_controller.move_start(HEAD_PITCH)
-        sleep(0.1)
-        self._servo_controller.move_start(HEAD_YAW)
-        sleep(0.1)
-        self.head_yaw = 500  # TODO: This should be fetched from the servo dynamically!
-        self.head_pitch = 500  # TODO: This should be fetched from the servo dynamically!
+        self.head_yaw = 0
+        self.head_pitch = 0
 
     def _update_motors(self):
         print(json.dumps(self._motion_packet))
+
+    def _transform_angle(self, servo_no, angle):
+        """ Convert the given servo position in degrees into servo units. """
+
+        angle = self.servo_calib[servo_no].limit_low if angle < self.servo_calib[servo_no].limit_low else angle
+        angle = self.servo_calib[servo_no].limit_high if angle > self.servo_calib[servo_no].limit_high else angle
+        angle = self.head_pitch_limits[1] if angle > self.head_pitch_limits[1] else angle
+        servo_pos = self.servo_calib[servo_no].origin + (self.servo_calib[servo_no].scale * angle)
+        return servo_pos
 
 
 class MarvinHAL(HAL):

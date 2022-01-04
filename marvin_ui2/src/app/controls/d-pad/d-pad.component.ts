@@ -19,12 +19,12 @@ export class DPadComponent implements OnInit {
 
   action_move_left(){
     console.log("D-Pad Action turn left triggered");
-    this.farpi_service.send_command("motion.action_turn", {"angle":-20, "speed":20});
+    this.farpi_service.send_command("motion.action_turn", {"angle":-10, "speed":10});
   }
 
   action_move_right(){
     console.log("D-Pad Action turn right triggered");
-    this.farpi_service.send_command("motion.action_turn", {"angle":20, "speed":20});
+    this.farpi_service.send_command("motion.action_turn", {"angle":10, "speed":10});
   }
 
   action_move_cancel(){
