@@ -89,10 +89,10 @@ class MarvinMotion(HALComponent):
         # Limits are in degrees, not servo units. Origin is the offset corresponding to
         # zero degrees. Making the scale value negative should reverse the movement
         self.servo_calib = [None,
-                            ServoCalib(scale=3.7, origin=500, limit_low=-135.0, limit_high=135.0),
-                            ServoCalib(scale=3.7, origin=500, limit_low=-135.0, limit_high=135.0),
-                            ServoCalib(scale=3.7, origin=500, limit_low=-135.0, limit_high=135.0),
-                            ServoCalib(scale=3.7, origin=500, limit_low=-135.0, limit_high=135.0),
+                            ServoCalib(scale=5.952, origin=500, limit_low=-84.0, limit_high=84.0),
+                            ServoCalib(scale=5.952, origin=500, limit_low=-84.0, limit_high=84.0),
+                            ServoCalib(scale=5.952, origin=500, limit_low=-84.0, limit_high=84.0),
+                            ServoCalib(scale=5.952, origin=500, limit_low=-84.0, limit_high=84.0),
                             ServoCalib(scale=3.7, origin=500, limit_low=-135.0, limit_high=135.0),  # Yaw
                             ServoCalib(scale=3.7, origin=500, limit_low=-41.0, limit_high=41.0)]  # Pitch
 
