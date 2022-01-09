@@ -19,49 +19,54 @@ pipeline_wrapper = rs.pipeline_wrapper(pipeline)
 pipeline_profile = config.resolve(pipeline_wrapper)
 
 
-def draw_overlay(frame, overlay_text):
+def draw_overlay(frame, colour, overlay_text, origin=None):
     # Frames are ndarray objects, [y, x, blue, green, red]
     font = cv2.FONT_HERSHEY_PLAIN
-    fontscale = 1.2
-    color = (0, 255, 0)
+    font_scale = 1.2
     thickness = 1
     line_height = 15
 
     height = len(frame)
 
     lines = overlay_text.split("\n")
-    orig = height - len(lines)*line_height
+    if origin is None:
+        origin = (10, height - len(lines)*line_height)
+
     for line in lines:
-        frame = cv2.putText(frame, line, (10, orig), font, fontscale, color, thickness, cv2.LINE_AA)
+        frame = cv2.putText(frame, line, origin, font, font_scale, colour, thickness, cv2.LINE_AA)
         orig = orig + line_height
     return frame
 
 
-def draw_crosshair(frame):
+def draw_crosshair(frame, colour, box=0):
     width = len(frame)
     height = len(frame[0])
 
     width_cen = int(width/2)
     height_cen = int(height/2)
+    half_box = box/2
 
     # Main crosshair lines
-    cv2.line(frame, (height_cen, 0), (height_cen, width), (0, 255, 0), 1)
-    cv2.line(frame, (0, width_cen), (height, width_cen), (0, 255, 0), 1)
+    cv2.line(frame, (height_cen, 0), (height_cen, width_cen - half_box), colour, 1)
+    cv2.line(frame, (height_cen, width_cen + half_box), (height_cen, width), colour, 1)
+
+    cv2.line(frame, (0, width_cen), (height_cen - half_box, width_cen), colour, 1)
+    cv2.line(frame, (height_cen + half_box, width_cen), (height, width_cen), colour, 1)
 
     minor_tick = 5
     major_tick = 10
 
     # Minor ticks
     for i in range(20, height, 40):
-        cv2.line(frame, (i, width_cen-minor_tick), (i, width_cen+minor_tick), (0, 255, 0), 1)
+        cv2.line(frame, (i, width_cen-minor_tick), (i, width_cen+minor_tick), colour, 1)
     for i in range(20, width, 40):
-        cv2.line(frame, (height_cen-minor_tick, i), (height_cen+minor_tick, i), (0, 255, 0), 1)
+        cv2.line(frame, (height_cen-minor_tick, i), (height_cen+minor_tick, i), colour, 1)
 
     # Major ticks
     for i in range(40, height, 40):
-        cv2.line(frame, (i, width_cen-major_tick), (i, width_cen+major_tick), (0, 255, 0), 1)
+        cv2.line(frame, (i, width_cen-major_tick), (i, width_cen+major_tick), colour, 1)
     for i in range(40, width, 40):
-        cv2.line(frame, (height_cen-major_tick, i), (height_cen+major_tick, i), (0, 255, 0), 1)
+        cv2.line(frame, (height_cen-major_tick, i), (height_cen+major_tick, i), colour, 1)
     return frame
 
 
@@ -76,11 +81,12 @@ def gen_depth_frames():
         depth_image = np.asanyarray(depth_frame.get_data())
 
         # Apply colormap on depth image (image must be converted to 8-bit per pixel first)
-        depth_colormapped = cv2.applyColorMap(cv2.convertScaleAbs(depth_image), cv2.COLORMAP_JET)
+        depth_color_mapped = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.3), cv2.COLORMAP_JET)
 
-        depth_colormapped = draw_overlay(depth_colormapped, f"{frame_count}")
+        depth_color_mapped = draw_overlay(depth_color_mapped, (255, 255, 255), f"Frame No. {frame_count}")
+        depth_color_mapped = draw_crosshair(depth_color_mapped, (255, 255, 255), box=40)
 
-        ret, buffer = cv2.imencode('.jpg', depth_colormapped)
+        ret, buffer = cv2.imencode('.jpg', depth_color_mapped)
 
         frame = buffer.tobytes()
         yield (b'--frame\r\n'
@@ -96,8 +102,8 @@ def gen_colour_frames():
         colour_frame = frames.get_color_frame()
         # Convert images to numpy arrays
         colour_image = np.asanyarray(colour_frame.get_data())
-        colour_image = draw_overlay(colour_image, f"{frame_count}\nMarvin Video Feed")
-        colour_image = draw_crosshair(colour_image)
+        colour_image = draw_overlay(colour_image, (0, 255, 0), f"Frame No. {frame_count}")
+        colour_image = draw_crosshair(colour_image, (0, 255, 0))
 
         ret, buffer = cv2.imencode('.jpg', colour_image)
 
