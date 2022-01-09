@@ -34,7 +34,7 @@ def draw_overlay(frame, colour, overlay_text, origin=None):
 
     for line in lines:
         frame = cv2.putText(frame, line, origin, font, font_scale, colour, thickness, cv2.LINE_AA)
-        orig = orig + line_height
+        origin = origin + line_height
     return frame
 
 
@@ -121,7 +121,7 @@ def gen_ir_frames():
         ir_frame = frames.get_infrared_frame()
         # Convert images to numpy arrays
         ir_image = np.asanyarray(ir_frame.get_data())
-        ir_image = draw_overlay(ir_image, f"{frame_count}")
+        ir_image = draw_overlay(ir_image, (255, 255, 255), f"{frame_count}")
 
         ret, buffer = cv2.imencode('.jpg', ir_image)
 
@@ -141,24 +141,27 @@ def video_feed():
     # Use the co-routine to generate and send image frames
     return Response(gen_colour_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
 @app.route('/depth_feed')
 def depth_feed():
     # Use the co-routine to generate and send image frames
     return Response(gen_depth_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 @app.route('/ir_feed')
 def ir_feed():
     # Use the co-routine to generate and send image frames
     return Response(gen_ir_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
 if __name__ == "__main__":
     port = int(sys.argv[1])
     print(f"Port Number {port}")
 
     # Start streaming
-    config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
-    config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
-    config.enable_stream(rs.stream.infrared)#, 640, 480, rs.format.bgr8, 30)
+    config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 10)
+    config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 10)
+    config.enable_stream(rs.stream.infrared, 640, 480, rs.format.bgr8, 10)
     pipeline.start(config)
     
     app.run(host='0.0.0.0', port=port, debug=False)  # Note: Setting debug to true causes the video capture to fail
