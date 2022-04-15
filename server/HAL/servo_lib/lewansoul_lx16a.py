@@ -97,8 +97,11 @@ class ServoController(object):
         self._serial = serial
         self._timeout = timeout
         self._lock = threading.RLock()
+        self._command_buffer = []  # FIFO buffer of commands
 
     def _command(self, servo_id, command, *params):
+        self._command_buffer.append((servo_id, command, *params))
+        servo_id, command, params = self._command_buffer.pop(0)
         length = 3 + len(params)
         checksum = 255-((servo_id + length + command + sum(params)) % 256)
         LOGGER.debug('Sending servo control packet: %s', [
