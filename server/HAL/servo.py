@@ -5,6 +5,7 @@ import pigpio
 # TODO: Add a smooth-servo component that uses cubic hermite interpolation to smooth the movement. Ideally in a way
 # TODO: that keeps all servos movements synchronised.
 
+
 class Servo(HALComponent):
     """ Simple component for controlling a servo on any GPIO pin.
 

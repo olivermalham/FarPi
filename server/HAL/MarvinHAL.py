@@ -78,8 +78,8 @@ class MarvinMotion(HALComponent):
         # self._motion_fifo = open("/etc/marvin/motion", "w")
         # self._motion_fifo = open("/etc/marvin/motion_test", "w")
 
-        self._motion_packet = { "move": {"distance":0, "speed": 0.0},
-                                "turn": {"angle":0, "speed": 0.0}, 
+        self._motion_packet = { "move": {"distance": 0, "speed": 0.0},
+                                "turn": {"angle": 0, "speed": 0.0},
                                 "head": {"pitch": 0, "yaw": 0},
                                 "action": None
                                 }
