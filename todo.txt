@@ -1,0 +1,18 @@
+
+Next steps
+----------
+
+1. Add motor control
+2. UI controls for motion - set angle to turn, distance to move, click button to execute
+3. Integrate GPS control into HAL
+4. Create map component for UI
+5. Extend UI
+    5.1. Split into multiple tabs
+    5.2. Sidebar contains motion controls
+    5.3. Navigation tab - realsense colour feed, GPS map, "radar" depth image, compass
+    5.4. Imaging tab - all realsense feeds, interactive 3d image of point cloud
+    5.5. AI tab - image recognition, output of ML models, visual tracking of targets, speech recognition info
+    5.6. Console tab - text console (expand HAL with more console commands)
+6. Add support for Steam Deck
+    6.1. Optimise for full-screen display at 1280 x 800
+    6.2. Support thumb-sticks for entering motion commands, button shortcuts for primary controls
