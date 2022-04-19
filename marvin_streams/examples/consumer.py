@@ -1,6 +1,6 @@
 import cv2
 from flask import Flask, render_template, Response
-from marvin_array_feed import MarvinArrayFeed
+from ..marvin_array_feed import MarvinArrayFeed
 
 # Initialize the Flask app
 app = Flask(__name__)

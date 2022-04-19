@@ -1,6 +1,6 @@
 import cv2
-from flask import Flask, render_template, Response
-from marvin_array_feed import MarvinArrayFeed
+from flask import Flask, Response
+from ..marvin_array_feed import MarvinArrayFeed
 import sys
 
 # Initialize the Flask app
@@ -23,26 +23,24 @@ def fetch_frame():
 @app.route('/')
 def index():
     # Default route just to provide a simple test page
-    page = """<!DOCTYPE html>
+    page = f"""<!DOCTYPE html>
                 <html lang="en">
                 <head>
                 <meta charset="UTF-8">
                 <title>Marvin Video Stream</title>
                 </head>
                 <body>
-                
-                <div class="container">
-                <div class="row">
-                <div class="col-lg-8  offset-lg-2">
-                <img src="{{ url_for('video_feed') }}">
-                </div>
-                </div>
-                </div>
-                
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8  offset-lg-2">
+                                Marvin video stream {feed_name}
+                            </div>
+                        </div>
+                    </div>
                 </body>
                 </html>"""
 
-    return render_template(page)
+    return page
 
 
 @app.route(f'/{feed_name}')
@@ -52,6 +50,7 @@ def video_feed():
 
 
 if __name__ == "__main__":
+    print(sys.argv)
     if len(sys.argv) != 3:
         print("Marvin Image Feed Server")
         print("Usage:")

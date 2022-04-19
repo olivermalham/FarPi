@@ -2,7 +2,7 @@
 from time import sleep
 import numpy as np
 import cv2
-from marvin_array_feed import MarvinArrayFeed
+from ..marvin_array_feed import MarvinArrayFeed
 
 # TODO: Generate a test frame, send to a redis queue. Consumer pulls the data and pushes it out as a JPG frame
 
