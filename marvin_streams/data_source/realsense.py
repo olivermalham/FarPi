@@ -1,16 +1,15 @@
-import sys
+import argparse
 import pyrealsense2 as realsense
 import numpy as np
 import cv2
+from marvin_streams.marvin_feed import MarvinFeed
+from marvin_streams.video_tools import VideoCrosshair, VideoText
 
-from ..video_tools import VideoCrosshair, VideoText
 
-
-class RealSenseVideoStream(VideoCrosshair, VideoText):
+class RealSenseVideoStream(VideoCrosshair, VideoText, MarvinFeed):
 
     def __init__(self, width=640, height=480, fps=30):
-        # super.__init__(RealSenseVideoStream)
-
+        super().__init__()
         self.width = width
         self.height = height
         self.fps = fps
@@ -119,6 +118,20 @@ class RealSenseVideoStream(VideoCrosshair, VideoText):
 
 
 if __name__ == "__main__":
-    port = int(sys.argv[1])
-    print(f"Port Number {port}")
 
+    arg_parser = argparse.ArgumentParser(description="Realsense RGB Video Marvin feed")
+    arg_parser.add_argument('--feed', dest='feed_name', action='store_const',
+                            default='default_feed', help='Name of the feed to push data to')
+    arg_parser.add_argument('--host', dest='host', action='store_const',
+                            const=sum, default='127.0.0.1', help='Host name of Redis server')
+    arg_parser.add_argument('--port', dest='port', action='store_const',
+                            const=sum, default='6379', help='Name of the feed to push data to')
+
+    arg_parser.parse_args()
+    quit()
+    with RealSenseVideoStream() as streamer:
+        # print(f"Connection established, beginning stream to {redis_queue_name}")
+        for data_frame in streamer.next_colour_frame():
+            streamer.push_array(data_frame)
+            #sleep(1)
+        print("Stream terminated")
