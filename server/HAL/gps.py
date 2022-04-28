@@ -27,11 +27,11 @@ class GPSPacket:
     mode = None
 
     @staticmethod
-    def new(data):
-        data = data.strip()
-        if data is None or data == b'':
+    def new(gps_data):
+        gps_data = gps_data.strip()
+        if gps_data is None or gps_data == b'':
             return None
-        sentence_parts = data.split(b",")
+        sentence_parts = gps_data.split(b",")
         data_checksum = sentence_parts[-1].split(b"*")
         sentence_parts[-1] = data_checksum[0]
         sentence_parts.append(data_checksum[1])
@@ -41,29 +41,30 @@ class GPSPacket:
             return None
 
         if sentence_type == b"GPGGA":
-            return GPSPacket.GPGGA(sentence_parts[1:])
+            return GPSPacket.gpgga(sentence_parts[1:])
 
         if sentence_type == b"GPGLL":
-            return GPSPacket.GPGLL(sentence_parts[1:])
+            return GPSPacket.gpgll(sentence_parts[1:])
 
         if sentence_type == b"GPVTG":
-            return GPSPacket.GPVTG(sentence_parts[1:])
+            return GPSPacket.gpvtg(sentence_parts[1:])
 
         if sentence_type == b"GPRMC":
-            return GPSPacket.GPRMC(sentence_parts[1:])
+            return GPSPacket.gprmc(sentence_parts[1:])
 
-        if sentence_type == b"GPGSA":
-            return GPSPacket.GPGSA(sentence_parts[1:])
+        if sentence_type == b"gpgsa":
+            return GPSPacket.gpgsa(sentence_parts[1:])
 
-        # TODO: Disabling for now, not sure how much I care about "satellites in view" data
+        # Disabling for now, not sure how much I care about "satellites in view" data
         # if sentence_type == b"GPGSV":
         #     return GPSPacket.GPGSV(sentence_parts[1:])
 
-        if sentence_type == b"GPTXT":
-            return GPSPacket.GPTXT(sentence_parts[1:])
+        # Informational only I think, not really interested
+        # if sentence_type == b"gptxt":
+        #     return GPSPacket.GPTXT(sentence_parts[1:])
 
     @staticmethod
-    def GPGGA(params):
+    def gpgga(params):
         """
         Global positioning system fix data (time, position, fix type data)
         :param params:
@@ -94,7 +95,7 @@ class GPSPacket:
         return new_packet
 
     @staticmethod
-    def GPGLL(params):
+    def gpgll(params):
         """
         Geographic position, latitude, longitude
         :param params:
@@ -118,7 +119,7 @@ class GPSPacket:
         return new_packet
 
     @staticmethod
-    def GPVTG(params):
+    def gpvtg(params):
         """
         Course and speed information relative to the ground
         :param params:
@@ -144,7 +145,7 @@ class GPSPacket:
         return new_packet
 
     @staticmethod
-    def GPRMC(params):
+    def gprmc(params):
         """
         Time, date, position, course, and speed data
         :param params:
@@ -172,7 +173,7 @@ class GPSPacket:
         return new_packet
 
     @staticmethod
-    def GPGSA(params):
+    def gpgsa(params):
         """
         GPS receiver operating mode, satellites used in the position solution, and DOP values.
         :param params:
@@ -194,7 +195,7 @@ class GPSPacket:
         return new_packet
 
     @staticmethod
-    def GPGSV(params):
+    def gpgsv(params):
         """
         The number of GPS satellites in view, satellite ID numbers, elevation, azimuth, and SNR values.
         :param params:
@@ -221,15 +222,15 @@ class GPSPacket:
         new_packet.packet_type = "GPGSV"
 
         return new_packet
-
-    @staticmethod
-    def GPTXT(params):
-        """
-        Informational text?
-        :param params:
-        :return:
-        """
-        return None  # For now ignore
+    #
+    # @staticmethod
+    # def gptxt(params):
+    #     """
+    #     Informational text?
+    #     :param params:
+    #     :return:
+    #     """
+    #     return None  # For now ignore
     
     def __repr__(self):
         result = ""
@@ -268,4 +269,3 @@ if __name__ == "__main__":
         packet = GPSPacket.new(data)
         if packet is not None and packet.packet_type == "GPGGA":
             print(f"Packet processed: {packet}")
-
