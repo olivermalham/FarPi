@@ -1,6 +1,6 @@
 from collections import namedtuple
 import serial
-from time import sleep
+# from time import sleep
 from .hal import *
 from .virtual import *
 from .servo_lib.lewansoul_lx16a import ServoController
@@ -102,40 +102,56 @@ class MarvinMotion(HALComponent):
         )
 
         self.head_pitch = self._to_degrees(HEAD_PITCH, self._servo_controller.get_position(HEAD_PITCH))
-        sleep(0.1)
         self.head_yaw = self._to_degrees(HEAD_YAW, self._servo_controller.get_position(HEAD_YAW))
-        sleep(0.1)
         self.wheel1_angle = self._servo_controller.get_position(WHEEL_1)
-        sleep(0.1)
         self.wheel2_angle = self._servo_controller.get_position(WHEEL_2)
-        sleep(0.1)
         self.wheel5_angle = self._servo_controller.get_position(WHEEL_5)
-        sleep(0.1)
         self.wheel6_angle = self._servo_controller.get_position(WHEEL_6)
-        sleep(0.1)
-    
+
     def refresh(self, hal):
         """ Use this to return the status of the current servo positions and motors
         """
         # TODO: These sleep intervals need to be fixed, this gets called frequently, risk of collision!
         self.head_pitch = self._to_degrees(HEAD_PITCH, self._servo_controller.get_position(HEAD_PITCH))
-        sleep(0.1)
         self.head_yaw = self._to_degrees(HEAD_YAW, self._servo_controller.get_position(HEAD_YAW))
-        sleep(0.1)
 
     def action_move(self, hal, **kwargs):
         print(f"Received marvin motion command")
         hal.message = f"Marvin Motion - {kwargs}"
-        self._motion_packet["move"]["distance"] = int(kwargs["distance"])
-        self._motion_packet["move"]["speed"] = int(kwargs["speed"])
-        self._update_motors()
+
+        vel = int(kwargs["speed"])
+        dist = int(kwargs["distance"])
+
+        command = f"MOVE:"
+        command = command + f"M1,D{dist},V{vel};"
+        command = command + f"M2,D{dist},V{vel};"
+        command = command + f"M3,D{dist},V{vel};"
+        command = command + f"M4,D{dist},V{vel};"
+        command = command + f"M5,D{dist},V{vel};"
+        command = command + f"M6,D{dist},V{vel};"
+
+        self._update_motors(command)
     
     def action_turn(self, hal, **kwargs):
         print(f"Received marvin motion command")
         hal.message = f"Marvin Motion - {kwargs}"
-        self._motion_packet["turn"]["angle"] = int(kwargs["angle"])
-        self._motion_packet["turn"]["speed"] = int(kwargs["speed"])
-        self._update_motors()
+
+        angle = int(kwargs["angle"])
+        speed = int(kwargs["speed"])
+        d_outer = 0  # TODO: Calc!
+        v_outer = 255
+        d_inner = 0  # TODO: Calc!
+        v_inner = 128  # TODO: Calc!
+
+        command = f"MOVE:"
+        command = command + f"M1,D{d_outer},V{v_outer};"
+        command = command + f"M2,D{d_outer},V{v_outer};"
+        command = command + f"M3,D{d_inner},V{v_inner};"
+        command = command + f"M4,D{d_inner},V{v_inner};"
+        command = command + f"M5,D{d_outer},V{v_outer};"
+        command = command + f"M6,D{d_outer},V{v_outer};"
+
+        self._update_motors(command)
 
     def action_head_yaw(self, hal, **kwargs):
         print(f"Received marvin head yaw command")
@@ -148,9 +164,7 @@ class MarvinMotion(HALComponent):
 
         hal.message = f"Marvin Head Yaw {angle} degrees"
         self._servo_controller.move(HEAD_YAW, self._to_servo(HEAD_YAW, angle), time)
-        sleep(0.1)
         self.head_yaw = self._to_degrees(HEAD_YAW, self._servo_controller.get_position(HEAD_YAW))
-        sleep(0.1)
 
     def action_head_pitch(self, hal, **kwargs):
         print(f"Received marvin head pitch command")
@@ -163,28 +177,33 @@ class MarvinMotion(HALComponent):
 
         hal.message = f"Marvin Head Pitch {angle} degrees"
         self._servo_controller.move(HEAD_PITCH, self._to_servo(HEAD_PITCH, angle), time)
-        sleep(0.1)
         self.head_pitch = self._to_degrees(HEAD_PITCH, self._servo_controller.get_position(HEAD_PITCH))
-        sleep(0.1)
-        
+
     def action_stop(self, hal, **kwargs):
         print(f"Received marvin hard stop command")
         hal.message = f"Marvin hard stop!"
-        self._motion_packet["action"] = "hard_stop"
-        self._update_motors()
+        self._update_motors("HARDSTOP;")
     
     def action_head_center(self, hal):
         print(f"Received marvin head motion command")
         hal.message = f"Marvin Head Center"
         self._servo_controller.move(HEAD_PITCH, self.servo_calib[HEAD_PITCH].origin, 1000)
-        sleep(0.1)
         self._servo_controller.move(HEAD_YAW, self.servo_calib[HEAD_YAW].origin, 1000)
-        sleep(0.1)
         self.head_yaw = 0
         self.head_pitch = 0
 
-    def _update_motors(self):
-        print(json.dumps(self._motion_packet))
+    def _update_motors(self, command):
+        """ Send motor control commands to the controller on the serial port
+
+            MOVE Command
+            Format:
+            MOVE:D<motor 1 distance>,V<motor 1 velocity>....D<motor 6 distance>,V<motor 6 velocity>;
+            e.g.
+            MOVE:D0.0,V0.0,D1.0,V1.0,D2.0,V2.0,D3.0,V3.0,D4.0,V4.0,D5.0,V5.0
+        """
+
+        # TODO: send to the controller via serial port
+        print(command)
 
     def _to_servo(self, servo_no, angle):
         """ Convert the given servo position in degrees into servo units. """
@@ -197,7 +216,6 @@ class MarvinMotion(HALComponent):
     def _to_degrees(self, servo_no, position):
         """ Convert the given servo position in degrees into servo units. """
         angle = (position - self.servo_calib[servo_no].origin) / self.servo_calib[servo_no].scale
-#        print(f"_to_degrees({servo_no}, {position}) = {angle}")
         return angle
 
 
