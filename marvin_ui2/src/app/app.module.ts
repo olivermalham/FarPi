@@ -28,6 +28,10 @@ import { SwitchToggleComponent } from './controls/switch-toggle/switch-toggle.co
 import { CameraComponent } from './controls/camera/camera.component';
 import { DPadComponent } from './controls/d-pad/d-pad.component';
 
+import { Component } from '@angular/core';
+import { GaugeModule } from 'angular-gauge';
+import { DialComponent } from './controls/dial/dial.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +43,8 @@ import { DPadComponent } from './controls/d-pad/d-pad.component';
     SwitchMomentaryComponent,
     SwitchToggleComponent,
     CameraComponent,
-    DPadComponent
+    DPadComponent,
+    DialComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +59,8 @@ import { DPadComponent } from './controls/d-pad/d-pad.component';
     MatProgressSpinnerModule,
     MatProgressBarModule,
     MatChipsModule,
-    MatInputModule
+    MatInputModule,
+    GaugeModule.forRoot()
   ],
   providers: [
     FarPiHostService,
@@ -62,4 +68,3 @@ import { DPadComponent } from './controls/d-pad/d-pad.component';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
