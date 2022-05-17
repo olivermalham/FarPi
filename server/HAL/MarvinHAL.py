@@ -111,7 +111,6 @@ class MarvinMotion(HALComponent):
     def refresh(self, hal):
         """ Use this to return the status of the current servo positions and motors
         """
-        # TODO: These sleep intervals need to be fixed, this gets called frequently, risk of collision!
         self.head_pitch = self._to_degrees(HEAD_PITCH, self._servo_controller.get_position(HEAD_PITCH))
         self.head_yaw = self._to_degrees(HEAD_YAW, self._servo_controller.get_position(HEAD_YAW))
 

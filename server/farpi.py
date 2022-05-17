@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import sys
 import importlib
 import logging
@@ -106,8 +108,9 @@ class FarPiStateHandler(tornado.websocket.WebSocketHandler):
 
 if __name__ == "__main__":
     # TODO: Need to implement proper logging
-    print("FarPi Server v0.1")
-    print("-----------------")
+    print("-------------------")
+    print(" FarPi Server v0.1")
+    print("-------------------")
     time = datetime.datetime.now()
     print("Starting at",time.isoformat())
 
@@ -117,7 +120,8 @@ if __name__ == "__main__":
 
     # The name of the application package is passed on the command line.
     # This gets imported and must define various attributes (see base_app.py)
-    app_name = sys.argv[1]
+    app_name = sys.argv[1].split(".")[0] if "." in sys.argv[1] else sys.argv[1]
+
     print("Loading Application {}".format(app_name))
     try:
         application = importlib.import_module(app_name)

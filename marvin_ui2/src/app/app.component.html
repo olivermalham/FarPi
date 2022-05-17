@@ -1,32 +1,40 @@
 <marvin-toolbar></marvin-toolbar>
 
-<div class="container-fluid">
+<mat-tab-group mat-align-tabs="end">
+  <mat-tab label="First">
 
-  <div class="row">
-    <div class="col-sm">
-<!--      <camera label="Navigation Camera" url="http://{{vision_server}}/video_feed"></camera>-->
-      <dial></dial>
-    </div>
-    <div class="col-sm">
-      <camera label="Depth Camera" url="http://{{vision_server}}/depth_feed"></camera>
-    </div>
-    <div class="col-sm">
-      <camera label="IR Camera" url="http://{{vision_server}}/ir_feed"></camera>
-    </div>
-  </div>
+    <div class="container-fluid">
 
-  <div class="row">
-    <div class="col-sm">
-      <d-pad></d-pad>
-    </div>
-    <div class="col-sm">
-        <control-panel></control-panel>
-    </div>
-  </div>
+      <div class="row">
+        <div class="col-sm">
+    <!--      <camera label="Navigation Camera" url="http://{{vision_server}}/video_feed"></camera>-->
+          <dial></dial>
+        </div>
+        <div class="col-sm">
+          <camera label="Depth Camera" url="http://{{vision_server}}/depth_feed"></camera>
+        </div>
+        <div class="col-sm">
+          <camera label="IR Camera" url="http://{{vision_server}}/ir_feed"></camera>
+        </div>
+      </div>
 
-  <div class="row">
-    <div class="col-sm">
-      <console></console>
+      <div class="row">
+        <div class="col-sm">
+          <d-pad></d-pad>
+        </div>
+        <div class="col-sm">
+            <control-panel></control-panel>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm">
+          <console></console>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+  </mat-tab>
+  <mat-tab label="Second">Content 2</mat-tab>
+  <mat-tab label="Third">Content 3</mat-tab>
+
+</mat-tab-group>
