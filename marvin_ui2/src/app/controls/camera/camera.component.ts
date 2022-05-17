@@ -7,11 +7,14 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class CameraComponent implements OnInit {
 
+  // Note: Marvin uses iptables to forward traffic for port 5000 to the Nano
+  vision_server = "http://192.168.0.142:5000";
+
   @Input()
   public label: string;
 
   @Input()
-  public url: string;
+  public feed: string;
 
   constructor() { }
 
