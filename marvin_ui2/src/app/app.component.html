@@ -1,31 +1,23 @@
-<marvin-toolbar></marvin-toolbar>
+<!--<marvin-toolbar></marvin-toolbar>-->
 
-<div class="container-fluid">
+<mat-tab-group backgroundColor="primary">
+  <mat-tab label="Marvin Control Center">
 
-  <div class="row">
-    <div class="col-sm">
-      <camera label="Navigation Camera" url="http://{{vision_server}}/video_feed"></camera>
-    </div>
-    <div class="col-sm">
-      <camera label="Depth Camera" url="http://{{vision_server}}/depth_feed"></camera>
-    </div>
-    <div class="col-sm">
-      <camera label="IR Camera" url="http://{{vision_server}}/ir_feed"></camera>
-    </div>
-  </div>
+    <div class="container-fluid">
 
-  <div class="row">
-    <div class="col-sm">
-      <d-pad></d-pad>
+      <div class="row">
+        <div class="col-sm">
+          <camera label="Navigation Camera" feed="video"></camera>
+        </div>
+        <div class="col-sm">
+          <d-pad></d-pad>
+        </div>
+      </div>
     </div>
-    <div class="col-sm">
-        <control-panel></control-panel>
-    </div>
-  </div>
+  </mat-tab>
 
-  <div class="row">
-    <div class="col-sm">
-      <console></console>
-    </div>
-  </div>
-</div>
+  <mat-tab label="Imaging"><imaging-view></imaging-view></mat-tab>
+  <mat-tab label="Navigation"><navigation-view></navigation-view></mat-tab>
+  <mat-tab label="Controls"><controls-view></controls-view></mat-tab>
+  <mat-tab label="Console"><console-view></console-view></mat-tab>
+</mat-tab-group>

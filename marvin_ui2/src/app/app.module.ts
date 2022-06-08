@@ -11,6 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +29,14 @@ import { SwitchToggleComponent } from './controls/switch-toggle/switch-toggle.co
 import { CameraComponent } from './controls/camera/camera.component';
 import { DPadComponent } from './controls/d-pad/d-pad.component';
 
+import { Component } from '@angular/core';
+import { GaugeModule } from 'angular-gauge';
+import { DialComponent } from './controls/dial/dial.component';
+import { ConsoleViewComponent } from './views/console-view/console-view.component';
+import { NavigationViewComponent } from './views/navigation-view/navigation-view.component';
+import { ControlsViewComponent } from './views/controls-view/controls-view.component';
+import { ImagingViewComponent } from './views/imaging-view/imaging-view.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +48,12 @@ import { DPadComponent } from './controls/d-pad/d-pad.component';
     SwitchMomentaryComponent,
     SwitchToggleComponent,
     CameraComponent,
-    DPadComponent
+    DPadComponent,
+    DialComponent,
+    ConsoleViewComponent,
+    NavigationViewComponent,
+    ControlsViewComponent,
+    ImagingViewComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +68,9 @@ import { DPadComponent } from './controls/d-pad/d-pad.component';
     MatProgressSpinnerModule,
     MatProgressBarModule,
     MatChipsModule,
-    MatInputModule
+    MatInputModule,
+    MatTabsModule,
+    GaugeModule.forRoot()
   ],
   providers: [
     FarPiHostService,
@@ -62,4 +78,3 @@ import { DPadComponent } from './controls/d-pad/d-pad.component';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-

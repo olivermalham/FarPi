@@ -13,7 +13,8 @@ export class FarPiHostService {
 
   public readonly state: Observable<State> = this._state.asObservable();
 
-  socket = webSocket('ws://192.168.0.142:8888/farpi');
+  // socket = webSocket('ws://192.168.0.142:8888/farpi');
+  socket = webSocket('ws://localhost:8888/farpi');
 
   constructor() {
     this.socket.subscribe(
