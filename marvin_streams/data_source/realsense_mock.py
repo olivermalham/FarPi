@@ -24,7 +24,7 @@ def draw_overlay(frame, overlay_text, frames):
     height = len(frame)
 
     lines = overlay_text.split("\n")
-    orig = (height) - len(lines)*line_height
+    orig = height - len(lines) * line_height
     for line in lines:
         frame = cv2.putText(frame, line, (10, orig), font, fontScale, color, thickness, cv2.LINE_AA)
         orig = orig + line_height
@@ -38,7 +38,7 @@ def draw_crosshair(frame):
     width_cen = int(width/2)
     height_cen = int(height/2)
 
-    # Main cross hair lines
+    # Main cross-hair lines
     cv2.line(frame, (height_cen, 0), (height_cen, width), (0, 255, 0), 1)
     cv2.line(frame, (0, width_cen), (height, width_cen), (0, 255, 0), 1)
 
@@ -126,7 +126,7 @@ def ir_feed():
 
 
 if __name__ == "__main__":
-    port = int(sys.argv[1])
+    port = 9876 #  int(sys.argv[1])
     print(f"Port Number {port}")
 
     # Start streaming

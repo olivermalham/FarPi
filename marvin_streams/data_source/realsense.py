@@ -1,5 +1,5 @@
 import argparse
-import pyrealsense2 as realsense
+import pyrealsense2.pyrealsense2 as realsense
 import numpy as np
 import cv2
 from marvin_streams.marvin_feed import MarvinFeed
