@@ -126,7 +126,7 @@ def ir_feed():
 
 
 if __name__ == "__main__":
-    port = 9876 #  int(sys.argv[1])
+    port = 9876  # int(sys.argv[1])
     print(f"Port Number {port}")
 
     # Start streaming

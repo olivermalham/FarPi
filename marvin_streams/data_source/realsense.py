@@ -15,7 +15,7 @@ class RealSenseVideoStream(VideoCrosshair, VideoText, MarvinFeed):
         self.fps = fps
 
         # Configure depth and color streams
-        self.pipeline = realsense.pipeline()
+        self.pipeline = realsense.pipeline()  # FIXME!
         self.config = realsense.config()
 
         # Get device product line for setting a supporting resolution
