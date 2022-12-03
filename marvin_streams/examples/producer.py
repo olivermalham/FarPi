@@ -49,6 +49,6 @@ if __name__ == "__main__":
         print(f"Connection established, beginning stream to {redis_queue_name}")
         for data_frame in gen_image():
             marvin_client.push_array(data_frame)
-            #sleep(1)
+            sleep(1)
     print("Stream terminated")
 

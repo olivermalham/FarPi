@@ -1,5 +1,7 @@
 # Import necessary libraries
 import sys
+import time
+
 import pyrealsense2.pyrealsense2 as rs
 import numpy as np
 from flask import Flask, render_template, Response
@@ -22,52 +24,52 @@ pipeline_profile = config.resolve(pipeline_wrapper)
 
 def draw_overlay(frame, colour, overlay_text, origin=None):
     # Frames are ndarray objects, [y, x, blue, green, red]
-    # font = cv2.FONT_HERSHEY_PLAIN
-    # font_scale = 1.2
-    # thickness = 1
-    # line_height = 15
-    #
-    # height = len(frame)
-    #
-    # lines = overlay_text.split("\n")
-    # if origin is None:
-    #     origin = (10, height - len(lines) * line_height)
-    #
-    # for line in lines:
-    #     frame = cv2.putText(frame, line, origin, font, font_scale, colour, thickness, cv2.LINE_AA)
-    #     origin = origin + line_height
+    font = cv2.FONT_HERSHEY_PLAIN
+    font_scale = 1.2
+    thickness = 1
+    line_height = 15
+
+    height = len(frame)
+
+    lines = overlay_text.split("\n")
+    if origin is None:
+        origin = (10, height - len(lines) * line_height)
+
+    for line in lines:
+        frame = cv2.putText(frame, line, origin, font, font_scale, colour, thickness, cv2.LINE_AA)
+        origin = (10, origin[1] + line_height)
     return frame
 
 
 def draw_crosshair(frame, colour, box=0):
-    # width = len(frame)
-    # height = len(frame[0])
-    #
-    # width_cen = int(width / 2)
-    # height_cen = int(height / 2)
-    # half_box = box / 2
-    #
-    # # Main crosshair lines
-    # cv2.line(frame, (height_cen, 0), (height_cen, width_cen - half_box), colour, 1)
-    # cv2.line(frame, (height_cen, width_cen + half_box), (height_cen, width), colour, 1)
-    #
-    # cv2.line(frame, (0, width_cen), (height_cen - half_box, width_cen), colour, 1)
-    # cv2.line(frame, (height_cen + half_box, width_cen), (height, width_cen), colour, 1)
-    #
-    # minor_tick = 5
-    # major_tick = 10
-    #
-    # # Minor ticks
-    # for i in range(20, height, 40):
-    #     cv2.line(frame, (i, width_cen - minor_tick), (i, width_cen + minor_tick), colour, 1)
-    # for i in range(20, width, 40):
-    #     cv2.line(frame, (height_cen - minor_tick, i), (height_cen + minor_tick, i), colour, 1)
-    #
-    # # Major ticks
-    # for i in range(40, height, 40):
-    #     cv2.line(frame, (i, width_cen - major_tick), (i, width_cen + major_tick), colour, 1)
-    # for i in range(40, width, 40):
-    #     cv2.line(frame, (height_cen - major_tick, i), (height_cen + major_tick, i), colour, 1)
+    width = len(frame)
+    height = len(frame[0])
+
+    width_cen = int(width / 2)
+    height_cen = int(height / 2)
+    half_box = int(box / 2)
+
+    # Main crosshair lines
+    cv2.line(frame, (height_cen, 0), (height_cen, width_cen - half_box), colour, 1)
+    cv2.line(frame, (height_cen, width_cen + half_box), (height_cen, width), colour, 1)
+
+    cv2.line(frame, (0, width_cen), (height_cen - half_box, width_cen), colour, 1)
+    cv2.line(frame, (height_cen + half_box, width_cen), (height, width_cen), colour, 1)
+
+    minor_tick = 5
+    major_tick = 10
+
+    # Minor ticks
+    for i in range(20, height, 40):
+        cv2.line(frame, (i, width_cen - minor_tick), (i, width_cen + minor_tick), colour, 1)
+    for i in range(20, width, 40):
+        cv2.line(frame, (height_cen - minor_tick, i), (height_cen + minor_tick, i), colour, 1)
+
+    # Major ticks
+    for i in range(40, height, 40):
+        cv2.line(frame, (i, width_cen - major_tick), (i, width_cen + major_tick), colour, 1)
+    for i in range(40, width, 40):
+        cv2.line(frame, (height_cen - major_tick, i), (height_cen + major_tick, i), colour, 1)
     return frame
 
 
@@ -95,15 +97,19 @@ def gen_depth_frames():
 
 
 def gen_colour_frames():
-    frame_count = 0
+    frame_count = 1
+    start_time = time.time()
+
     while True:
         frame_count = frame_count + 1
         # Wait for a coherent pair of frames: depth and color
         frames = pipeline.wait_for_frames()
         colour_frame = frames.get_color_frame()
+
+        fps = round((frame_count / (time.time() - start_time)))
         # Convert images to numpy arrays
         colour_image = np.asanyarray(colour_frame.get_data())
-        colour_image = draw_overlay(colour_image, (0, 255, 0), f"Frame No. {frame_count}")
+        colour_image = draw_overlay(colour_image, (0, 255, 0), f"Frame No. {frame_count}\nFPS: {fps}")
         colour_image = draw_crosshair(colour_image, (0, 255, 0))
 
         ret, buffer = cv2.imencode('.jpg', colour_image)
