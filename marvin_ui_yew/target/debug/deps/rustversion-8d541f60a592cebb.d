@@ -1,0 +1,20 @@
+/home/om/Projects/FarPi/marvin_ui_yew/target/debug/deps/librustversion-8d541f60a592cebb.so: /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/lib.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/attr.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/bound.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/constfn.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/date.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/error.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/expand.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/expr.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/iter.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/release.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/time.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/token.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/version.rs /home/om/Projects/FarPi/marvin_ui_yew/target/debug/build/rustversion-cff2b8ff0fed8e86/out/version.expr
+
+/home/om/Projects/FarPi/marvin_ui_yew/target/debug/deps/rustversion-8d541f60a592cebb.d: /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/lib.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/attr.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/bound.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/constfn.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/date.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/error.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/expand.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/expr.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/iter.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/release.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/time.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/token.rs /home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/version.rs /home/om/Projects/FarPi/marvin_ui_yew/target/debug/build/rustversion-cff2b8ff0fed8e86/out/version.expr
+
+/home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/lib.rs:
+/home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/attr.rs:
+/home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/bound.rs:
+/home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/constfn.rs:
+/home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/date.rs:
+/home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/error.rs:
+/home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/expand.rs:
+/home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/expr.rs:
+/home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/iter.rs:
+/home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/release.rs:
+/home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/time.rs:
+/home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/token.rs:
+/home/om/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.11/src/version.rs:
+/home/om/Projects/FarPi/marvin_ui_yew/target/debug/build/rustversion-cff2b8ff0fed8e86/out/version.expr:
+
+# env-dep:OUT_DIR=/home/om/Projects/FarPi/marvin_ui_yew/target/debug/build/rustversion-cff2b8ff0fed8e86/out
