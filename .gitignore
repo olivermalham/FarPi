@@ -1,3 +1,6 @@
 .idea
 *.pyc
 */node_modules/*
+*/dist/*
+*/target/*
+/marvin_ui_yew/css/node_modules/

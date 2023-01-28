@@ -12,8 +12,9 @@ fn App() -> Html {
     };
 
     html! {
-        <div>
-            <button {onclick}>{ "+1" }</button>
+        <div class="alert alert-success shadow-lg">
+            <h1 class="text-3xl font-bold underline">{"WIBBLE!"}</h1>
+            <button class="btn" {onclick}>{ "+1" }</button>
             <p>{ *counter }</p>
         </div>
     }

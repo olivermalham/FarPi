@@ -32,6 +32,32 @@ class BasicPiGPIO(HALComponent):
         GPIO.output(self._pin_number, self.state)
 
 
+class BasicConsole(HALComponent):
+    """ HAL component that processes commands sent from the client
+    """
+
+    def __init__(self):
+        super(HALComponent, self).__init__()
+
+    def refresh(self, hal):
+        pass
+
+    def action_command(self, command, hal):
+        command_parts = command.split()
+        hal.message = f"Command received: {command}"
+        print(f"Console command received: {command_parts[0]}")
+
+        # Deliberately allow any exceptions thrown here to bubble up
+        command_name = f"command_{command_parts[0]}"
+        command = getattr(self, command_name)
+        command(*command_parts[1:], hal=hal)
+
+    def command_status(self, *args, hal):
+        """ Example command method that is exposed to the client """
+        print(f"Received console Status command")
+        hal.message = "Status is GREEN"
+
+
 class BasicPi(HAL):
     """ Concrete HAL class for accessing basic Raspberry Pi hardware.
 

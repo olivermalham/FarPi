@@ -4,6 +4,7 @@ import serial
 from .hal import *
 from .virtual import *
 from .servo_lib.lewansoul_lx16a import ServoController
+from .basic_pi import BasicConsole
 
 # UART serial port for servo bus
 SERVO_SERIAL_PORT = '/dev/serial0'
@@ -43,31 +44,6 @@ class MarvinGPIO(HALComponent):
         hal.message = "BasicPiGPIO action_set value:{}".format(value)
         self.state = bool(value)
 
-
-class MarvinConsole(HALComponent):
-    """ HAL component that processes commands sent from the client
-    """
-    def __init__(self):
-        super(HALComponent, self).__init__()
-        
-    def refresh(self, hal):
-        pass
-
-    def action_command(self, command, hal):
-        command_parts = command.split()
-        hal.message = f"Command received: {command}"
-        print(f"Console command received: {command_parts[0]}")
-        
-        # Deliberately allow any exceptions thrown here to bubble up
-        command_name = f"command_{command_parts[0]}"
-        command = getattr(self, command_name)
-        command(*command_parts[1:], hal=hal)
-
-    def command_status(self, *args, hal):
-        """ Example command method that is exposed to the client """
-        print(f"Received console Status command")
-        hal.message = "Status is GREEN"
-        
 
 class MarvinMotion(HALComponent):
     """ Component that communicates with the Marvin-core subsystem to handle low level movement 
@@ -237,7 +213,7 @@ class MarvinHAL(HAL):
         self.bcm04 = MarvinGPIO(pin_number=4, directon=0)
 
         self.wave = GeneratorSquareWave()
-        self.commandLine = MarvinConsole()
+        self.commandLine = BasicConsole()
 
         self.motion = MarvinMotion()
 
